@@ -1,0 +1,198 @@
+
+ (*
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │             DOKUMENTATION DES TEX - SYSTEMS I            │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                           TEX                            │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+                                                                               
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │ Beschreibung    │ Satzerstellungssystem TEX nach D. E. Knuth               │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ © Copyright     │ 1992 Linus & Daniel Willmann + Stefan Lindner +          │
+ │                 │      Klaus-Peter Reimers +                               │
+ │                 │      GDOS-PflegeGemeinschaft Kiel (mgr, jm, wgn, kpr,    │
+ │                 │      kdz) Kontaktadresse : Klaus-Peter Reimers,          │
+ │                 │      Wulfsbrook 34a, 2300 Kiel 1, Telefon 0431 / 682018  │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ *)
+
+
+0. GEP_TEX - Das Satzerstellungssystem TEX für den GEPARD (Überblick)
+
+1. Vorbemerkungen (inclusive Hardwarevoraussetzungen)
+2. Ablauf einer TEX-Session im Groben
+3. Ein erster Testlauf
+
+Das vom Informatik-Pabst II, D.E. Knuth, (Nummer I ist natürlich NW) geschaffene
+Satzerstellungssystem TEX ist nun an das GDOS 1.52 angepaßt. Die Vorarbeiten
+(der zweifellos größere Teil der Arbeit) leisteten Daniel und Linus Willmann
+mit ihrer MODULA-2 - Version des Hauptprogramms TEX und Stephan Lindner mit
+seiner C - Variante eines DVI-Treibers auf dem ATARI. Allen dreien sei hier
+noch einmal herzlich für die freundliche Überlassung ihrer Sources an unser
+nichtkommerzielles Projekt einer GDOS-Pflegemeinschaft gedankt.
+
+Meine Aufgabe bestand nur noch darin, die Treiber-Texte von C nach MODULA-2
+zu übersetzen, alle Systemkomponenten an unser GDOS 1.52 und untereinander, 
+in einer eigenen TEX-Shell integriert, anzupassen, sowie diese kurze Einführung 
+und eine Dokumentation zu verfassen.
+
+Ich hoffe, daß das System nicht nur mir von Nutzen sein kann.
+
+Klaus-Peter Reimers
+
+
+1. Vorbemerkungen (inclusive Hardwarevoraussetzungen)
+
+Das Satzerstellungssystem TEX versucht, die Techniken eines professionellen
+Buchdrucks auf dem Computer zu simulieren. Geschaffen wurde es, um insbesondere
+mathematische Facharbeiten auf einem Rechner setzen, anschauen und drucken
+zu können. Der hiermit verbundene Aufwand ist so groß, daß TEX nicht mehr auf
+sogenannten Minimalkonfigurationen lauffähig ist. Benötigt werden :
+
+- mindestens 1.5 MB RAM
+- mindestens zwei Laufwerke mit mindestens 800 KB Kapazität
+- ein mit dem GDOS-Grafiksystem GGS lauffähiger Bildschirm
+- ein (EPSON-Standard-kompatibler oder -emulierender) Drucker.
+
+Das System wird zur Zeit so ausgeliefert, das es mit folgender Konfiguration
+sofort, d.h. ohne in der Dokumentation beschriebene Anpassungen lauffähig ist :
+
+- 2 MB RAM
+- 2 Diskettenlaufwerke a 800 KB als Drives #A, #B
+- ein mit den Treibern 'MonoChrom', 'NECGdc' oder 'Text80ZPGd' betreibbarer
+  Bildschirm, der auf eine Horizontalpixelzahl von 640 und eine 
+  Vertikalpixelzahl von 400 (ATARI-Standard) eingestellt ist
+- ein EPSON-kompatibler 9-Nadeldrucker mit vierfacher Grafikdichte (ESC Z).
+
+Alle anderen Hardwareumgebungen dürften eine Auseinandersetzung mit der 
+Dokumentation des Systems erforderlich machen. Im Folgenden ist vorausgesetzt,
+daß eine solche Anpassung der Treiber unnötig war oder aber bereits geschehen
+ist.
+
+
+2. Ablauf einer TEX-Session im Groben
+
+TEX arbeitet im Prinzip wie ein Compiler. Es reagiert auf im Text eingestreute
+Befehle, besitzt eigene Kontrollstrukturen und ist Makro-fähig, d.h. die
+Befehlssprache ist beliebig um eigene Befehle erweiterbar. Die Arbeit mit
+TEX ist daher dem wohlvertrauten Edit-Compile-Debug-Run - Zyklus mit unserem
+MODULA-2 - Compiler ähnlich :
+
+(a) Text editieren
+    Der noch ungeübte TEX-Anwender gibt den eigentlichen Text so wie es ihm
+    vertraut ist mit Hilfe des System-Editors ein. Geübtere streuen hier
+    bereits einige Befehle z.B. zur Erzeugung von Abschnitten, Einrückungen,
+    Kapitelüberschriften etc. ein.
+    
+(b) TeXt programmieren
+    Der Text wird nun zu einem TEX-Source-Text umprogrammiert. Dazu ist es
+    im Moment z.B. erforderlich, alle Nicht-ASCII-GEPARD-Zeichen mit Hilfe
+    der R(eplace-Option des Editors in entsprechende Zeichenerzeugungs-Befehle
+    von TEX zu verwandeln. Insbesondere die deutschen Umlaute und das Es-Zett
+    sperren sich noch einer direkten Verarbeitung. Eine Vorstufe eines
+    GEPARD-Preprozessors, der zumindest die zuletzt erwähnten Zeichen
+    automatisch konvertiert, ist die Utility 'Text_to_tex'.
+
+(c) TeXt compilieren
+    Die TEX-Sources werden nun durch Aufruf von GEP_TeX compiliert, eventuelle
+    Fehler werden im Editor wie gewohnt angezeigt, verbessert und schließlich
+    nach einem erfolgreichen Durchgang ein DVI-File erzeugt, das alle 
+    Informationen enthält, um den übersetzten und gesetzten Text auf nahezu
+    beliebigen Ausgabegeräten darzustellen. 
+
+(d) TeXt visualisieren
+    Das DVI-File wird anschließend zumeist vor einer Druckausgabe (Print -
+    endgültige Produktion des Textes auf einem 'hochauflösenden' Ausgabegerät
+    wie einem Drucker oder einer Lichtsatzanlage) auf dem Bildschirm dargestellt
+    (Preview - Kontrolle des Erzeugnisses auf einem niedrigauflösenden
+    Ausgabegerät). 
+
+
+3. Ein erster Testlauf
+
+Die Kopie der Diskette mit der VolumeKennung 'Gep_TEX-SYSTEM' gehört ins Lauf-
+werk mit der Kennung #A, die 'Gep_TeX-Fonts' genannte in #B. Im Filer bzw. 
+besser schon über Config (siehe Dokus dazu) setze man die Variable
+'GraphicScreen' auf den für das eigene System passenden Wert. Sonst versucht
+das System es mit 'MonoChrom' !
+
+(a) TeX_Shell starten
+    Mit der <X> - Taste wird das FileSelect-Menu der Shell-Option eX(ecute 
+    aktiviert und dort das Programm 'TeX_Shell' ausgewählt. Es zeigt sich wie 
+    üblich eine Kommandozeile.
+
+(b) TeXt editieren
+    Durch <E> wird der E(dit-Modus angesprochen, d.h. der System-Editor geladen.
+    Er zeigt im FileSelect-Menu die Einträge des Directories der 
+    Gep_TEX-SYSTEM-Diskette. Dort findet sich ein Text namens 'Story.tex.Text'.
+    Man wähle diesen an und schaue was er bietet. Man verstehe die kleinen,
+    eingebauten Witze und lasse die Eigentümlichkeiten der eingefügten 
+    TEX-Befehle (beginnen alle mit '\') auf sich wirken. 
+    
+    Der TeXt stammt übrigens aus der Bibel für alle TEX-Hacker, dem Buch
+    von D.E.Knuth 'The TEXbook'. Dort lerne man TEX oder aber durch Norbert
+    Schwarz 'Einführung in TEX', beide bei ADDISON-WESLEY erschienen.
+    
+    Wie bei einem Compilationsvorgang unter MODULA-2 verlasse man mit <Q><C> 
+    den Editor, der so automatisch das Programm GEP_TeX zur Ausführung bringt.
+    
+(c) TeXt compilieren
+    Nach dem Laden von GEP_TeX (dauert etwas von der Diskette) meldet sich
+    das Programm mit der folgenden Bildschirmausgabe, einem Protokoll seiner
+    Aktivitäten und einer Eingabezeile :
+    
+    (#a0:Story.tex.Text [1]) 
+    *
+    \end________________________________________________________________________
+    
+    Diese Zeilen dokumentieren, daß sich TEX mit dem durch einen vollständigen
+    Filenamen inclusive VolumeKennung und Suffix gekennzeichneten Text 
+    beschäftigt. Es wird die Bearbeitung der ersten Seite durch '[1' angedeutet,
+    die schließende Klammer ']' zeigt das Ende der Arbeit an dieser Seite,
+    die runde Klammer das Ende der Compilation des gesamten Textes. Der Stern
+    ist ein Eingabe-Prompt von TEX, die letzte Zeile macht einen vernünftig
+    erscheinenden Vorschlag wie nun weiter verfahren werden soll. Ein Drücken
+    von <RETURN> übernimmt den Befehl '\end' und es wird nun das DVI-File
+    auf die Diskette TEX-SYSTEM geschrieben.
+    
+(d) TeXt visualisieren I
+    Die TEX_Shell meldet sich wieder und die Option L(ook gibt einem die
+    Möglichkeit, den inzwischen zum Workfile erhobenen Text 'Story.tex.Text'
+    ohne nochmaliges FileSelect anzugucken. Also <L> gedrückt und gewartet, denn
+    jetzt lädt der DVI-Treiber das von GEP_TeX erzeugte DVI-File, sucht die
+    dort angeforderten Fonts von der Gep_TeX_Fonts - Diskette, zeigt irgendwann 
+    sein Prompt und dokumentiert wie GEP_TeX durch '[1', daß die erste Seite
+    des Textes in Arbeit ist. Nachdem die Bitmap als Ausgangsbasis des
+    Visualisierens erzeugt ist, wird das Grafiksystem aktiviert und die
+    Darstellung der Seite beginnt. Beim Preview wird die gesamte Breite, aber
+    nur ein Teil der Höhe des Dokumentes darstellbar. 
+    Man hat daher die Möglichkeit, sich im Dokument bzw. der angezeigten Seite
+    hin und her zu bewegen :
+    
+    - <DownKey> bringt einen weiter nach unten
+    - <UpKey> dann wieder nach oben
+    - <h> oder <H> HOME zur linken, oberen Ecke
+    - <e> oder <E> zum Seiten-Ende 
+    - <+> um 12 Pixel nach unten
+    - <-> um 12 Pixel nach oben
+    
+    <ESCKey> beendet das Schauspiel und man landet wieder in der Shell.
+    
+(e) TeXt visualisieren II
+    Von der nun wieder sichtbar werdenden TeX_Shell wird über die Option R(un 
+    der eigentliche Produktionsvorgang auf Papier eingeleitet. Auch hier wird
+    das Workfile sofort geladen und auch die nachfolgenden Schritte verlaufen
+    so wie unter (d) beschrieben. Letztendlich wird allerdings der Drucker,
+    sofern er eingeschaltet ist, durch seine Geräusche kundtun, daß das
+    Endstadium unseres Experimentes erreicht ist : der Text wird auf dem
+    Papier in der gewünschten Form ausgedruckt.
+    Nach Abschluß dieses Vorgangs quittiert ein Tastendruck, daß alles gut
+    gegangen ist. Man findet sich in der TeX_Shell wieder und verläßt sie 
+    mit <Q>.
+    

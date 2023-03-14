@@ -1,0 +1,597 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                          Shell                           │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+ 
+  (0) Die System-Programme der GDOS 1.52 - Shell (Überblick) 
+  
+  (1) Die erste Kommandozeile
+  
+  (2) Die zweite Kommandozeile
+  
+  (3) Die dritte Kommandozeile
+  
+  (4) Die vierte Kommandozeile
+  
+  (5) Die fünfte Kommandozeile
+  
+  (6) Fehlermeldungen zur Laufzeit
+  
+  
+  Für die meisten System-Benutzer dürfte die auf der SYSTEM: - Diskette mitge-
+  lieferte, in das GDOS eingebundene Shell die Hauptschnittstelle zwischen
+  ihm und dem GEPARD sein. Die Shell präsentiert sich Kommandozeilen - orien-
+  tiert : In der obersten Bildschirmzeile werden die zumeist einbuchstabigen
+  Befehlsanfänge zusammen mit einer kurzen Andeutung ihrer Bedeutung aufge-
+  listet. Im Normalfall ist nur eine der fünf Kommandozeilen zu sehen. Natür-
+  lich sind alle Funktionen verfügbar, solange man sich nur auf dieser Haupt-
+  kommando-Ebene des Systems aufhält.
+  
+  Will man sich einen Überblick über alle Möglichkeiten des Systems verschaf-
+  fen, so drücke man die Taste <H> wie H(elp. Es erscheinen untereinander
+  alle fünf Kommandozeilen. Die jeweiligen Befehle werden, wie eben schon
+  ausprobiert, mit dem Buchstaben aktiviert, der vor der '('- Klammer steht
+  (oder durch das Drücken des entsprechenden <Ctrl?Key>, wenn vor dieser
+  Klammer die Zeichenkombination '^?' steht). 
+  Hat man genug von dieser Darstellung, so kann man den Bildschirm von den 
+  letzten vier Zeilen durch das Drücken der <SPACE>-Taste befreien. Diese
+  Bildschirmbereinigung funktioniert übrigens jederzeit - egal, welches
+  Programm gerade Müll auf dem Bildschirm hinterlassen hat, nachdem es sich
+  verabschiedet hat und die Shell sich wieder mit ihrem Prompt meldet.
+  
+  Will man nur jeweils eine der fünf Zeilen sehen und doch alle nacheinander
+  zu Gesicht bekommen, so kann man dieses Weiterschalten der Prompts mit der
+  Taste <?> erreichen. Weiß man, welche Kommandozeile betrachtet werden soll,
+  so wird durch die Tasten <1> bis <5> die entsprechende Anzeige ausgeführt.
+  
+  Es sollte noch darauf hingewiesen werden, daß die im folgenden getroffenen
+  Aussagen sich auf die Situation beziehen, die durch die Standardbelegung
+  der System-Files auf der GDOS 1.52 - SYSTEM: - Diskette gegeben ist. Es ist 
+  nämlich möglich, irgendein eigenes Programm 'Filer.Syst' zu nennen, um es 
+  dann von der Shell aus mit <F> wie (normalerweise) Filer zu starten.
+  
+  Die Bedienung der einzelnen Shell-Programme entnehme man den entsprechenden
+  Einzel-Dokumentationen.
+  
+  
+  
+  (1) Die erste Kommandozeile
+  
+  
+  (a) A(ssembler     - Dies ist der von as entwickelte und von jh erweiterte
+                       und gewartete Stand-Alone-Assembler, der 68010-Befehle
+                       verarbeiten und nicht nur für den GEPARD zur Anwendung 
+                       gebracht werden kann, da es sich um einen Cross - Assem-
+                       bler handelt, der MOTOROLA-S-Records produziert, die 
+                       auch auf anderen Maschinen interpretiert werden können.
+                       
+                       Die jetzt vorliegende Version 1.4 kann nur auf absolute 
+                       Adressen assemblieren, also keine linkbaren Module er-
+                       zeugen. Auch ist kein Import von GDOS-Prozeduren oder 
+                       Objekten möglich. Allerdings besitzt der Assembler alle 
+                       Fähigkeiten, um zum Beispiel neue Boot-EPROMs für den 
+                       GEPARD auf diesem selbst zu schreiben.
+                       Full_FileName := 'SYSTEM:Assembler.Syst'.
+                       
+  (b) L(oader        - Das  Programm 'Loader.Syst' ermöglicht das Laden von 
+                       mit 'Assembler.Syst' generierten S-Records in den
+                       Speicher des GEPARD, um sie dort unter der Kontrolle 
+                       des Monitors auszuführen.
+                       Full_FileName := 'SYSTEM:Loader.Syst'.
+                       
+  (c) C(ompiler      - Der GEPARD - MODULA-2 - Compiler des jm. Das Herzstück
+                       des Systems, denn mit diesem Compiler, der einen inte-
+                       grierten 68020 - Assembler besitzt, wurden alle Teile
+                       des Systems übersetzt. Der Compiler weist etliche Er-
+                       weiterungen und nur geringe Einschränkungen gegenüber 
+                       dem Wirth'schen Standard auf. Der Assembler kann nur
+                       relozierbaren Code erzeugen, d. h. eben nicht auf ab-
+                       solute Adressen assemblieren. Allerdings können alle
+                       MODULA-2 - Objekte angesprochen werden.
+                       Full_FileName := 'SYSTEM:Compiler.Syst'.
+                       
+  (d) E(ditor        - Der Programm - Editor des GEPARD, initiiert von hjh. Er
+                       unterstützt die Erzeugung und Korrektur von Programm-
+                       Texten während der Software-Entwicklung auf dem GEPARD. 
+                       Er hat zwar einige Features eines Textverarbeitungs-
+                       programms, sollte dazu aber für gewöhnlich nicht miß-
+                       braucht werden.
+                       Full_FileName := 'SYSTEM:Editor.Syst'.
+                       
+  (e) F(iler         - Ein universelles Instrument zur Verwaltung von Drives,
+                       Volumes, Units und Files, die dem GDOS für seine Arbeit
+                       zur Verfügung stehen. Hier können Disketten formatiert,
+                       Files kopiert, gelöscht und umbenannt werden.
+                       Full_FileName := 'SYSTEM:Filer.Syst'.
+                       
+  (f) M(onitor       - Dieses Programm findet sich nicht auf der Diskette als
+                       Syst-File wie die anderen, sondern ist integraler Be-
+                       standteil des GDOS selbst. Es erlaubt einen Blick in die
+                       Innereien des GDOS und der darunter laufenden Programme.
+                       Ein eingebauter Disassembler, BreakPoints und der Trace-
+                       Modus erlauben das Sezieren von Programm-Katastrophen,
+                       zumal das System bei unvermeidlichen Abstürzen in diesem
+                       Teil des GDOS und nicht in der Shell landet. 
+                       
+  (g) eX(ecute       - Um Utilities und eigene Programme von der Shell aus
+                       zu starten, verwende man die <CtrlXKey>-Taste, wenn 
+                       einem der vollständige Name des Code-Files (Volume-
+                       Angabe, File-Name und Suffix, Definitionen siehe Filer-
+                       Doku) noch geläufig ist. 
+                       Der Suffix kann allerdings auch weggelassen werden bei 
+                       der Beantwortung der Frage des Systems, welches Code-
+                       File denn nun ausgeführt werden soll, da dieses das 
+                       Suffix 'Code' automatisch anzuhängen versucht, wenn das 
+                       Starten des Programms nicht auf Anhieb klappt.
+                       
+                       Verwendet man stattdessen die <X>-Taste als Variante 
+                       dieses Befehls, wird ein SelectFile-Menue die im 
+                       Moment vom System erreichbaren, ausführbaren Code-Files
+                       ausgeben. Über die Bedienung dieses Menues informiert
+                       Sie die Dokumentation 'SelectFile' oder der Definitions-
+                       Modul-Text von GdosHelp.
+                       
+   
+   
+  (2) Die zweite Kommandozeile
+  
+  (h) R(un          - Mit dieser Option wird eine Kombination von zwei schon
+                      besprochenen Möglichkeiten dem Benutzer angeboten :
+                      C(ompile + eX(ecute. Über ein SelectFile-Menue wird
+                      ein Text zur Übersetzung durch den MODULA-2 - Compiler
+                      ausgewählt, gelingt die Code-Erzeugung bei diesem
+                      Prozeß, so wird das Programm sofort / automatisch ge-
+                      startet.
+                      
+  (i) O(ther Compiler
+                    - Sollte irgendjemand irgendwann einmal einen weiteren
+                      Compiler für das System des GEPARD schreiben, so könnte
+                      er über diese Option aufgerufen werden. Über das Config-
+                      Programm kann dieses neue System-Programm angemeldet
+                      werden (siehe Dokumentation dort). Natürlich kann - wie
+                      oben erwähnt - jedes andere Programm, das der Benutzer
+                      seperat von der Shell starten möchte, unter diesem Titel
+                      angemeldet werden.
+                      Full_FileName := 'SYSTEM:_________.Syst'.
+                      
+  (j) G(epStar      - Ein WORDSTAR-ähnlicher Editor, der einen großen Teil der
+                      Features dieses Textverarbeitungsprogramms aufweist. Mit
+                      seiner Hilfe sollten sich die meisten Dinge in diesem
+                      Bereich erledigen lassen. Das Programm ist ein Beitrag
+                      von tb, jha, msp und jh.
+                      Full_FileName := 'SYSTEM:GepStar.Syst'.
+                      
+  (k) K(alkulator   - Hinter diesem Namen verbirgt sich das allseits beliebte
+                      GepCalc von ek und jh. Es ist ein dreidimensionales Ta-
+                      bellenkalkulationsprogramm, das sich wohl an alten 
+                      APPLE-Urtypen orientiert.
+                      Full_FileName := 'SYSTEM:GepCalc.Syst'.
+          
+  (l) D(riveCopy    - Diese Utility hätte sicher auch im Filer ihren angemes-
+                      senen Platz. Sie erlaubt es, ganze Disketten in einem
+                      nur vom Speicherplatz abhängigen, gepufferten Prozeß
+                      zu kopieren. Das ganze geschieht auf Treiberebene unter
+                      Umgehung des File-Systems.
+                      Full_FileName := 'SYSTEM:DriveCopy.Syst'.
+                      
+  (m) U(ser Restart - Die Shell 'merkt' sich jeweils, welches Code-File vom
+                      Benutzer zuletzt gestartet wurde. Über diesen kurzen
+                      Befehl wird das Programm sofort wieder ausgeführt.
+                      
+                      
+                      
+  (3) Die dritte Kommandozeile
+  
+  (n) S(tatus       - Hier liefert die Shell einen Überblick über den Zustand
+                      des Systems. Es werden folgende Daten aufgelistet :
+                      
+                      1. der Name des zuletzt ausgeführten User-Code-Files;
+                      2. die CPU (68000,68010,68020,68030);
+                      3. das REAL-Format;
+                      4. Anfang des HEAP (Parameter-Stack, A3);
+                      5. Anfang des System-Stack (A7);
+                      6. RAM-Disk(s) :
+                         VolumeKennung + (VolumeName) + Größe in GDOS - Blocks;
+                      7. Vorhandener Speicher :
+                         für die Speicherarten langsam, schnell und auch
+                         (reset-) fest, sowie insgesamt werden die jeweiligen
+                         Anteile am Gesamtspeicher (MemAvail) und auch das
+                         darin befindliche größte zusammenhängende Speicher-
+                         stück (Largest MemAvail) angezeigt.
+                         
+   (o) I(nstall RAM / Resident
+                    - Sollte nach dem Booten der Wunsch spürbar werden, die
+                      Existenz einer RAMdisk zu beeinflussen oder aber resi-
+                      dente Module für das System entstehen oder vergehen zu
+                      lassen, so finden sich hier die nötigen Shell-Routinen.
+                      Nach Aufruf durch die <I>-Taste gibt es in der ersten und
+                      zweiten Bildschirmzeile ein Angebot der Dinge, die sich
+                      installieren bzw. deinstallieren lassen.
+                      Es sind dies - wie übrigens vor dem Booten durch Config 
+                      einstellbar, die 
+                      R(amdisk.    - Hier wird nachgefragt, ob es ein
+                                     I(nstall oder R(emove einer Ramdisk geben
+                                     soll. Im ersten Falle wird sogleich eine
+                                     neue Alternative aufgezeigt : Ramdisks
+                                     lassen sich R(esident oder N(ormal in-
+                                     stallieren. Residente Ramdisks benötigen
+                                     resetfestes RAM, wie es unter Config ange-
+                                     meldet und unter S(tatus in der Shell be-
+                                     trachtet werden kann. Normale Ramdisks
+                                     liegen im normalen Speicher und haben 
+                                     nicht den DriveType 25, sondern 12.
+                                     Nun wird die maximale Größe der Ramdisk,
+                                     die das System verkraften könnte, ausgege-
+                                     ben, und man muß einen Wert darunter aus-
+                                     wählen. Anschließend wird nach der Lauf-
+                                     werksKennung ('A' bis 'J') gefragt, die 
+                                     der Ramdisk zugewiesen werden soll. Hier
+                                     sind belegte Kennungen zu vermeiden. 
+                                     Auch bei der nächsten Frage nach dem 
+                                     VolumeNamen der Ramdisk muß ein neuer 
+                                     Name, der dem System nicht bekannt ist, 
+                                     ausgesucht werden. Hierbei wird unter-
+                                     stellt, daß der Treiber 'RamDisk.RWTS'
+                                     verfügbar ist.
+                                     Beim R(emoven einer Ramdisk wird nur nach
+                                     der LaufwerksKennung gefragt und dann ohne
+                                     Warnung gelöscht.
+                      F(iler       - wird sofort entfernt oder installiert;
+                      E(ditor      - wird sofort entfernt oder installiert;
+                      C(ompiler    - wird sofort entfernt oder installiert;
+                      O(ther Comp. - wird sofort entfernt oder installiert;
+                      A(ssembler   - wird sofort entfernt oder installiert;
+                      L(oader      - wird sofort entfernt oder installiert;
+                      G(epStar     - wird sofort entfernt oder installiert;
+                      K(alkulator  - wird sofort entfernt oder installiert;
+                      D(riveCopy   - wird sofort entfernt oder installiert;
+                      N(ew Config  - wird sofort entfernt oder installiert.
+                      
+                      Die Installtion obiger Programme gelingt natürlich nur,
+                      wenn genügend Speicher da ist und die SYSTEM: - Diskette
+                      noch für das GDOS greifbar ist.
+                      Will man zuvor sehen, welche Module bereits resident im
+                      System bzw. welche RamDisks bereits konfiguriert sind,
+                      so drücke man die <?>-Taste und betrachte die dann auf-
+                      gelisteten Informationen.
+                      
+  (p) P(rint        - Alle Texte, die auf dem GEPARD geschrieben wurden, können
+                      über die Shell bequem ausgedruckt werden. Ein SelectFile-
+                      Menue gestattet die Auswahl eines Files, danach wird
+                      gefragt, auf welche Unit ausgegeben werden soll.  Der
+                      unter dem Namen Printer% unter Config angemeldete 
+                      Drucker-Treiber wird normalerweise gewählt und daher auch
+                      als Default angeboten. Man kann aber durch die in ihm 
+                      definierten Parameter seine Art zu drucken beeinflussen, 
+                      indem man sie nach einem Semicolon anhängt. 
+                      Beispiel : 'Printer%;U;P' (z.B. U(nidirektionaler Druck
+                      und Seitenvorschub nach der letzten Zeile).
+                      Der Vorgang ist durch den <ESCKey> abbrechbar.
+                      
+  (q) H(elp         - zeigt alle fünf Zeilen mit den Kommandos der Shell.
+
+
+  (4) Die vierte Kommandozeile
+  
+  (r) ^P(rint abort - Mit dieser Option kann ein im Hintergrund (über einen
+                      Spooler) laufender Druckprozeß abgebrochen werden,
+                      indem die ausgebende Unit ge'clear'ed wird, d. h. der
+                      Unit-Buffer geleert und die Unit-Zugriffe unterbunden
+                      werden.
+                      
+  (s) ^D(ebug output 
+                    - Um die Ausgaben des Debuggers beim Programmanalysieren
+                      nicht mit den vom Programm selbst vorgenommenen Bild-
+                      schirmausgaben durcheinander mischen zu lassen, kann man
+                      hier einen zweiten Bildschirm / eine zweite Screen% -
+                      Unit einschalten, wenn diese im Config-Programm in der
+                      uit (Unit Information Table) angemeldet wurde. Die
+                      Ausgaben des Debuggers werden dann auf diesen Bildschirm
+                      umgeleitet. Die Eingabe erfolgt über FormatIO.GetLine
+                      mit 'Screen%' als Default. Es wird auch nachgefragt,
+                      ob der Benutzer die im Debugger gegebenen Einflußmög-
+                      lichkeiten über das Keyboard% nutzen möchte (siehe
+                      Definitions-Modul-Text Debug, insbesondere Redirect-
+                      Output). 
+                      
+  (t) ^M(onitor output
+                    - Auch für den Monitor gibt es eine entsprechende Aus-
+                      gabeumleitung, allerdings ist der Defaultwert hier der
+                      Printer%, um ein Protokoll der Monitor-Sitzung zu er-
+                      halten. Die Frage nach dem Keyboard% entfällt hier.
+                      Stattdessen wird gefragt, ob diese Output-Umleitung im 
+                      System resident gehalten werden soll, um später wieder
+                      darauf zugreifen zu können. 
+                      
+  (u) ^K(ill        - Vom Config-Programm oder der Shell-Option I(nstall als
+                      residente Module eingeführte Programme können hierüber
+                      wieder aus dem Speicher entfernt werden. Es muß der Name 
+                      des betreffenden Moduls eingegeben werden.
+                      
+  (v) ^N(ew SysConf - Hiermit wird das Config-Programm gestartet, das es ge-
+                      stattet, sehr viele System-Komponenten den eigenen
+                      Wünschen gemäß zu gestalten. Insbesondere kann hier
+                      eine optimale Anpassung an die eigene Hardware vollzogen
+                      werden. Die neue System-Konfiguration wird allerdings
+                      erst aktiv, wenn das System über ^R(eset neu gebootet
+                      worden ist.
+                      Full_FileName := 'SYSTEM:Config.Syst'.
+                      
+                      
+                      
+  (5) Die fünfte Kommandozeile
+  
+  (w) ^U(nit Config - Units, die durch entsprechende Teile in den Treibern
+                      konfigurierbar programmiert sind, können hiermit den
+                      akuten Gegebenheiten der Laufzeit angepaßt werden. Es
+                      wird nach dem Namen der zu konfigurierenden Unit ge-
+                      fragt und als Default der Printer% vorgeschlagen. Die
+                      Einzelheiten der Programmierung des Konfigurations-
+                      teils entnehme man den einschlägigen Abhandlungen des
+                      tt und der mustergültigen Programmierung des STAR_NL10
+                      durch mgr auf dem DRIVER_TEXT: - Volume.
+                      
+  (x) ^B(ell        - Auch GEPARDen B(ellen, wenn man es so einstellt. Die
+                      Geräusche, die unser Raubtier von sich gibt, sind hier
+                      ein- bzw. ausschaltbar. Zuerst wird der momentane Zustand
+                      ausgegeben, dann gefragt, ob Stille oder Lärm gewünscht 
+                      ist.
+                      
+  (y) ^C(ursor      - tut im Moment wohl nichts.
+  
+  (z1) ^R(eset (boot)
+                    - Nach einer freundlichen Rückfrage, ob man da eigentlich 
+                      weiß, was man tut, wird der GEPARD neu gebooted. Wenn
+                      man das freiwillig macht, um z. B. eine neue System-
+                      Konfiguration, die durch Config erzeugt wurde, auszu-
+                      probieren, mag man sich freuen. Es gibt aber leider
+                      auch in diesem GDOS Situationen, wo man sich wohl nicht
+                      anders helfen können wird. In diesem Fall : GDOS - PGK
+                      kontaktieren !
+                      
+  (z2) ^T(estflag   - Dieses Flag bewirkt, wenn es gesetzt ist, daß dem Be-
+                      nutzer bei Aufruf eines Haupt-Moduls angezeigt wird,
+                      welche Module in dieses importiert werden. So kann man
+                      Abhängigkeiten von Modulen überprüfen.
+                      
+  (z3) ^L(ogo       - Diese Möglichkeit findet sich genau wie e^X(ecute nicht
+                      in den Kommandozeilen. Es wird das allseits beliebte
+                      GEPARD-Logo zusammen mit der Copyright-Meldung und einer
+                      ersten System-Übersicht samt erster Kommmandozeile 
+                      gezeigt. Dies ist auch die Bildschirmausgabe, die man
+                      unmittelbar nach erfolgreichem, d. h. fehlerfreiem
+                      Booten und ohne eigenes PreInit- oder TurnKey- File 
+                      erhält.
+                      
+  
+  
+  (6) Fehlermeldungen zur Laufzeit
+  
+  
+  (a) Hardware-, Kommunikations- und interne Fehler
+  
+  (* 00 *)        'no I/O-error',
+  (* 01 *)        'parity error (CRC)',
+  (* 02 *)        'lost data error',
+  (* 03 *)        'illegal I/O request',
+  (* 04 *)        'time out error',
+  (* 05 *)        'verify error',
+  (* 06 *)        'bad format',
+  (* 07 *)        'ring buffer overflow',
+  (* 08 *)        'seek error',
+  (* 09 *)        'no buffer in system',
+  
+  
+  (b) Fehler beim File - Handling
+  
+  (* 10 *)        'no such file on volume',
+  (* 11 *)        'file no longer in directory',
+  (* 12 *)        'file is locked',
+  (* 13 *)        'file not open',
+  (* 14 *)        'file not closed',
+  (* 15 *)        'file is read',
+  (* 16 *)        'file is append only',
+  (* 17 *)        'file has bad block',
+  (* 18 *)        'file is protected',
+  (* 19 *)        'end of file',
+  
+  
+  (c) Fehler in der Directory - Verwaltung
+  
+  (* 20 *)        'no directory on volume',
+  (* 21 *)        'directory overflow',
+  (* 22 *)        'directory too large',
+  (* 23 *)        'directory has bad block',
+  (* 24 *)        ,
+  (* 25 *)        'directory full',
+  (* 26 *)        'no valid directory in buffer',
+  (* 27 *)        ,
+  (* 28 *)        'duplicate file in directory',
+  (* 29 *)        'destination file exist',  (* FileCopy *)
+  
+  
+  (d) Fehler in der VTOC - Verwaltung
+  
+  (* 30 *)        'no VTOC on volume',
+  (* 31 *)        'VTOC on disk is lost',
+  (* 32 *)        'VTOC in memory is lost',
+  (* 33 *)        'VTOC has bad block',
+  (* 34 *)        ,
+  (* 35 *)        'VTOC is full',
+  (* 36 *)        ,
+  (* 37 *)        ,
+  (* 38 *)        ,
+  (* 39 *)        ,
+  
+  
+  (e) Fehler beim Volume - Handling
+  
+  (* 40 *)        'volume not on line',
+  (* 41 *)        'volume not longer on line',
+  (* 42 *)        'volume is write-protected',
+  (* 43 *)        'volume has bad block',
+  (* 44 *)        'no volume table on drive',
+  (* 45 *)        'volume table is full',
+  (* 46 *)        'duplicate volume name',
+  (* 47 *)        ,
+  (* 48 *)        'destination volume too small',
+  (* 49 *)        'Volume is OS/S-Volume (Write-prot.)',
+  
+  
+  (f) Fehler beim Drive - Handling
+  
+  (* 50 *)        'drive not on line',
+  (* 51 *)        'drive not longer on line',
+  (* 52 *)        'disk is write-protected',
+  (* 53 *)        'disk has a bad block',
+  (* 54 *)        'disk is initalized',
+  (* 55 *)        'disk has changed',
+  (* 56 *)        'disk has no bootstrap',
+  (* 57 *)        'disk has no system',
+  (* 58 *)        'destination drive too small',
+  (* 59 *)        'no disk in drive',
+  
+  
+  (g) Fehler beim Unit - Handling
+  
+  (* 60 *)        'unit not on line',
+  (* 61 *)        'unit not initialized',
+  (* 62 *)        'unit name not found',
+  (* 63 *)        'unit not open',
+  (* 64 *)        'duplicate unit name',
+  (* 65 *)        'unit driver not found',
+  (* 66 *)        'sub-unit not found',
+  (* 67 *)        'access to unit denied', (* Treiber: UnitOpen nicht OK *)
+  (* 68 *)        'interface not available', (* liefern Treiber *)
+  (* 69 *)        'access to interface denied', (* liefern Treiber *)
+  
+  
+  (h) Fehler bei Namen und Nummern
+  
+  (* 70 *)        'bad device number',
+  (* 71 *)        'bad volume name',
+  (* 72 *)        'bad file name',
+  (* 73 *)        'bad device name',
+  (* 74 *)        'bad unit name',
+  (* 75 *)        'bad unit number',
+  (* 76 *)        'bad block number',
+  (* 77 *)        'bad suffix',
+  (* 78 *)        'bad filetype for this access',
+  (* 79 *)        'file must be screen-orientated unit',
+  
+  
+  (i) Diverse Fehler
+  
+  (* 80 *)        00,'sector not found',
+  (* 81 *)        00,'controller not found',
+  (* 82 *)        00,'disk driver not found',
+  (* 83 *)        00,'no disk driver konfigurated',
+  (* 84 *)        00,'RAM disk size too small',
+  (* 85 *)        00,
+  (* 86 *)        00,'bad module version',
+  (* 87 *)        00,'bad module format',
+  (* 88 *)        00,'nesting of module calls too deep',
+  (* 89 *)        00,'overflow of module list',
+  
+  (* 90 *)        00,'filebuffer too large',
+  (* 91 *)        00,'bad filetype for that function',
+  (* 92 *)        00,'unit channel not open',
+  (* 93 *)        00,'file not found', (* FileSearch *)
+  (* 94 *)        00,"function can't operate on units", (*FileSearch*)
+  (* 95 *)        00,'device already initialized', (* Treiber bei Init *)
+  (* 96 *)        00,'Card-Ident already defined', (* SetCardId *)
+  (* 97 *)        00,'Illegal Card-Number',
+  (* 98 *)        00,
+  (* 99 *)        00,'unknown error',
+  (*100 *)        00,'function not implemented',
+  
+  
+  (j) Fehler beim Graphik - Handling
+  
+  (*101 *)        "missing graphic device",
+  (*102 *)        "can't re-open a graphic device",
+  (*103 *)        "graphicdevice already closed",
+  (*104 *)        "unable to close: device not in catalogue",
+  (*105 *)        "unable to open: not enough memory",
+  (*106 *)        "graphic device is closed", 
+  (*107 *)        "graphic-hardware is leaved",
+  (*108 - 109 *)  ,
+  
+  (*110 *)        ,
+  (*111 *)        "graphic driver function not implemented",
+  (*112 - 119 *)  ,
+  
+  (*120 - 129 *)  ,
+  
+  (*130 - 139 *)  ,
+  
+  (*140 *)        "unable to open: framebuffer full",
+  (*141 *)        "unable to open: range error in parameters",
+  (*142 *)        "unable to open: wrong number of rows",
+  (*143 *)        "graphic already opened",
+  (*144 *)        "coordinates out of range",
+  (*145 *)        "operationmode not implemented",
+  (*146 *)        "clippingmode not implemented",
+  (*147 *)        "colourmode not implemented",
+  (*148 *)        "can't display zoomfactor",
+  (*149 *)        "colourkey not compatible to <bit per pixel>",
+  
+  (*150 *)        "device has no CLUT",
+  (*151 *)        "can't insert more shapes",
+  (*152 *)        "undefined shapenumber",
+  (*153 *)        "undefined rotation",
+  (*154 *)        "undefined spritenumber",
+  (*155 *)        "wrong shapenumber",
+  (*156 *)        "wrong spritenumber",
+  (*157 *)        "wrong hardspritenumber",
+  (*158 *)        "error in shape definition",
+  (*159 *)        "error in foto definition",
+ 
+  (*160 *)        "wrong mode",
+  (*161 *)        "can't insert more sprites",
+  (*162 *)        "unknown colourkey",
+  (*163 *)        "wrong screen",
+  (*164 *)        "colourindex out of range",
+  
+  (* xx *)        '<unknown IOResult>',
+
+  
+  (*900 *)        'Runtime: Value range error',
+  (*901 *)        'Runtime: No valid RETURN from function procedure',
+  (*902 *)        'Runtime: Overflow',   
+  (*903 *)        'Runtime: Division by zero',
+  (*904 *)        'Runtime: Out of stack space',
+  (*905 *)        'Runtime: HALT breakpoint found',
+  (*906 *)        'Runtime: String overflow',
+  (*907 *)        'Runtime: Variable access via NIL pointer',
+  (*908 *)        'Runtime: RETURN from coroutine',
+  (*909 *)        'Runtime: Out of memory',
+  (*910 *)        'Runtime: Odd memory amount',
+  (*911 *)        'Runtime: Illegal function call',
+  (*948 *)        'Runtime: User error',
+  (*949 *)        'Runtime: Unknown error',
+  
+  (*950 *)        'FPU: Unknown instruction',
+  (*951 *)        'FPU: Protocol violation',
+  (*952 *)        'FPU: Branch/Set on unordered',
+  (*953 *)        'FPU: Division by Zero',
+  (*954 *)        'FPU: Overflow',
+  (*955 *)        'FPU: Operand out of Range',
+  (*956 *)        'FPU: Signaling NAN encountered',
+  (*957 *)        'FPU: Invalid Trap',
+  
+  (*999 *)        'Undefined error code'.
+    
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+ 

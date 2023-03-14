@@ -1,0 +1,167 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                         Monitor                          │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+
+  (0) Das Monitor - Programm des GEPARD (Überblick)
+  
+  (1) Einführung
+  
+  (2) Funktionsübersicht
+  
+  
+  (1) Einführung
+  
+  In den Monitor gerät man auf verschiedenen Wegen. Freiwillig geschieht dies
+  durch
+         - den Aufruf des Monitors aus der Shell durch Eingabe vom <M>;
+         - einen BREAK-Aufruf in einem Assemblerprogramm mit der Ziel-
+           koordinate $4AFC im BootROM;
+         - das Drücken der Monitor-Aufruf-Taste (ist treiberabhängig !);
+  und unfreiwillig durch
+         - kleine Programmfehler, die System-Abstürze zur Folge haben.
+         
+  Beim Aufruf werden alle Prozessorregister (bis auf USP) gerettet und dann dem
+  Benutzer zur Änderung bereitgehalten. Dabei zeigt der PC auf den nächsten
+  auszuführenden Befehl, der SP (= SSP) steht auf der Ebene, von der der Moni-
+  tor aufgerufen wurde.
+  
+  Der Monitor gibt einige Auskünfte über die Art der Verursachung seines 
+  Aufrufes und den Zustand der Register, wenn er sich unfreiwillig zeigt :
+  1. Zeile    - Art / Ursache des Aufrufes, Trace-Modus - Einstellung;
+  2. Zeile    - PC, SP und SR.
+  Ansonsten meldet er sich brav mit einigen Versions- und Copyright-Infos
+  sowie Zeile 2.
+  
+  
+  (2) Funktionsübersicht 
+
+  Ein "!" zeigt die Eingabebereitschaft des Monitors an.
+
+  Alle Werte sind normal hexadezimal angegeben/anzugeben. Dezimale Werte können 
+  mit vorangestelltem "&" eingegeben werden.
+  Im folgenden Text gilt :
+      <b> steht für die Anfangsadresse, 
+      <e> für die erste ausgeschlossene Adresse.
+  Anstatt <e> kann <X><n> (n = Anzahl in Bytes) angegeben werden. In manchen
+  Fällen kann auch <Z><n> (n = Anzahl der anzuzeigenden Zeilen) verwandt werden.
+  Bei den Funktionen "M", "D" und "I" kann statt der Endadresse auch ein Punkt
+  eingegeben werden, um eine unendliche Auflistung zu erreichen.
+  Einer Adresse kann die Offset-Variable <O> vorangestellt werden.
+  Statt eines Adreßwertes kann ein Registerinhalt folgendermaßen angegeben 
+  werden: <R><rg>, wobei rg der Name des Registers ist. Beispiel :
+  "D RPC." disassembliert ab der aktuellen PC-Adresse.
+  
+  Alle Auflistungen können mit der <SPACE>-Taste angehalten oder mit einer
+  anderen Taste abgebrochen werden.
+  Die Ausgabegeschwindigkeit kann individuell angepaßt werden : Drückt man eine
+  der Tasten <0>..<9>, so wird die Ausgabe zunehmend verlangsamt. Standardein-
+  stellung ist 0, die höchste Geschwindigkeitsstufe, bei der es sich eher um
+  ein Vorbeirauschen denn um ein Auflisten handelt.
+  
+  
+  (a) M <b> <e>               Memory dump. Zeigt Speicher byteweise an.
+  (b) : <b> <w1> <w2>...      Speichert <w1> <w2> als Bytes oder als Register-
+                              inhalte (long) ab <b>.
+  (c) D <b> <e>               Disassembliert Speicherbereich.
+  (d) O <offs>                Setzt die Variable "O" auf den Wert <offs>.
+  (e) C <b> <e> <d>           Kopiert Bytes von <b>..<e>-1 nach 
+                              <d>..<d>+(<e>-<b>).
+  (f) V <b> <e> <d>           Verify. Vergleicht Bytes und zeigt die Unter-
+                              schiede an.
+  (g) H <b> <e> <b1> <b2>...  Hunt. Sucht nach Bytes.
+  (h) H <b> <e> '<string>           Sucht nach Zeichenkette.
+  (i) F <b> <e> <b1> <b2>...  Füllt Speicher mit Bytes.
+  (j) F <b> <e> '<string>     Füllt Speicher mit Zeichenkette.
+  (k) I <b> <e>               ASCII dump.
+  (l) ' <b> <string>          Speichert ASCII-Zeichenkette in den Speicher.
+  (m) B                       Zeigt alle Breakpoints (BP) an.
+  (n) B<n> <a>                Setzt BP Nr. <n> auf Adresse <a>.
+  (o) B-                      Löscht alle BPs.
+  (p) G <b>                   Go. Verläßt den Monitor und fährt auf Adr. <b> 
+                              fort.
+  (q) GS <b>                  Ruft Unterprogramm auf, das mit RTS abschließen
+                              muß, um wieder in den Monitor zurückzugelangen.
+  
+  (r) T+  (T-)                Tracekontrollmodus einschalten (bzw. ausschalten).
+                              Wenn der Tracemodus eingeschaltet ist und "G" 
+                              ausgeführt wurde, lösen folgende Tasten eine 
+                              Funktion aus :
+                               
+                              <SPACE>  Führt die angezeigte Instruktion aus.
+                              <ESCKey> Verläßt Tracekontrollprogramm, um nor-
+                                       male Monitorfunktionen auszuführen. 
+                                       Rückkehr mit "G".
+                              <O>      Schaltet Anzeige und Tastenabfrage ab 
+                                       und führt Programm weiter aus. Dabei 
+                                       muß dafür gesorgt werden, daß das Pro-
+                                       gramm wieder in die Monitoreingabe 
+                                       zurückkehrt,  z.B. über einen BP.
+                              <R>      Schaltet Ein-/Ausgabe bis zur Rückkehr 
+                                       aus dem augenblicklichen Unterprogramm 
+                                       ab. 
+                              <T>      Toggled T-Flag des SR des Prozessors
+                                       (Ist auch in normaler Monitoreingabe 
+                                       mit "R FT=1"  bzw. "R FT=0" möglich).
+                              <S>      Überspringt angezeigte Instruktion.
+                              <F>      Führt bis BP ohne Trace aus, setzt dann 
+                                       wieder Traceflag.
+                              <D>      Disassembliert die folgenden Instruk-
+                                       tionen.
+                              <B>      Setzt kurzzeitigen Breakpoint (wird bei 
+                                       Rückkehr sofort wieder gelöscht).
+                                      
+  Bei den folgenden Register-Operationen werden die Register <reg> meist mit 
+  den üblichen Abkürzungen (D0,A7,SR,PC,usw.) angegeben. Ausnahmen : VBR spe-
+  zifiziert das Vector Base Reg., BEV und AEV den Bus- bzw. Address Error Vek-
+  tor. Diese beiden Exception-Vektoren werden vom Monitor umgelenkt, so daß in 
+  den Vektoren im RAM die eigentlichen Vektoren nicht mehr zu finden sind. 
+  Daher können diese Vektoren wie die anderen Register verändert werden, und 
+  beim Verlassen des Monitors werden sie zurück in die Vektortabelle einge-
+  tragen.
+  
+  (s)  R <reg>                Zeigt Register an.
+  (t)  R+                     Zeigt alle Register an.
+  (u)  R                      Zeigt die mit "R:..." ausgewählten Register samt
+                              Inhalt an. 'R:' listet nur die Registernamen.
+  (v)  R <reg> = <long>       Setzt <long>-Wert in Register <reg>. Für <reg> =
+                              'Fx' mit x aus {T,S,I,V,N,Z,X,C} wird das ent-
+                              sprechende Flag im Statusregister gesetzt.
+  (w)  R: <reg1> <reg2>...    Wählt Register-Default-Anzeige aus (z.B. f. 
+                              Trace).
+  (x)  R:+                    Wählt alle Register.
+  (y)  R:-                    Wählt kein Register.
+  (z)  R:+ <reg>              Addiert Register zur Default-Auswahl.
+  (z1) R:- <reg>              Subtrahiert Register von Default-Auswahl.
+  (z2) R-                     Zeigt Monitor-Einsprungsmeldung und Position.
+  
+  Zusatzfunktionen:
+  (z3) P <filename>           Protokollfile eröffnen (auch auf Unit).
+  (z4) PC                     Protokollfile schließen (automatisch bei "Q").
+  (z5) P                      Formfeed ausgeben (löscht Bildschirm).
+  (z6) P- ( P+ )              Wählt Ein-/Ausgabe über Boot-ROM- (bzw. GDOS-)
+                              Routinen. Bei 'P-' werden zudem im Monitor alle
+                              Interrupts gesperrt.
+  (z7) L <filename>,<b>       Lädt Datei nach Adresse <b>
+  (z8) S <filename>,<b> <e>   Speichert Bereich (wortweise) von <b> bis <e>-2.
+  (z9) Q                      Quit (ruft SysReturn-Prozedur auf). Verlassen
+                              des Monitors.
+  (zA) ? goh                  Verknüpft die Long-Werte g und h mit dem Operator
+                              o aus der Menge {+,-,*,/,O,E,A}. Bei Addition
+                              und Subtraktion wird das Carry-Flag mit angezeigt,
+                              bei Division der Rest.
+  (zB) & d                    Zeigt den hexadezimalen Wert der Dezimalzahl d.
+ 
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+     
+          

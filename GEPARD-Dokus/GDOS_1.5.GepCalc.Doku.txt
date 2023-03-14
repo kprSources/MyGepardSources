@@ -1,0 +1,585 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                     GepCalc (V 5.0)                      │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+  (0)     Anleitung zum GepCalc
+
+  (1)     Allgemeine Hinweise und Erläuterungen
+  
+  (2)     Erklärung sämtlicher Kommandos
+  
+  (3)     Hinweis für Programmierer
+
+
+
+  (1)     Allgemeine Hinweise und Erläuterungen 
+  
+  Das dreidimensionale Tabellenkalkulationsprogramm GepCalc hat im Rahmen des
+  GDOS 1.52 einen neuen Namen bekommen müssen, da sowohl das 'G' (für den Gep-
+  Star) als auch das 'C' (für den MODULA-2 - Compiler) bereits vergeben ist.
+  Wir haben uns daher entschieden, es K(alkulator zu nennen. Es ist also mit 
+  Hilfe der <K>-Taste aus der Hauptkommandoebene der Shell abrufbar.
+  
+  Es erscheint als erstes ein Prompt, das insbesondere auch Auskunft über die
+  Copyright-Verhältnisse gibt. Auch diese Dokumentation unterliegt dem Copy-
+  right. Die genannten Programmautoren haben das Recht an der Urfassung, die
+  GDOS-PGK das Recht an den Anpassungen ans GDOS 1.52. Das Drücken auf irgend-
+  eine Taste schaltet um auf den üblichen Bildschirmaufbau bei einem Tabellen-
+  kalkulationsprogramm.
+  
+  
+  Bildschirmaufbau:
+  
+  In den beiden unteren Zeilen der Tabelle sind die Befehle angegeben, die man
+  über <Control>-Tasten erreichen kann. Den größten Teil der Fläche nimmt das
+  Spreadsheet ein. In der oberen Zeile wird angezeigt:
+  
+  (a) Field          - die Koordinaten der momentanen Zelle (Field) : x,y
+  
+  (b) Page           - die Seite (Page) der momentanen Zelle : z
+  
+  (c) Text/Formula   - der Eingabemodus : Text oder Formel (Value).
+                       Beim Programmstart ist der Eingabemodus zunächst auf 
+                       automatische Erkennung eingestellt. Dies kann jedoch mit 
+                       Hilfe des `Global'-Befehls geändert werden.
+                       `+' oder `-' erzwingt eine Formeleingabe, 
+                       `"' erzwingt Texteingabe.
+  
+  (d) Messages       - Meldungen des GepCalc über Status oder Fehlersituationen
+  
+  (e) A/M            - Automatische (A) oder manuell (M) veranlaßte Neuberech-
+                       nung des Spreadsheets
+                       
+  (f) R/C            - den Berechnungsweg R (Row = zeilenweise) oder 
+                                          C (Column = spaltenweise)
+                       
+  (g) Mem            - den freien Speicherplatz `Mem' in Bytes
+  
+  Die zweite Zeile enthält zur Begrüßung die GepCalc - Versionsnummer, die
+  Gdosversion, das Datum des letzten Updates und den Hinweis, daß das Drücken
+  der <?>-Taste einen Help-Screen zeigt, der in Form eines Kurzinfos die
+  wichtigsten Informationen zur Bedienung zusammenfaßt.
+  
+  
+  Eingabe von Texten und Formeln:
+  
+  Der Cursor wird mit den Pfeiltasten über die Zellen bewegt. Die Zellen können 
+  mit einfachen Texten oder mit Formeln besetzt werden. Bei Eingaben von For-
+  meln kann die Angabe der Seite meist entfallen, wenn man sich nur auf der-
+  selben Seite bewegt.
+  
+  
+  Eingabe von Texten:
+  
+  Für die Eingabe von Text betätigt man einfach eine Taste mit einem druckbaren
+  Zeichen. Will man Zahlen als Text in der Zelle ablegen, so darf man nicht mit 
+  einer Ziffer beginnen (das Programm interpretiert dies meist automatisch als 
+  Formeleingabe), sondern hat mit '"' ganz offiziell einen Text zu eröffnen. 
+  Der eingegebene Text erscheint direkt auf dem Rechenblatt. 
+  Bei Überschreitung der Zellenbreite wird der Text in der nächsten Zelle 
+  weitergeschrieben. Beim Betätigen von <EnterKey> wird der eingegebene Text 
+  in die Zelle übernommen. Danach sieht man den eben eingegebenen Text auch 
+  noch in der zweiten Zeile von oben stehen. Diesmal steht davor das Wort
+  "holds:". Dort wird immer der Inhalt der Zelle angezeigt, auf der sich der
+  Cursor befindet.
+  Rechts neben dem Inhalt sieht man noch einige Informationen über die Zelle:
+        <T/ >   : Inhalt ist ein Text
+        <V/G/ > : Inhalt ist eine Formel (`V' für `Value', 'G' wie 'Global')
+  Solange die Eingabe einer Zelle noch nicht abgeschlossen ist, kann man mit
+  <ESCKey> oder <BSKey> von rechts nach links jeden vorigen Buchstaben der 
+  Eingabe wieder löschen. 
+
+
+  Eingabe von Formeln:
+  
+  Durch Formeln sollen mathematische Terme berechenbar gemacht und auch Bezie-
+  hungen zwischen den Feldern hergestellt werden.
+  Zum Experimentieren bringen wir den Cursor mit <CtrlJKey> <1> <,> <1>  zu-
+  nächst wieder nach Zelle 1,1. Nach dem Eingeben der Control-Taste erscheint 
+  in der zweiten Bildschirmzeile eine Eingabeaufforderung für einen 'Sprung 
+  nach' ('Jump to x,y :'), die mit den Koordinaten der Zielzelle, getrennt 
+  durch ein Komma beantwortet werden sollte.
+  
+  Die einfachste Formel, die es gibt, besteht lediglich aus einer Zahl. Also
+  geben wir die Ziffer <1> ein. Anders als bei der Text-Eingabe erscheint 
+  nun die eingegebene Formel zunächst in der zweiten Zeile. Nach <EnterKey> 
+  sieht man sie auch in der Zelle selbst, allerdings als '1.00'.
+  
+  Jetzt geben wir den Ausdruck <1+1>, abgeschlossen durch <EnterKey>, ein. In 
+  Feld 1,1 steht nun '2.00'. Nun haben wir vielleicht ein wenig Vertrauen zu 
+  unserem Rechner gewonnen, da er immerhin weiß, wieviel 1+1 ist! Probieren wir 
+  doch einmal, was er zu folgendem sagt:
+             
+             '((2.7-SIN(1.45))/SQR(8-COS(2.3^2.1))+3.56'
+  
+  --> Es erscheint jetzt (hoffentlich, sonst ist der Rechner defekt!),
+      '4.20' in der Zelle.
+  Dem letzten Beispiel entnimmt man, daß offenbar auch ein anfängliches '('
+  beim Eintragen in die Zelle eine Formeleingabe und nicht etwa eine Text-
+  eingabe bewirkt. Will man einen Text mit der Klammer '('anfangen lassen,
+  so benutze man das Text-einleitende '"' !
+  Mittels einiger unten vollständig aufgelisteter mathematischer Funktionen,
+  der üblichen Rechenzeichen und Konstanten lassen sich so beliebig komplexe
+  Terme aufbauen, die das Programm interpretiert und mit dem Endergebnis in der 
+  entsprechenden Zelle präsentiert.
+  
+  Die Rolle der Variablen in mathematischen Termen wird hier in gewisser
+  Weise durch die Zellen - Koordinaten (in eckigen Klammern) übernommen.
+  Es gilt :
+  
+       [1,1,1] steht für den Wert der Zelle bei x=1,y=1,Seite 1.
+       [2,4]   Bei Zellen auf der gleichen Seite kann man die Seitenzahl 
+               weglassen.
+ 
+  Ist die Zelle leer oder enthält sie nur Text, so wird immer der Wert 0
+  zurückgegeben, wenn die Zelle in einem Term benutzt wird.
+ 
+  Eine Verknüpfungsmöglichkeit von puren Zellen ist die Summenbildung :
+       
+       [2,3..7]    entspricht der Summe über [2,3] bis [2,7] 
+                   (spaltenweise Summierung)
+       [4..9,2,3]  entspricht der Summe über [4,2,3] bis [9,2,3]
+                   (zeilenweise Summierung)
+  
+  Es kann nur (exclusiv) über x oder y summiert werden.
+
+  
+  Es stehen folgende mathematischen Funktionen zur Verfügung :
+       
+       Sin, Cos, Tan, Sqr, Abs, Log, Ln, ^, Exp, Int .
+       (Sinus-, Cosinus-, Tangens-, Quadrat, Betrag-, Logarithmus_zur_Basis_10-,
+        Logarithmus_zur_Basis_e-, Potenz-, Exponential-, Ganzzahl- Funktion.
+       Vorsicht ! Die Zahl vor ^ muß positiv sein !
+       
+       Der Exponent E ist bei Zahlen nicht zugelassen, es muß stattdessen
+       '*10^' als Teilterm des zu berechnenden Ausdrucks verwendet werden.
+       
+       
+  Will man nun alle Möglichkeiten zusammenbringen, so erhält man Terme der
+  folgenden Gestalt :
+  
+       '[1..9,1]*[1,2]-sqr(Abs([1,1]-[1,2..8]) + exp(2.456))'
+       
+  Die Raffinessen der Berechnung auch kompliziertester Terme mit Hilfe eines
+  Tabellenkalkulationsprogramms entnehme man einschlägigen Darstellungen.
+
+  
+  Spezielle Funktionen:
+  
+  Die IF - THEN - ELSE - Funktion :
+  Mit dieser Funktion kann man Zelleninhalte von Bedingungen abhängig machen. 
+  Ein Beispiel:
+
+           IF [1,3..5]>56*[1,9] | [3,1..3] | 67.98
+           
+  Nach dem IF kommt ein Boole'scher Ausdruck, der `TRUE' oder `FALSE' sein kann.
+  Ist er richtig, wird der Ausdruck nach dem ersten '|' berechnet und als Feld-
+  wert übernommen. Wenn er falsch ist, wird der Ausdruck nach dem zweiten '|'
+  berechnet. Als Trennzeichen muß immer ein | eingegeben werden. Die beiden 
+  Terme nach den '|'-Zeichen dürfen nicht leer sein. Es muß also zumindest eine
+  Null eingetragen werden. 
+  Im vorliegenden Falle erhält man bei `TRUE' [3,1..3] und bei `FALSE' 67.98.
+
+  Die NF  - Funktion (Number of Fields) :
+  Diese Funktion zählt in einem angegebenen Bereich alle besetzten Zellen. Zum 
+  Beispiel:
+  
+            NF[1..4,2..6,3]
+            
+  Das Ergebnis ist die Zahl der belegten Zellen im Bereich x = 1 bis 4 und 
+  y = 2 bis 6 auf Seite 3. Die Angabe der Seite kann wieder entfallen, wenn 
+  die gezeigte Seite gemeint ist. Man kann natürlich auch einzelne Zellen, 
+  Spalten oder Zeilen abfragen. Beispiel:
+    
+                  NF[1,3]
+                  NF[3,4..8]
+                  NF[34..56,7,2]  usw.
+              
+  Die MIN -, MAX - Funktionen :
+  Mit den Funktionen MIN und MAX kann man in einem Bereich nach der kleinsten
+  oder größten Zahl suchen. Die Angabe des Bereiches erfolgt genauso wie bei der
+  Funktion NF. Zum Beispiel:
+                
+                MIN[3,3..8] oder MAX[4..11,67..78].
+  
+  Wenn in dem angegebenen Bereich keine Zelle belegt ist, werden als Ergebnis
+  zurückgegeben:
+                        bei MIN : *F* (= +MaxReal)
+                        bei MAX : *F* (= -MaxReal)
+                 
+
+  (2)     Erklärung sämtlicher Kommandos 
+  
+  (a) <?>/<HelpKey>     - Über einen Hilfsschirm werden Kurz-Informationen aus-
+                          gegeben.
+  
+  (b) Pfeiltasten       - Der Cursor wird um jeweils eine Zelle weiter bewegt;
+                        - Im Zusammenhang mit Text- oder Value-Eingabe gilt
+                          zusätzlich: 
+                          Übernahme in die entsprechende Zelle wie bei 
+                          <EnterKey>. Der Cursor wird jedoch anschließend um 
+                          eine Zelle weiter in die angegebene Richtung bewegt.
+  
+  (c) <CTRL>-<·─>/<──>,
+      <TabLeftKey>,     
+      <TabRightKey>     - wie Pfeiltasten ·─ ──
+  
+  (d) <CTRL>-<²>/<³>,
+      <CtrlOKey>,
+      <CtrlLKey>        - nach oben oder unten blättern
+  
+  (e) <CtrlAKey>        - Berechnungsmodus wieder auf Automatik einstellen,
+                          siehe auch <CtrlMKey>
+                         
+  (f) <CtrlBKey>        - Zelle löschen / Alle Zahlenwerte auf Null setzen.
+                          Es erscheint in der zweiten Zeile eine Liste mit
+                          den drei möglichen Löschvarianten, die durch Ein-
+                          tippen der jeweiligen Kennzahl vollzogen werden :
+                          
+                          Option <1>:
+                          Dieser Befehl erlaubt es, die Zelle, auf der der 
+                          Cursor steht, wieder vollständig zu löschen.
+                          
+                          Option <2>:
+                          In der momentanen Spalte kann man eine Kolonne von 
+                          Zellen löschen. Dazu gibt man die y-Koordinaten für 
+                          den Start- und den Endwert an.
+                          
+                          Option <3>:
+                          Man kann allen Feldinhalten, die als Formel nur eine 
+                          Zahl enthalten, den Wert 0 zuweisen.
+                          Bei den Optionen 2 und 3 wird aus Sicherheitsgründen 
+                          vor der endgültigen Ausführung noch einmal um Bestä-
+                          tigung gebeten: "Type y to confirm !"
+                      
+  (g) <CtrlCKey>        - Felder oder Spalten kopieren :
+                          Es wird die Alternative
+                            F(ield on this page;
+                            this C(olumn to another page
+                          angeboten. Drückt man ein <F>, so wird gefragt wohin
+                          die Zelle, auf der der Cursor gerade steht, kopiert
+                          werden soll.
+                          Durch Angabe der Zielkoordinaten kann man ein Feld 
+                          auf dieselbe Seite kopieren. Dies macht man so wie 
+                          bei der Summierung von Feldern (nur ohne Klammern):
+                                          
+                          1..3,8     nach 1,8 bis 3,8 kopieren
+                          1..3,2..6  in den Block [1,2] [1,6] [3,2] [3,6] 
+                                     kopieren
+         
+                          Geschützte Felder (siehe unten : <CtrlLKey>, Option
+                          W(riteprotect) werden dabei natürlich nicht über-
+                          schrieben. Wenn das zu kopierende Feld eine Formel 
+                          mit Koordinaten enthält, fragt das Programm bei
+                          jeder Koordinate, ob diese wörtlich ( A(bsolut ) oder 
+                          entsprechend der Veränderung ihrer Position korri-
+                          giert werden soll ( R(elativ ). Bei jedem <R>, das man
+                          eingibt, wird aus der linken Klammer der Koordinate 
+                          ([) eine Mengen-Klammer ({) gemacht, damit man sich 
+                          die Eingabe merken kann. (Diese Mengen-Klammer wird
+                          natürlich nicht in die kopierten Felder übernommen, 
+                          sie soll nur zeigen, was schon eingegeben wurde).
+                          
+                          Man kann jetzt auch Spalten von einer Seite auf eine 
+                          andere Seite kopieren, indem in obiger Alternative
+                          das <C> gedrückt wird.
+                          Formeln bleiben dabei allerdings unberührt. Es wird 
+                          die Spalte genommen, auf der der Cursor steht. Man 
+                          muß nur die Zielseite eingeben.
+                        
+                          Bei umfangreichen Tabellen kann das Kopieren schon 
+                          einige Zeit dauern. Als Hinweis erscheint für die 
+                          Dauer der Kopierzeit in der rechten, oberen Ecke
+                          ein © -Zeichen.
+                        
+                          Hinweis :  Beim Versuch, leere Zellen zu kopieren, 
+                                     können unvorhersehbare Effekte auftreten.
+                                     
+  (h) <CtrlDKey>        - Löschen von Spalten (C) oder Reihen (R)
+                          Mit diesem Befehl kann man Spalten oder Zeilen aus-
+                          löschen. Alle Koordinaten in den Formeleinträgen 
+                          werden natürlich bei den verschobenen Zeilen oder 
+                          Spalten korrigiert, so daß die Beziehungen zwischen 
+                          den Feldern richtig bleiben. Es wird immer die Spalte 
+                          oder Zeile genommen, auf der der Cursor steht.
+                        
+  (i) <CtrlEKey>        - Editierfunktion für Felder
+                          In der zweiten Zeile erscheint das Wort "Edit" und 
+                          der Zelleninhalt. Jeder Buchstabe wird an der Cursor-
+                          position in den Text eingefügt. Die Cursorposition 
+                          läßt sich durch die Pfeiltasten beeinflussen.
+                          Mit dem <DELKey> kann man das Zeichen unter dem 
+                          Cursor löschen. <ESCKey> oder die Taste <BSKey> 
+                          löscht das Zeichen links.
+                          <CtrlQKey> beendet die Editierung und läßt den Text 
+                          unverändert. <EnterKey> übernimmt den veränderten 
+                          Text in die Zelle.
+                          
+                          Der Edit-Modus wird auch bei jedem Syntax-Error auto-
+                          matisch aufgerufen, wenn beim Berechnen irgendeiner 
+                          Zelle ein Fehler in der Syntax gefunden wird. Der
+                          Cursor wird dabei gleich auf die Stelle des Fehlers 
+                          gesetzt. Man kann so den Fehler sofort beseitigen, 
+                          und die Berechnung geht weiter. Will man den Fehler
+                          nicht beseitigen, drückt man einfach <CtrlQKey>, und 
+                          die Berechnung geht mit der nächsten Zelle weiter. 
+                          Der Wert der fehlerhaften Zelle wird dabei auf Null
+                          gesetzt.
+  
+  (j) <CtrlGKey>        - globale Parameter einstellen
+                          
+                          Option S(ize:
+                          Änderung der (sichtbaren) Zellenbreite, global für 
+                          die gesamte Tabelle. Es wird die gegenwärtige Ein-
+                          stellung angezeigt und angeboten, sie zu d(ekremen-
+                          tieren / <-> bzw. zu i(nkrementieren / <+>.
+                          
+                          Option C(alcdirection:
+                          Änderung des Berechnungsweges. In der obersten Zeile 
+                          findet man rechts ein "A R". Das R bedeutet, daß bei 
+                          der Berechnung des Blattes zeilenweise ( R(ow ) vor-
+                          gegangen wird. Die Berechnung beginnt also bei 1,1,1 
+                          und läuft dann zeilenweise von links nach rechts bis 
+                          1000,1000,1. Dann auf der nächsten Seite dasselbe 
+                          usw. 
+                          Bei spaltenweiser Berechnung ("A C") läuft der 
+                          Rechenweg von 1,1,1 von oben nach unten alle Spalten 
+                          ( C(olumn ) durch. Die Berechnungsdauer bei `spalten-
+                          weise' ist etwas größer als bei `zeilenweise', da 
+                          durch die Listenstruktur der Felder der zeilenweise 
+                          Modus bevorzugt wird.
+                          Die Auswahl geschieht hier also durch <R> oder <C>.
+                          
+                          Option D(ecimals:
+                          Änderung des Ausgabeformates für Dezimalzahlen für 
+                          das gesamte Blatt. Die Formate sind: 
+                          0..9 = Angabe der Nachkomma-Stellen.
+                          Der gegenwärtige Wert wird dargestellt, der neue
+                          erwartet und sofort übernommen.
+                          
+                          Option A(utoswitch:
+                          Der Autoswitch schaltet das Erkennen von Values oder 
+                          Texten von `automatisch' auf `manuell' oder umgekehrt
+                          ohne Rückfrage sofort um.
+                          Bei `manuell' erscheint ein ">" vor der Modusanzeige, 
+                          und die Taste <CtrlVKey> wird jetzt wirksam.
+                          Im `automatischen' Modus erzwingt '"' eine Text- und 
+                          '+' oder '-' eine Valueeingabe.
+                      
+  (k) <CtrlIKey>        - Einfügen von Spalten (C) oder Reihen (R).
+                          Mit diesem Befehl kann man Spalten oder Zeilen ein-
+                          fügen. Alle Koordinaten in den Formeleinträgen werden 
+                          bei den verschobenen Zeilen oder Spalten korrigiert, 
+                          so daß die Beziehungen zwischen den Feldern richtig 
+                          bleiben. Es wird immer die Spalte oder Zeile genommen,
+                          auf der der Cursor steht.
+    
+  (l) <CtrlJKey>        - Sprung auf eine gewünschte Zelle der aktuellen Seite.
+                          Es werden die Zielkoordinaten erfragt :
+                          z. B. Jump to coordinate x,y: 34,56 <EnterKey>.
+  
+  (m) <CtrlLKey>        - Lokale Parameter für eine spezielle Zelle einstellen.
+    
+                          Option Decimals:
+                          Normalerweise ist das Ausgabeformat der Dezimalzahlen 
+                          für das ganze Blatt global vorgegeben :
+                          `Format global'.
+                          Wenn eine Zelle neu mit einer Formel beschrieben 
+                          wird, wird ihr Ausgabeformat immer automatisch auf 
+                          `global' gesetzt. Die anderen Formate sind: 
+                          0..9 = Angabe der Nachkomma-Stelle. 
+                          Mit G(lobal wird die Zelle wieder auf das globale 
+                          Format zurückgesetzt. 
+                          Ob eine Zelle lokal oder global eingestellt ist, 
+                          sieht man in der 2. Kopfleiste:
+                          <V/G/ > : Ausgabeformat richtet sich nach der globa-
+                                    len Einstellung;
+                          <V/L/ > : Ausgabeformat dieser Zelle ist lokal einge-
+                                    stellt.
+                             
+                          Option S(ize:
+                          Änderung der Zellenbreite, lokal für eine Spalte.
+                          Der momentane Wert wird angezeigt, die Variationen
+                          gehen von 8 bis 24 Stellen.
+                          
+                          Option W(riteprotect:
+                          Man kann eine Zelle mit W(riteprotect vor dem Über-
+                          schreiben schützen. Jeder Versuch, etwas Neues in 
+                          die Zelle zu schreiben, wird dann vergeblich sein,
+                          bis der Schreibschutz mit O(ff explizit wieder ab-
+                          gestellt worden ist. Eine geschützte Zelle erkennt 
+                          man am "*" in der Kennung. Zum Beispiel:
+                          <T/*>          Textfeld ist schreibgeschützt;
+                          <V/G/*>        Valuefeld ist geschützt.
+                      
+                          Schreibgeschützte Felder kann man nur über den 
+                          <CtrlJKey> (also Jump) erreichen. Bei Bewegungen 
+                          springt der Cursor über schreibgeschützte Felder 
+                          hinweg.
+                        
+                          Hinweis :  Man sollte Felder innerhalb von Rahmen 
+                          (s.u.) nicht schreibgeschützt halten, da der Cursor 
+                          beim Versuch, ein schreibgeschütztes Feld zu überlau-
+                          fen, auf der Stelle hängenbleiben kann !
+                                  
+  (n) <CtrlMKey>        - Berechnungsmodus einstellen.
+                          Hiermit kann man die automatische Neuberechnung, die 
+                          nach jeder Formeleingabe erfolgt, ausschalten. Es 
+                          erscheint dann in der ersten Zeile ein "M" (manuell) 
+                          an der Stelle, an der vorher das "A" (automatisch) 
+                          stand.
+                          Eine Berechnung des Blattes erfolgt jetzt nur durch 
+                          Drücken der "!"-Taste. Treten während des Rechen-
+                          vorgangs Overflow's oder Division-by-zero-Fälle auf,
+                          so werden die entsprechenden Werte in diesen Feldern 
+                          auf Null gesetzt. Die Berechnung der Seiten wird 
+                          aber weitergeführt. Am Schluß der Berechnung weist 
+                          eine Meldung auf aufgetretene Overflow's oder 
+                          Division-by-zero's hin.
+                        
+                          Während die Berechnung läuft, erscheint in der 
+                          rechten oberen Ecke ein Taschenrechner-Symbol.
+ 
+  (o) <CtrlNKey>        - nächste Seite zeigen, vorwärts blättern. 
+                          (Nach 4 kommt wieder 1)
+                          Ein J(ump an den Anfang der Tabelle wird dabei auto-
+                          matisch ausgeführt.
+                          
+  (p) <CtrlPKey>        - vorige Seite zeigen, rückwärts blättern. 
+                          (Nach 1 kommt wieder 4)
+                          Ein J(ump an den Anfang der Tabelle wird dabei auto-
+                          matisch ausgeführt.
+  
+  (q) <CtrlQKey>,
+      <CtrlSKey>        - L(oad | S(ave | P(rint |      Q(uit
+                          Laden, Speichern, Drucken und Verlassen
+                          (Im <CtrlSKey>-Submenue werden auch die entsprechen-
+                          den Ctrl-Zeichen akzeptiert!)
+    
+                          Option L(oad:
+                          Zum L(aden erscheint das vom GDOS her bekannte 
+                          SelectFile-Menue, das eventuell abgespeicherte 
+                          `.Calc'-Files zur Auswahl anbietet.
+                          
+                          Option S(ave:
+                          Soll das gesamte eingegebene Arbeitsblatt abgespei-
+                          chert werden, gibt man S(ave ein. Dann erscheint der 
+                          Name, unter dem das vorliegende Modell von der Dis-
+                          kette her eingeladen wurde und der, unverändert 
+                          übernommen, die entsprechende Datei auf der Diskette 
+                          überschreiben würde. Mit dem vom GDOS her bekannten 
+                          `FormatIO.EditString' bzw. `FormatIO.Getline' kann 
+                          der Name jedoch beliebig editiert werden. 
+                          Falls es sich um ein völlig neues Modell handelt, 
+                          wird selbstverständlich kein Name vorgegeben. Die 
+                          Namen der Files werden ohne Suffix eingegeben. Es 
+                          wird immer automatisch '.Calc' an den Namen ange-
+                          hängt. Eventuell sollte man im Namen die VolumeKen-
+                          nung oder den VolumeNamen angeben (z.B. '#A0:Name').
+                          Ein J(ump an den Anfang der Tabelle wird dabei auto-
+                          matisch ausgeführt.
+                      
+                          Option P(rint):
+                          Für die Druckerausgabe (1:pq) gibt man die Eckkoor-
+                          dinaten ein. Wenn das zu druckende Formular breiter 
+                          als 80 Zeichen ist, wird es zerteilt. Man kann auch 
+                          in ein Textfile (2:ab) drucken, um das Blatt mit 
+                          einem Textprogramm weiterverarbeiten zu können. 
+                          Dabei werden in beiden Fällen jeweils wieder zwei 
+                          Sonderfälle angeboten: 
+                          Man kann `Felder auflisten' = 'List fields', d.h. die 
+                          `Formeln' ausdrucken, die das Modell bestimmen, oder
+                          aber seitenweise den Inhalt der Tabelle ausdrucken 
+                          ('Seiten drucken' = `Print page'). 
+                          Der Filename wird auch hier ohne Suffix angegeben 
+                          (`.Text' wird automatisch addiert).
+                        
+                          Option Q(uit): 
+                          Mit Q(uit kann man GepCalc legal verlassen.
+                           
+                          Option E(xit): 
+                          Wie Q(uit, aber nicht als Option ausgewiesen.
+   
+  (r) <CtrlTKey>        - Rahmen setzen / löschen
+                          Dieser Befehl dient dazu, einen horizontalen oder 
+                          vertikalen Rand zu definieren, der immer festgehalten 
+                          wird, auch wenn sich der Rest des Bildes bewegt. Beim 
+                          Festlegen eines Rahmens ist die momentane Cursorposi-
+                          tion ausschlaggebend. Der Rahmen geht immer bis ein-
+                          schließlich der Cursorposition.
+                          Es besteht die Möglichkeit, einen h(orizontalen, 
+                          einen v(ertikalen Rahmen oder b(eide zu definieren. 
+                          Die Richtung wird immer links oben zwischen 'x' und 
+                          'y' angezeigt:
+                                 '-' : horizontal
+                                 '|' : vertikal
+                                 '+' : beides
+                          Der Cursor kann jetzt nicht mehr durch die Cursor-
+                          tasten in das Rahmengebiet gelangen. Man gelangt aber 
+                          mit dem Sprungbefehl <CtrlJKey> dorthin. 
+                          
+                          Hinweis :  Es kann manchmal vorkommen, daß der Cursor 
+                          beim Rücksetzen der Rahmen ein wenig durcheinander-
+                          kommt. Man kann dann einmal kurz mit '?' zur Help-
+                          seite und wieder zurück gehen. Dann sollte eigent-
+                          lich alles wieder stimmen.
+                        
+  (s) <CtrlVKey>        - bewirkt ein Umschalten zwischen Textmodus und Value-
+                          Modus, sofern vorher mit dem <CtrlGKey> A(utoswitch 
+                          `manuell berechnen' gewählt wurde.
+  
+  (t) <CtrlYKey>        - Gesamte Tabelle löschen. 
+                          Bei umfangreichen Tabellen kann das Löschen einige 
+                          Zeit dauern. Als Hinweis erscheint für die Dauer der 
+                          Löschzeit in der rechten oberen Ecke ein Busyzeichen.
+                          Ein J(ump an den Anfang der Tabelle wird dabei auto-
+                          matisch ausgeführt.
+  
+  (3)     Hinweis für Programmierer 
+  
+  Um auch außerhalb von GepCalc auf Feldinhalte zugreifen zu können, existiert
+  die Funktion GetValue. In Programmen können diese Werte durch folgenden Im-
+  port erreichbar gemacht werden :
+  
+       FROM GepCalcAccess IMPORT GetValue;
+  
+  Die Prozedur hat 7 Parameter, deren Anordnung und Bedeutung im folgenden
+  beschrieben ist :
+           
+       GetValue (name, x, y, z, found, io, wert)
+       
+       name : STRING    enthält den Namen des Files, aus dem gelesen
+                        werden soll (Ohne Suffix, `.Calc' wird automatisch
+                        angehängt), z.B. `#A0:Rechnung' ─── `#A0:Rechnung.Calc'.
+                   
+       x,y,z : CARDINAL stellen die Koordinaten des Feldes dar.
+                      
+       found : BOOLEAN  wird auf TRUE gesetzt, wenn das Feld gefunden wurde.
+                        Wurde das Feld nicht gefunden oder das File existiert 
+                        nicht, ist 'found' FALSE.
+                      
+       io : CARDINAL    Wenn found auf FALSE steht, kann man mit dieser Varia-
+                        ble feststellen, ob bei der Filebearbeitung etwas
+                        schiefgelaufen ist.
+                        'io' enthält den Wert von IORESULT nach dem Versuch,
+                        das File zu eröffnen.
+                     
+       wert : REAL      hier steht nun endlich, wonach wir gesucht haben, 
+                        vorausgesetzt, alles ist gutgegangen. Sonst wird hier
+                        nur der Wert 0.0 übergeben.
+
+  
+  
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+

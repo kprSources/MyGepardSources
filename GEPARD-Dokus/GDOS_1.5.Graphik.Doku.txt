@@ -1,0 +1,83 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │           DOKUMENTATION DES GRAPHIK - SYSTEMS            │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                        Allgemeines                       │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+
+  Das GDOS-Graphik-System (GGS) ist nun allen GEPARD - Benutzern als gemeinsame
+  Entwicklungsumgebung verfügbar. Es sollte daher angestrebt werden, Software
+  mit Graphik-Komponenten so zu entwickeln, daß sie auf allen Systemen laufen,
+  die von der Treiberseite auch unterstützt werden.
+  Zu den vorhandenen Bildschirmtreibern zählen :
+    (a) MonoChrom.GraD    - der Treiber für die Monochchrome Grafikkarte;
+    (b) NecGdc.GraD       - der Treiber für die diversen GDC-Karten;
+    (c) Text80ZPGd.GraD   - der Treiber für die erweiterte 80Z-Textkarte.
+  Als Muster für eine solche geräteunabhängige Programmierung ist das Schach-
+  Programm CHESS (eine Adaption eines BORLAND-Programmes) im Source-Text auf
+  dem Volume DOKUS: beigefügt. 
+  
+  Man beachte bei der Graphik-Programmierung insbesondere folgende Punkte.
+    (1) Die Bildschirmdimensionierung (Auflösung) muß variabel, sprich allen
+        Treibern gemäß, gestaltet werden. Dazu benutze man die Variablen aus
+        GraphicHandler-.
+    (2) Alle Koordinaten, Beschriftungen, Hilfstexte etc. müssen sich an den
+        vom Treiber jeweils gelieferten Dimensionen orientieren.
+    (3) Der Benutzer des Graphikprogrammes legt in der Variablen 'GraphicScreen'
+        aus dem Modul GraphicHandler- im Programm Config bzw. im Filer fest,
+        welcher Treiber gerade in seinem System benutzt werden soll. Folglich
+        muß das Programm diese Variable abfragen und als Default übernehmen.
+        
+  Um nun die beigefügte Software in ihrem Zusammenspiel zu testen, sorge man
+  dafür, daß
+    (1) die Variable GraphicScreen aus GraphicHandler einen Wert zugewiesen
+        bekommt. Dazu setze man vor dem nächsten Booten mittels des Programmes
+        Config diese Variable im Unterabschnitt Miscellaneous information auf
+        den im eigenen System richtigen Wert :
+        (a) MonoChrom       - bei vorhandener Monochromer Grafikkarte;
+        (b) NecGdc/;K14     - bei vorhandener GDC-Karte mit Kennung $14;
+            NecGdc/;K15     - bei vorhandener GDC-Karte mit Kennung $15;
+            NecGdc/;K16     - bei vorhandener GDC-Karte mit Kennung $16;
+            NecGdc/;K17     - bei vorhandener GDC-Karte mit Kennung $17;
+        (c) Text80ZPGd/;TM  - bei vorhandener erweiterter 80Z-Textkarte.
+        Soll die Konfiguration zur Laufzeit nachgeholt werden, dann wähle man
+        in der Hauptkommandoebene des Filers die Option <G> wie Graphik-Infor-
+        mationen (siehe auch Filer - Dokumentation) und trage dort eine der
+        unter (a) bis (c) aufgelisteten Möglichkeiten ein.
+    (2) die Files mit folgenden Namen im gerade konfigurierten System zugreif-
+        bar sind :
+        (a) Chess.Code                - das Haupt-Modul des Schachprogrammes;
+        (b) CHESSOPEN.Data            - eine Eröffnungsbibliothek;
+        (c) MathLib0.Code             - wird vom Grafik-System importiert;
+        (d) GraphicHandler1.Code;  ┐
+        (e) GraphicHandler2.Code;  │
+        (f) GraphicHandler3.Code;  │
+        (g) GraphicHandler4.Code;  │
+        (h) GraphicHandler5.Code;  ├  - das Graphik-System.
+        (i) GraphicHandler6.Code;  │
+        (j) GraphicHandler7.Code;  │
+        (k) GraphicKernel.Code;    │
+        (l) ErrorHandler.Code      ┘
+        (l) TestDriver                - ein Haupt-Modul zum Testen der unter-
+                                        schiedlichen Treiber.
+                                        
+  Nach dem Starten von CHESS kann man nun wunderbar Schach spielen oder aber,
+  durch Aktivieren von TestDriver, die Malkünste der Graphik-Treiber bewundern.
+    
+  Wer mehr über das System erfahren möchte und insbesondere Orientierung da-
+  rüber sucht wie man in ihm programmiert, der schaue in die Dokumentation des 
+  Graphik-Systems von uw auf FORUM 13. (Diese Dokumentation konnte aus urheber-
+  rechtlichen Gründen nicht an unser GDOS angepaßt werden. Insbesondere bei
+  einigen erwähnten Demonstrationsprogrammen muß unser System leider (noch) 
+  passen.)
+        
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+    

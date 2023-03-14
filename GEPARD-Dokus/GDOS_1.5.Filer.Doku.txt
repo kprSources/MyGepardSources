@@ -1,0 +1,1339 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                     Filer  (V 1.46)                      │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+  (0)            Bedienungsanleitung zum GEPARD-System-Filer (Übersicht)
+  
+  (1)            Einleitung
+  (2)            System - Variablen - Verwaltung
+  (3)            Drive - / Volume - Verwaltung
+  (4)            Unit - Verwaltung
+  (5)            File - Verwaltung
+  
+  
+  
+  (1)            Einleitung
+  
+  Die Datei 'Filer.Syst' der SYSTEM-Diskette wird von der Shell aus durch die
+  Taste <F> angesprochen und als Programm gestartet. Sollte dieses sehr nütz-
+  liche System-Programm über die I(nstall-Option der Shell oder im Programm
+  Config resident gemacht worden sein, so ist auch ein Zugriff über den System-
+  Editor oder GepStar möglich. 
+  Der Filer faßt die üblichen Utilities zusammen, die ein Betriebssystem zur
+  Verwaltung seines File-Systems bereitstellt. Es können Drives und Volumes
+  im Überblick studiert, Units kontrolliert, Directories eingesehen, Files
+  gelöscht, geschaffen oder bewegt werden und so weiter.
+  
+  Auch der Filer meldet sich mit einer Kommandozeile, die eine Liste der
+  verfügbaren Optionen bietet. Mit der Taste <?> können insgesamt 4 solcher
+  Prompts nacheinander aufgerufen werden. Natürlich sind alle Möglichkeiten
+  auch dann benutzbar, wenn die zugehörige Kommandozeile nicht sichtbar ist.
+  Häufig werden Eingaben über FormatIO.EditString abgewickelt. Man mache sich
+  also mit diesen Möglichkeiten vertraut. Eine Besonderheit des Filers sei hier
+  noch genannt : Angesichts einer Eingabeaufforderung unter der eben erwähnten 
+  Routine kann man die letzte Eingabe, die in einem solchen Feld getätigt 
+  wurde, durch Drücken der <UndoKey>-Taste wieder hervorholen. Dies ist 
+  besonders bei schiefgelaufenen Bedienungsversuchen nützlich.
+  
+  
+  
+  (2)            System - Variablen - Verwaltung
+  
+  Aus historischen Gründen gibt es im Filer einige Features, die zum Teil nur
+  indirekt mit dem File-System verkoppelt sind : I(nfo, G(rafikInfo und W(hat. 
+  
+  
+  I(nfo:
+  
+  Da jedes vom GDOS verwaltete File ein Erstellungsdatum und ein Letztbearbei-
+  tungsdatum samt Uhrzeit im Directory-Eintrag zugeordnet bekommt, müssen Datum
+  und Uhrzeit irgendwo im System einstellbar sein :
+  
+  (a) D(ate          zeigt das aktuelle / im Moment im System gültige Datum und
+                     eröffnet bei Drücken der Taste <D> eine Neueinstellung.
+                     Vorgehen wie bei FormatIO.EditString üblich. Das vorge-
+                     gebene Format ist bei der Eingabe wiederherzustellen.
+                     
+  (b) T(ime          zeigt die aktuelle / im Moment im System gültige Uhrzeit 
+                     und eröffnet bei Drücken der Taste <T> eine Neueinstellung.
+                     Vorgehen wie bei FormatIO.EditString üblich. Das vorge-
+                     gebene Format ist bei der Eingabe wiederherzustellen.
+  
+  (c) F(orm          bestimmt das Erscheinungsbild des Datums bei Meldungen 
+                     des Systems und kann durch folgende Wahl einer zweiziff-
+                     rigen Zahl beeinflußt werden :
+                     
+                     1. Ziffer   0 = kein Trennungszeichen
+                                 1 = '.' als Trennungszeichen
+                                 2 = '-' als Trennungszeichen
+                                 3 = '/' als Trennungszeichen
+                                 4 = ':' als Trennungszeichen 
+                     
+                     2. Ziffer   1 = dd - mm - yy
+                                 2 = dd - mm - 19yy
+                                 3 = mm - dd - yy
+                                 4 = mm - dd - 19yy
+                                 5 = yy - mm - dd
+                                 6 = 19yy - mm - dd
+                                 7 = dd - Mmm - yy (D)
+                                 8 = dd - Mmm - yy (GB)
+                                 9 = dd - Mmm - yy (F)
+                     
+                     (dd = Tag, mm = Monatsnummer, yy = Jahr, Mmm = Monat)
+                     Die Form der Zeitangaben kann im Moment nur im Config-
+                     Programm festgelegt / verändert werden.
+                     Nach erfolgreicher Datums-/Zeit-Festlegung geht es
+                     automatisch zum I(nfo-Menue zurück.
+                     
+  Jedes Drive (d. i. jedes blockorientierte Ein-/Ausgabe-Gerät) des GDOS,
+  welches gegenüber dem System angemeldet ist (siehe Config.Doku), wird in
+  sogenannte Volumes, das sind sehr entfernte Verwandte von Subdirectories,
+  strukturiert. Man kann Volumes auch mit böser Zunge virtuelle Drives oder
+  Partitionen nennen. Jedes Volume besitzt einen maximal zwölfbuchstabigen
+  Volumenamen und eine VolumeKennung (s. u.).
+  Um besonders wichtige Volumes mit einer einbuchstabigen Abkürzung stets
+  schnell ansprechen zu können, sind im System sogenannte ShortVolumes
+  definiert, die in diesem I(nfo-Teil mit ihrer derzeitigen Belegung angezeigt 
+  werden. Diese Zuordnungen können zum Teil auch hier verändert werden. 
+  Normalerweise sollten Sie schon im Config-Programm eine günstige Belegung 
+  wählen.
+  Nicht zu verändern ist natürlich das mit '*' abgekürzte BootVolume, d. h.
+  das Volume, auf dem die für den Bootvorgang nötigen Dateien standen und 
+  hoffentlich noch stehen. Es wird nur angezeigt, und zwar wie im folgenden 
+  i. a. sowohl mit dem Volumenamen (hier i. a. 'SYSTEM:') und einer eindeutig 
+  festgelegten VolumeKennung (hier i. a. '#a0:' s.u.). Die veränderbaren Short-
+  Volumes werden beim Eintritt in die I(nfo-Option mit dem gegenwärtigen
+  Systemzustand durch Zugriff auf die Drives und Volumes verglichen, eventuell 
+  einer Revision unterzogen und sind über die <S>-Taste neu belegbar.
+  
+  (d) S(et Volumes   liefert in der Promptzeile eine Liste der einbuchstabigen
+                     ShortVolumes und die Option Q(uit, um diesen Teil wieder
+                     zu verlassen. Wird eines der ShortVolumes angewählt, erhält
+                     der Benutzer die Offerte, dieses Volume namentlich anzu-
+                     sprechen oder aber nur über die oben erwähnte Volume-
+                     kennung. Es ist mit y,Y,j,J oder n,N zu antworten.
+                     Über FormatIO.EditString wird nun ein Vorschlag des
+                     Systems übergeben und die Aufforderung formuliert, die
+                     neue Zuordnung durch Angabe des Volumenamens oder der
+                     VolumeKennung festzulegen.
+                     Der Volumename darf 11 + 1 Zeichen enthalten, und zwar alle
+                     (international) verfügbaren ASCII-Buchstaben und Ziffern, 
+                     sowie die Zeichen '(', ')', '+', '-', '.', '<', '>', '_',
+                     'ä', 'Ä', 'ö', 'Ö', 'ü', 'Ü', 'ß' ; als Abschluß muß
+                     ein Doppelpunkt angehängt werden.
+                     Beispiele : SYSTEM: , DEFN: , DEF_TEXTE: .
+                     Die VolumeKennung setzt sich zusammen aus der Drive-
+                     kennung und der Volumenummer sowie dem auch hier ab-
+                     schließenden ':'.
+                     Die Drivekennung besteht aus einem führenden '#' und dem 
+                     Kennbuchstaben des im GDOS konfigurierten Drives (maximal 
+                     A bis J). Die Volumenummer ist eine (maximal) zweiziffrige
+                     Zahl, die sich aus der beim Formatieren ergebenden Reihen-
+                     folge der Volumes eindeutig als Zählnummer errechnet 
+                     (s.u.).
+                     Beispiele : #a0: , #b03: , #h09: .
+                     Sind alle ShortVolumes wunschgemäß festgelegt, so eröffnet
+                     Q(uit den Ausstieg aus diesem Untermenue.
+                     
+                     
+  (e) W(orkfile      Ein bestimmtes File auf einem Volume kann als so
+                     wichtig angesehen werden, daß man es mit dem Short-
+                     Filenamen '@' versieht. Das im Moment gerade zu bear-
+                     beitende Textfile wird hier über FormatIO.EditString
+                     mit seinem vollen Filenamen dem System bekannt gemacht. 
+                     Ein voller Filename besteht aus den Angaben :
+                     [Volumename | VolumeKennung] Filename '.' Suffix.
+                     Volumename oder VolumeKennung wie oben definiert. 
+                     Der Filename ist maximal 25 Zeichen lang und darf
+                     dieselben Zeichen enthalten wie ein Volumename.
+                     Der Suffix ist einer der in GdosTypes definierten
+                     Endungen aus genau vier Buchstaben, hier allerdings
+                     wohl stets 'Text' als Kennung für ein Textfile.
+                     Die erfolgreiche Eingabe bringt einen dann wieder
+                     zum I(nfo-Menue zurück.
+                     
+  (f) <I>            startet das I(nfo - Einlesen von den nun eventuell
+                     ausgetauschten Datenträgern erneut.
+                     
+  Dieses Menue kann nun wiederum durch ein Q(uit in Richtung Hauptebene
+  des Filers verlassen werden.
+  
+  
+  G(rafikInfo:
+  
+  Das GDOS 1.52 beinhaltet ein mächtiges Grafik-System. Um dieser hübschen 
+  Erweiterung gerecht zu werden, wurden im GDOS zwei globale Variablen defi-
+  niert, die es gestatten, fast jedes GEPARD-System mit einer hochauflösenden 
+  Grafik zusammenarbeiten zu lassen. Wie im vorigen Abschnitt sind auch diese 
+  Variablen vor dem Booten bereits bei der System-Konfiguration im Config-
+  Programm mit Werten versehbar. Der Filer gestattet auch hier einen nachträg-
+  lichen Eingriff. Nach dem Aufruf dieses Menue-Punktes mit <G> werden nach-
+  einander über FormatIO.EditString bearbeitbare Anfragen nach dem 
+  
+  (a) Graphic Screen 
+                   - das ist derjenige Grafik-Bildschirm-Treiber, der zu der
+                     eigenen Hardware paßt (siehe Dokumentation des Grafik-
+                     Systems) -
+                     
+  und dem
+  
+  (b) Graphic Hardcopy Devive
+                   - das ist derjenige Grafik-Hardcopy-Treiber, der zu dem
+                     eigenen Drucker o. ä. paßt - 
+                     
+  gestellt. Nach erfolgreicher Bearbeitung geht es direkt zurück zur Hauptebene 
+  des Filers.
+  
+  
+  <CtrlTkey>:
+  
+  Damit wird ein Flag des Filers geschaltet, das für die Anzeige des insgesamt
+  verfügbaren Speichers (MemAvail) und des größten zusammenhängenden Speicher-
+  bereiches (Largest MemAvail) bei speicherkritischen Filer-Operationen verant-
+  wortlich ist. Es werden diese beiden Daten in folgender Form ausgegeben :
+  [12345678/12340000]. Die Angabe erfolgt in Bytes.
+  
+  
+  
+  W(hat:
+  
+  Da der Filer Drives und Units verwaltet, muß er wohl auch wissen, welche 
+  Hardware-Komponenten unser ach so modulares System dafür bereit hält.
+  Der Druck auf die <W>-Taste liefert denn auch eine nichtänderbare (siehe
+  unten !) Tabelle aller im System verfügbaren und erkannten IO-Karten. Die 
+  Prozessorkarte und die RAMkarten finden sich hier nur implizit.
+  
+  Für die Peripherie ist im GEPARD der Speicherbereich oberhalb des BootROMs
+  bis zur Grenze $40000 (256 KB) vorgesehen. Alle IO-Karten des GEPARD 
+  besitzen daher eine sogenannte IO-Adresse in diesem Bereich. Sie sind dort 
+  für den Computer ansprechbar, d. h. letztlich darüber steuerbar. 
+  Diese IO-Adresse ist hardwaremäßig vorgegeben (Jumper etc.) und wird vom
+  System automatisch ermittelt, sobald die vorhandene Karte überhaupt erkannt
+  wurde.
+  
+  Als Erkennungszeichen dient dem Prozessor (den entsprechenden Routinen des
+  BootROMs) eine hardwaremäßig eingebaute Identifizierungsnummer, das soge-
+  nannte Reference-Byte. 
+  
+  Damit nicht nur der Rechner seine Freude beim Wiedererkennen einer Karte
+  hat, bekam jede von der Firma GEPARD (... hab sie seelig !) auch noch
+  einen menschenlesbaren Namen, der etwas über ihre Aufgabe oder Funktion 
+  verraten sollte. Da in der Zwischenzeit eine Reihe weiterer Karten entwickelt
+  wurden, haben wir uns entschlossen, dem Benutzer die Möglichkeit zu eröffnen,
+  neue oder gar eigene Karten in die Liste mit dem entsprechenden Reference-
+  Byte und dem gewünschten Kartennamen einzutragen. Diese Nachtragsmöglichkeit
+  besteht allerdings nur für Kartenkennungen, die noch nicht in GdosMsgStuff
+  offiziell im GDOS 1.52 mit einer Bedeutung versehen sind. Es ist daher unten
+  eine Liste der vorhandenen und freien Reference-Bytes samt Kartentexten ange-
+  fügt. Will man nun die Lücken füllen, so verschaffe man sich über den Editor
+  ein Textfile, das sich streng an folgenden Aufbau hält :
+  
+       1. Zeile : 03 Super-Universal-LowCost-TurboSpeed-Karte
+       2. Zeile : 38 Handgestrickte InOut-Karte 
+           .
+           .
+       n. Zeile : 999
+  
+  Am Anfang einer Zeile steht also das noch nicht belegte Reference-Byte als
+  gewöhnliche CARDINAL - Zahl, es folgt ein trennendes SPACE und dann kommt
+  der Kartentext, der höchstens 40 Zeichen lang sein darf. In der letzten Zeile
+  steht allein ein abschließendes 999, das das File-Ende markieren soll.
+  Das Text-File mit diesen Angaben muß 'GDOS_1.5_Cards.Text' heißen und sich 
+  auf der BOOT-Diskette befinden, da die dort befindlichen Einträge während
+  des Bootens ins System übernommen werden und dann nicht mehr änderbar sind.
+  
+  Tabelle der vorhandenen und freien Karten-Kennungen und Karten-Namen :
+  
+  (* 01 *)        'Extension card',
+  (* 02 *)        '"Self made" card',
+  (* 03 *)        frei,
+  (* 04 *)        'I/O card (serial, parallel)',
+  (* 05 *)        'PI/T card',
+  (* 06 *)        'VIA card',
+  (* 07 *)        '80 channel I/O card',
+  (* 08 *)        frei,
+  (* 09 *)        frei,
+  (* 0A *)        'IEC interface',
+  (* 0B *)        '10 or 12 bit A/D card',
+  (* 0C *)        'MIDI interface',
+  (* 0D *)        frei,
+  (* 0E *)        'Boot ROM (16 KB) - I/O card #2 (V1)',
+  (* 0F *)        'Boot ROM (8 KB) - I/O card #1 (Apple)',
+  (* 10 *)        'Graphic card (GDC-1)',
+  (* 11 *)        'Graphic card (GDC-2)',
+  (* 12 *)        'Graphic card (GDC-3)',
+  (* 13 *)        'Graphic card (GDC) 48 MHz 1024 x 662',
+  (* 14 *)        'Graphic card (GDC) 44 MHz 640 x 400',
+  (* 15 *)        'Graphic card (GDC) 22 MHz 640 x 400',
+  (* 16 *)        'Graphic card (GDC) 48 MHz 576 x 210',
+  (* 17 *)        'Graphic card (GDC) 25 MHz 576 x 210',
+  (* 18 *)        'Monochrome graphic card 640 x 400',
+  (* 19 - 1F *)   frei,
+  (* 20 *)        'Floppy disk controller (FDC)',
+  (* 21 *)        'EPROM burner',
+  (* 22 *)        frei,
+  (* 23 - 27 *)   frei,
+  (* 28 *)        '80 character text card',
+  (* 29 *)        'Floating point unit (FPU)',
+  (* 2A *)        'Mouse/trakball interface',
+  (* 2B *)        'Video digitizer interface',
+  (* 2C *)        'Hard disk controller (HDC)',
+  (* 2D - 30 *)   frei,
+  (* 31 - 37 *)   frei,
+  (* 38 - 3C *)   frei,
+  (* 3D *)        'SRAM/EPROM - no banking',
+  (* 3E *)        'SRAM/EPROM with banking',
+  (* 3F *)        'Keyboard interface',
+  (* xx *)        '<illegal card number>',
+                
+  
+  Beide Informationen, Reference-Byte und Kartenname werden also untrennbar
+  in GdosMsgStuff vereinigt, um jederzeit im System gepaart ausgegeben
+  werden zu können. So auch hier im Filer mit W(hat.
+  
+  Es wird also eine Tabelle mit folgenden Einträgen dargestellt :
+
+  (a) IO-Address    Stelle im Peripherie-Speicher des GEPARD, die dieser Karte
+                    als Basis-Adresse zugeordnet ist;
+  
+  (b) Ref-Byte      eindeutige hardwaremäßige Karten-Kennung
+                    
+  (c) Name of the card
+                    Name und / oder Funktion der Karte
+                    
+  In der Tabelle mit ihren maximal 16 Einträgen bleiben zumeist Lücken, da
+  die IO-Adressen hier immer nur in $4000-Sprüngen angezeigt werden und nicht
+  alle Positionen besetzt sind. Der Benutzer kann bei vielen Karten die
+  Adreßlage selbst einstellen. Doppelbelegungen einer Adresse mit mehreren
+  Karten führen meist zum Systemzusammenbruch beim Booten.
+  
+  Am unteren Rand des Bildschirms findet man dann noch die Auswertung des 
+  BootROMs hinsichtlich des vorhandenen Prozessors, des physikalischen RAMs, 
+  des SystemRAMs und der ROMversion, zusätzlich die Information über das im 
+  GDOS verwendete REALformat.
+  Sollte RAM vorhanden sein, das vom Modul FixStorage verwaltet wird, so
+  erfolgt auch eine Meldung über die Größe dieses RAMs.
+  
+  
+  (3)            Drive - / Volume - Verwaltung
+  
+  Die bereits in (1) eingeführte Unterscheidung von Drives und darauf einge-
+  richteten Volumes wird hier vorausgesetzt.
+  
+  Um ein Drive, das dem GDOS gemeldet ist, benutzen zu können, muß der zugehö-
+  rige Datenträger (Diskette oder Partitionen der Harddisk), der in diesem
+  Drive verwendet werden soll, sein Gerüst für die Informationsablage aufge-
+  prägt bekommen : er muß formatiert werden.
+  
+  
+  F(ormat:
+  
+  Das physikalische Strukturieren eines Datenträgers wird letztlich von dem
+  zum Drive gehörenden Treiber (mit der Endung 'RWTS') durchgeführt. Die
+  Details einer solchen Aktion studiere man also in den Texten, die seinerzeit
+  beim GDOS 1.4 mitgeliefert wurden.
+  Hier wird nur die Oberfläche dieses Vorganges aus Sicht des Benutzers be-
+  schrieben. Nach der Wahl dieser Option durch <F> aus der Hauptebene des
+  Filers wird gefragt, in welchem Drive das Formatieren vorgenommen werden
+  soll. Dazu bietet das System eine Liste der zur Zeit angemeldeten Drives
+  bzw. genauer, eine Liste der Kennbuchstaben dieser Drives. <ESCKey> bricht
+  hier wie auch später den gesamten Vorgang ab. Wird ein Buchstabe aus der
+  Liste erwählt, so versucht das System den hoffentlich schon vorhandenen
+  Datenträger in diesem Drive zu lesen. Ist keiner vorhanden, wird eine
+  Fehlermeldung ausgegeben und zur Hauptebene zurückgekehrt.
+  Ist der Datenträger zwar vorhanden, aber für das GDOS mit einer unbekannten
+  Struktur bzw. gar keiner versehen, so wird gefragt, ob das Drive formatiert
+  werden soll. Bei Verneinung ist alles vorbei; bei Bejahung wird sofort mit
+  dem Formatieren begonnen. Dieses wird durch eine Meldung des Systems auch
+  verkündet.
+  Jetzt ist der Punkt erreicht, bei dem erfolgreiches Formatieren stets an-
+  kommt, egal wie begonnen wurde. Folglich sollte noch beschrieben werden, was
+  geschieht, wenn das GDOS einen Datenträger vorfindet, der bereits durch seine
+  Mühlen gewandert ist.
+  Es wird aufgelistet, welche Volumes in dem Drive identifiziert wurden und
+  zwar sowohl mit der aus (1) bekannten VolumeKennung ('No') als auch mit dem 
+  Volumenamen ('Name'). Dahinter wird aufgeführt wie lang ('Len' in GDOS-
+  Blocks) das Volume ist und welcher Block der erste ('First') des Volumes ist.
+  Zum Schluß gibt es noch Informationen über die Anzahl der maximal möglichen
+  Directory-Einträge auf diesem Volume.
+  In der Zeile über dieser Tabelle findet sich dann die Schicksalsfrage :
+  'Destroy the Volume-Table ?', deren Bejahung fast das endgültige Aus für alle
+  auf dem Datenträger versammelten Daten bedeutete und das Formatieren in Gang
+  setzte, wenn da nicht noch die nachfolgende Sicherheitsfrage wäre, ob wirk-
+  lich formatiert werden soll.
+  Mit einem 'Ja' dazu beginnt auch auf diesem Weg das Formatieren. Es ist nur
+  noch durch <SysReturn> zu unterbrechen. Das verheerende Resultat auf der
+  Diskette ist kaum zu beschreiben.
+  Läßt man aber alles geschehen, so erscheint nach einiger Zeit in der ersten
+  Zeile des Bildschirms die Frage, wie viele Systemblöcke man auf der Diskette
+  unterbringen möchte. Da man relativ selten komplett selbsterstellte Boot-
+  disketten benötigt, wird hier für gewöhnlich der gleich mitgelieferte
+  Defaultwert 0 genügen, der durch einfaches <Enterkey>-Drücken gewählt wird.
+  
+  Es wird nun eine von der Gliederung her schon vertraute Tabelle aufgebaut,
+  die für die maximal 32 möglichen Volumes bereits die Kennungen enthält. 
+  Für das Volume mit der Volumenummer (!) Null findet sich auch ein Vorschlag
+  für den Volumenamen : 'BLANK' und die Länge ist auf die maximal mögliche
+  eingestellt, der Anfangsblock auf Eins (plus gewählte Anzahl der System-
+  Blöcke) und die Anzahl der Directory-Einträge hat einen halbwegs vernünftigen
+  Durchschnittswert erhalten.
+  
+  Über der Tabelle finden sich einige Statusinformationen, die sich während
+  des nun anstehenden Definierens von Volumes in dem Drive laufend den neuen
+  Gegebenheiten anpassen. Es wird die Maximalzahl der Blocks auf diesem
+  Datenträger angegeben, die Anzahl der bereits an Volumes vergebenen Blocks
+  und die Anzahl der noch verfügbaren Blocks.
+  
+  Drückt man nun schon abschließend den <ESCKey>, so werden die Defaultwerte
+  auf dem Datenträger permanent gemacht. Das Formatieren ist abgschlossen.
+  
+  Möchte man aber eine seinen Zwecken angemessene Strukturierung des Daten-
+  trägers in Volumes erzeugen, so sollte man diese Tabelle editieren.
+  Wie in der ersten Zeile zu lesen ist, bewegen die Cursor-Steuer-Tasten
+  den Cursor in der Tabelle. Alle Einträge sind über FormatIO.EditString
+  veränderbar.
+  Man gebe also seinen Volumes sprechende Namen, wähle eine angemessene
+  Länge für das Volume, wähle eine passende Anzahl von Directory-Einträgen
+  (kann zwischen 7 und 4095 schwanken) und schaue jeweils, was dann noch für 
+  weitere Einträge übrig bleibt.
+  
+  Zum Schluß den <ESCKey> und die Formatier-Routine verabschiedet Sie
+  hoffentlich mit einem bestätigendem 'OK' In der zweiten Zeile unter der
+  Hauptkommando-Zeile des Filers.
+  
+  
+  D(rives:
+  
+  Ist man im Besitz von GDOS-formatierten Datenträgern in seinen Drives, so
+  liefert die <D>-Taste in der Hauptebene des Filers einen Überblick über
+  die beim GDOS angemeldeten Drives und über die darinnen befindlichen, dazu
+  passenden Datenträger. Die in der ausgegebenen, nicht änderbaren Tabelle 
+  verzeichneten Einträge stammen zum Teil aus den beim Booten verwendeten Daten
+  des MiscInfo-Files bzw. letztlich aus dem Programm Config und zum Teil
+  werden sie aus den Volume-Tabellen der Datenträger in den einzelnen Drives 
+  extrahiert.
+  
+  Erklärung der Spaltenüberschriften  
+  
+  (a) Drive       - Drive-Kennungen von #A bis #J. 
+  
+  (b) Sides       - Anzahl der physikalischen Seiten eines Drives.
+  
+  (c) Tracks      - Anzahl der Spuren des Drive, d. h. wieviele Spuren das 
+                    Laufwerk / Zylinder die Harddisk im physikalischen Sinne
+                    sein / ihr eigen nennen kann.
+  
+  (d) Blocks      - Anzahl der Blöcke á 1024 Bytes, die dieses Drive dem 
+                    GDOS zur Verwaltung überläßt.
+   
+  (e) Type        - Kennzeichnet den Typ des Drive.
+  
+  Von hier an werden die Daten direkt von den Datenträgern gelesen.
+  
+  (f) SysBlks     - Anzahl der Systemblöcke auf dem Datenträger.
+  
+  (g) Vols        - Anzahl der Volumes auf dem Datenträger.
+  
+  (h) LastBoot    - Datum und Uhrzeit des letzten Bootens mit diesem
+                    Datenträger (sonst : 'No Boot Disk').
+                    
+  Die Informationen zu den einzelnen Drives werden in der Zeile dargestellt,
+  in der dieser Eintrag bei der normalen Durchnummerierung von #A bis #J
+  stehen müßte. Es können sich also auch größere Lücken ergeben.
+  Nach Ausgabe der Tabelle erscheint sofort wieder die Hauptebene des Filers.
+  
+  
+  V(olumes:
+  
+  Wie bereits beim Unterpunkt F(ormat deutlich geworden ist, sind Datenträger,
+  die im GDOS bearbeitet werden sollen, von Anfang an in Volumes zu struktu-
+  rieren. Die nächste, durch <V> aufzurufende Filer-Funktion gibt einen Über-
+  blick über alle Volumes, deren das GDOS in den angemeldeten Drives habhaft 
+  werden konnte. Auch diese Tabelle ist nicht veränderbar. Sie ist genauso 
+  aufgebaut wie die, die beim Formatieren einen Überblick über bereits vor-
+  handene Volumes auf einem neu zu formatierenden Datenträger gibt.
+  
+  Erklärung der Spaltenüberschriften  
+  
+  (a) No          - VolumeKennung (z. B. #A00:)
+  
+  (b) Name        - Volumename (ohne abschließenden Doppelpunkt)
+  
+  (c) Len         - Länge des Volumes in GDOS-Blocks
+  
+  (d) First       - Nummer des ersten Blocks des Volumes
+  
+  (e) DirEnt      - Anzahl der maximal verfügbaren Directory-Einträge
+  
+  Hinter den Einträgen aus (e) können maximal drei Attribute als Ausdruck des
+  jeweiligen Volumestatus stehen :
+  
+  P  - steht für ein Volume, das 'writeprotected' ist, also keine schreibenden
+       File-Operationen gestattet.
+       
+  O  - steht für ein Volume, das 'OS/Science'-gebranntmarkt ist. Solche Volumes,
+       im allgemeinen wohl die ganze Diskette, sind ebenfalls schreibgeschützt.
+       
+  S  - steht für ein Volume, das 'Search excluded' ist, das also bei einer
+       FileSearch-Operation als ganzes nicht beachtet wird. Dadurch sind
+       natürlich alle Files dieses Volumes während der Suche für das GDOS 
+       unsichtbar.
+       
+  Das Setzen und Zurücksetzen dieser Attribute besorgt die im nächsten Abschnitt
+  beschriebene Option.
+  
+  Nach Ausgabe der Tabelle erscheint sofort wieder die Hauptebene des Filers.
+  
+  
+  <CtrlVKey>(olume Status :
+  
+  Manches wichtige File würde auch heute noch existieren, hätte es die Möglich-
+  keit, ganze Volumes mit einem Schreibschutz zu versehen, bereits früher
+  gegeben. Will man also verhindern, daß irgendein schreibender, verändernder
+  Zugriff auf ein Volume erfolgt, so drücke man den <CtrlVKey>. Man wird dann
+  gefragt, welches Volume einer Sonderbehandlung bedarf. Es gibt neben dem
+  Schreibschutz auch die Option, ein ganzes Volume vom FileSearch auszu-
+  schließen. Die gesamte Palette der Möglichkeiten zeigt sich in der ersten
+  Zeile Ihres Bildschirms; es sind Parameter, die an die eigentliche Antwort
+  nach einem Semikolon angehängt werden können.
+  
+  P    - (Protect) das Volume erhält das Attribut 'writeprotected' (kein File
+         kann mehr geändert werden; alle Leseoperationen sind weiterhin 
+         möglich), wenn auch noch ein '+' zugefügt wird. Der Schreibschutz 
+         läßt sich entfernen, wenn ein '-' hinter dem ';P' angehängt ist. 
+         Beispiele : '#b0:;P+' oder 'Project007:;P-'.
+  
+  X    - (Exclude Search) das Volume ist 'Search excluded', d.h. es ist kein
+         suchender Zugriff mit FileSearch möglich. Natürlich kann immer noch
+         auf das Volume lesend und schreibend zugegriffen werden. Diese Option
+         ist für solche Leute gedacht, die mehrere Versionen eines Programmier-
+         projektes im System haben und die verhindern wollen, daß beim Compili-
+         lieren der neuen Version, alte Definitionmodule ihr Unwesen treiben
+         oder gar beim Starten der neuen Version immer nur alte Implementations-
+         module mit der Fehlermeldung 'Bad module version' gefunden werden. 
+         (Sowohl der Compiler als auch das Modul GdosLoader benutzen den
+         FileSearch aus GdosFileStuff, um Definitionen oder Code-Module, die
+         angefordert werden zu finden.)
+         Ein '+' setzt dieses Flag, '-' setzt es zurück. 
+         
+  Übrigens : Ein schreibgeschütztes Volume kann man natürlich nicht mehr
+  nachträglich vom FileSearch ausschließen. Die schwächere X-Option muß also
+  stets vor der P-Option gesetzt werden, wenn man beides haben möchte.
+  Ein Flag, das vom System automatisch gesetzt wird, sobald es erkennt, daß
+  ein Datenträger des OS/Science sich im GDOS tummelt, ist vom Benutzer nicht
+  beeinflußbar, hat aber die gleiche Wirkung wie die P-Option :
+  
+  O    - (OS/Science) das Volume ist 'OS/Science'-formatiert und darf im GDOS
+         zwar gelesen werden, aber jeder schreibende Zugriff ist untersagt.
+
+
+  B(ad block scan:
+  
+  Diese Option verdankt ihre Existenz vermutlich einer realistischen Einschät-
+  zung der Lebensdauer von Laufwerken und Datenträgern. Möchte man sicher
+  gehen, daß eine nicht mehr ganz taufrische oder gar eine fabrikneue, in jedem
+  Fall aber formatierte Diskette für die kostbare Datenfracht ein relativ 
+  sicherer Aufbewahrungsort ist, so lege man die Diskette in ein passendes 
+  Laufwerk, das dem GDOS gemeldet ist, drücke die <B>-Taste und lasse das 
+  System nachschauen, ob die Diskette die Qualitätsanforderungen des 
+  GDOS erfüllt und alle Blocks dieses Datenträgers noch intakt sind. 
+  
+  Der Filer fragt erst einmal, welches Drive Sie denn benutzen wollen, und gibt 
+  Ihnen auch gleich eine Liste mit den angemeldeten Drives, woraus Sie eines 
+  per Kennbuchstaben aussuchen sollten (sonst landen Sie mit <ESCKey> wieder 
+  auf der Hauptebene des Filers).
+  
+  Für das gewählte Drive wird nun seine Gesamtgröße in GDOS-Blocks ausgegeben.
+  Der Benutzer hat dann nacheinander einen Startblock und einen Endblock zu
+  benennen, die beide kleiner als die Gesamtgröße sein sollten und zwischen 
+  denen die Untersuchung auf GDOS-Tauglichkeit stattfinden soll.
+  Bei den üblichen 3 1/2 - Zoll-Disketten müßten zur Kontrolle aller Blöcke
+  die Werte Null für den Startblock und 799 für den Endblock gewählt werden.
+  
+  Da auch bereits beschriebene Datenträger durch den rein lesenden Zugriff
+  während des Scannens ungeschoren bleiben, wird als Option angeboten, die
+  Files, die nicht mehr intakte Blöcke enthalten, dem Namen nach mit aufzu-
+  listen, denn sonst wird nur die Nummer des defekten Blockes ausgegeben.
+  Auch defekte Boot-, VTOC- oder Directory-Blocks werden bei Bejahung korrekt
+  betitelt.
+  
+  Danach meldet das System, daß es das gewählte Drive überprüft, listet ggf.
+  fortlaufend fehlerhafte Blöcke, eventuell auch zugehörige Namen von
+  betroffenen Objekten, wenn es welche findet, ansonsten schließt es mit
+  der Meldung (hoffentlich !) : 'No bad blocks found!'.
+  
+  Im Falle eines Fehlers sollte man die Utilty 'MarkBadBlocks' kon-
+  sultieren, die einem zumindest bei defekten Disketten und Harddisks
+  einiges an Verzweiflung für die Zukunft ersparen hilft. 
+  
+  
+  O(ff line:
+  
+  Stellt man zu seinem Entsetzen fest, daß Drives und nicht nur Disketten
+  ihre Arbeit nicht mehr ordnungsgemäß verrichten, so sollte man sicherheits-
+  halber einen Zugriff auf diese Drives verhindern. Die mit <O> von der Haupt-
+  ebene des Filers aus erreichbare Option O(ff Line bewirkt diese Behinderung
+  eines gefährlichen Benutzenwollens!
+  Das ausgewählte Drive wird im System als nicht mehr erreichbar gekennzeichnet,
+  jeder Zugriff abgefangen. Allerdings werden in diesem Moment noch nicht alle 
+  Daten des Drives gelöscht. Davon kann man sich überzeugen, wenn man mit 
+  D(rives alle angemeldeten Laufwerke auflisten läßt.
+  Die Auswahl geschieht nach dem Muster bei F(ormat. Es wird eine Liste der 
+  angemeldeten Drives in eine passende Frage integriert, ein Buchstabe aus
+  der Liste oder <ESCKey> sollte eingegeben werden. Ist ein gültiger Lauf-
+  werkkennbuchstabe gewählt, so wird ob der negativen Konsequenzen noch ein-
+  mal nachgefragt, ob es wirklich verschwinden soll. Bei einem Ja kommt die 
+  Tat ohne Vollzugsmeldung.
+  
+  Eine andere Verwendungsmöglichkeit dieser Option : Harddisks können mit
+  ihrer Hilfe in eine Park-Position gefahren werden, sofern der Treiber
+  entsprechend gestaltet ist.
+  
+  
+  Z(ero Volume:
+  
+  Da es gelegentlich vorkommt, daß man die gewählte Volumestruktur auf einem
+  Drive beibehalten möchte und doch alle Dateien dieses Volumes verschwinden
+  sollen, stellt der Filer über <Z> Routinen zur Verfügung, die eben solches
+  leisten. 
+  Nach Eintippen des <Z> wird nach der VolumeKennung bzw. nach dem Volume-
+  namen gefragt, und es werden folgende Optionen angeboten, die an die eigent-
+  liche Antwort nach einem Semikolon angehängt werden können.
+  
+  N    - (New Name) die Volumestruktur des Drive wird zwar nicht geändert, 
+         aber es wird auch nach einem neuen Volumenamen gefragt, der wie 
+         üblich mit FormatIO.EditString eingegeben werden kann. Davor kommt
+         eine Sicherheitsrückfrage, ob das mit VolumeKennung und Volumenamen
+         noch einmal angezeigte Volume wirklich beseitigt werden soll. Bei 
+         einem Ja werden zum Schluß alle Einträge dieses Volumes in die VTOC 
+         bzw. in das Directory gelöscht.
+  
+  Z    - (Zero) alle Blöcke des Volumes werden nicht nur in der VTOC freigege-
+         ben und alle Files aus dem zugehörigen Directory gelöscht, sondern sie
+         werden auch ge'Zero'ed, d. h. es werden Nullen in alle Speicher-
+         plätze dieses Volumes auf den Datenträger geschrieben. Die gelöschten
+         Blocks werden durch Ausgabe ihrer Nummer bekanntgegeben;
+  
+  S    - (Space) für Leute, die gelegentlich ihre intimen Bekenntnisse oder
+         geheime Daten auf dem GEPARD bearbeiten und dann wieder spurlos
+         verschwinden lassen möchten, ohne daß der benutzte Datenträger neu
+         formatiert wird, gibt es diese Möglichkeit. Es werden nur die Blöcke
+         eines Volumes ge'Zero'ed, die in der VTOC als leer eingetragen
+         sind, das sind dann auch solche, die ehemals zu Dateien gehörten,
+         deren Directory-Eintrag schon gelöscht wurde. Der Rest der VTOC
+         und des Directories bleiben unbehelligt. 
+         
+         
+         
+  (4) Unit - Verwaltung
+  
+  Auch die nicht block-, sondern zeichenorientierten Ein- bzw. Ausgabeeinheiten
+  des GEPARD, sogenannte Units wie etwa Bildschirme, Tastaturen etc., werden 
+  zum Teil im Filer verwaltet. Sie führen dort aber eher ein Randdasein und 
+  werden grundlegend im Config-Programm und während der Laufzeit in der 
+  Utility UnitHandler bearbeitet.
+  
+  Eine ähnliche Überblicksfunktion wie D(rives oder V(olumes übernimmt
+  
+  
+  U(nits:
+  
+  Es werden Statusinformationen über alle konfigurierten Units des GDOS in
+  einer Tabelle dargestellt, die keinerlei Eingriffsmöglichkeit seitens des
+  Benutzers vorsieht.
+  
+  Erklärung der Spaltenüberschriften 
+  
+  (a) No          - die Nummer der Unit, siehe Programm Config.
+  
+  (b) Name        - der Name der Unit.
+                    Da jedes Betriebssystem wenigstens eine Eingabe- und
+                    eine Ausgabeeinheit für den Benutzer bereithalten muß,
+                    sind die Units 'Screen' und 'Keyboard' bei jeder Konfi-
+                    guration obligatorische Bestandteile. Zumindest diese
+                    Unit-Namen müssen also in der Liste auftauchen.
+                    Ein weiterer Name mit bereits vordefinierter Bedeutung
+                    ist 'Printer'. Der Unit-Name darf maximal 11 Zeichen +
+                    abschließendes '%' = 12 Zeichen lang sein.
+  
+  (c) Type        - Der Unit-Typ gibt Auskunft darüber, ob die Unit Daten 
+                    aus dem Rechner nach außen gibt (output, Eintrag : 1), 
+                    Daten aus der Umwelt in den Rechner hereinholt (input,
+                    Eintrag : 2) oder beides kann (input/output, Eintrag : 3).
+                    Um der besonderen Rolle der Units für den Bildschirm
+                    ('Screen'), die Tastatur ('Keyboard') und den Drucker 
+                    ('Printer') gerecht zu werden, haben diese drei Units
+                    innerhalb des GDOS auch besondere Unit-Typ-Zahlen 
+                    zugewiesen bekommen :
+                    17 - Screen,
+                    34 - Keyboard,
+                    49 - Printer.
+                    Bald eingeführt werden :
+                    65, 66, 67 - für diverse Graphic-Devices.
+                    
+                    
+  (d) + / In / Out  In der Tabellenüberschrift sind die Bedeutungen der in
+                    diesen drei Spalten verwendeten Symbole erläutert.
+                    +      - Die Unit wurde nicht nur dem GDOS angemeldet,
+                             sondern auch initialisiert.
+                    o      - Die Unit ist leer, d. h. der zur Unit gehörige 
+                             Buffer ist zur Zeit leer.
+                    *      - Die Unit ist aktiv, d. h. der zur Unit gehörige
+                             Buffer ist weder leer noch voll.
+                    #      - Die Unit ist zur Zeit voll, d. h. der zugehörige
+                             Buffer ist bis zum Rand gefüllt.
+                             
+  
+  <CtrlUKey>(nit Control:
+  
+  Über diese Option besteht die Möglichkeit, angemeldete Units zu initiali-
+  sieren, sie in den leeren Zustand zu versetzen (d. h. den Buffer zu löschen)
+  und die Unit aus dem System herauszunehmen.
+  
+  Nach dem Aufruf über den <CtrlUKey> wird gefragt, an welcher Unit die
+  Kontrollfunktionen ausgeübt werden sollen. Es ist mit dem vollständigen
+  Unit-Namen zu antworten, d. h. die Unit 'Screen' heißt jetzt korrekt
+  'Screen%', wobei das Prozentzeichen das eindeutige Erkennungsmerkmal für 
+  Units in Unit-Namen ist. Nach dem Namen ist, - eingeleitet durch ein obligato-
+  risches ';' -, die gewählte Option so anzugeben, wie die oberste Zeile es 
+  vorgibt.
+  
+  (a) I(nit        - Die Unit wird initialisiert.
+  
+  (b) C(lear       - Die Unit wird geleert.
+  
+  (c) E(xit        - Der Zugriff auf diese Unit wird vom GDOS abgefangen,
+                     die Unit bleibt aber angemeldet.
+                      
+  Wird keine (erlaubte) Option eingegeben, so geht es direkt zurück zur Haupt-
+  ebene des Filers. Kann der Status der Unit nicht wie gewünscht geändert 
+  werden, so wird zuvor eine passende Fehlermeldung ausgegeben.
+
+  Es sei hier nochmals auf die Utility UnitHandler verwiesen, die eine
+  Vielzahl weiterer Einflußmöglichkeiten auf Units bietet. Ein weiterer
+  Hinweis gelte den Namen von Volumes und Units. An den Stellen, wo 
+  eindeutig nur eines dieser beiden Objekte gemeint sein kann, ist es geboten,
+  die Abschlußzeichen ':' bzw. '%' wegzulassen. Dies gilt sowohl für den
+  Filer als auch für den UnitHandler.
+  
+  
+  
+  (5)              File - Verwaltung
+  
+  Die unterste logische Strukturierungsebene, mit der der Filer im Rahmen 
+  seiner Verwaltungsakte zu tun bekommt, ist die der Files. Es ist sicher
+  auch die wichtigste, da ja der Name Filer irgendwie bewußt gewählt erscheint.
+  
+  Ein File im physikalischen Sinne ist materiegewordene Information, die sich
+  auf Datenträgern in Drives befindet. Jedes File hat seinen Namen, seinen
+  Ort, wo es auf dem Datenträger tatsächlich zu finden ist, einen Verwaltungs-
+  eintrag über diesen Ort (VTOC - Volume Table Of Contents) und einen Verwal-
+  tungseintrag, der Namen, VTOC-Eintrag und einige andere Kenndaten zusammen-
+  bringt : den Eintrag in das Directory.
+  
+  Wer genauere Informationen über den Aufbau eines solchen Directory-Eintrags
+  wünscht, der schaue in GdosTypes unter dem Typ 'DirEntry' nach und verglei-
+  che auch, wie die offiziellen Bezeichnungen der nun einzuführenden Filekenn-
+  daten lauten :
+  
+  FileName      - Der Filename ist ein maximal 25 Zeichen langer STRING. Er darf
+                  aus allen international verfügbaren ASCII-Buchstaben, den
+                  Ziffern '0' bis '9' und den Zeichen '(', ')', '+', '-', '.', 
+                  '<', '>', '_', 'ä', 'Ä', 'ö', 'Ö', 'ü', 'Ü', 'ß' aufgebaut 
+                  werden. Ein im Filenamen stehendes SPACE wird ignoriert,
+                  Groß- und Kleinschreibung werden nur akzeptiert, aber nicht
+                  differenziert !
+  
+  Suffix        - Jedes File sollte zur Kennzeichnung seines Inhaltes einen
+                  Suffix an den Filenamen angehängt bekommen. Die im GDOS de-
+                  finierten Suffix-Typen finden sich in GdosTypes (siehe File-
+                  Type) . Suffixe sind alle vierbuchstabig. Als Trennsymbol 
+                  zwischen Filenamen und Suffix ist der Punkt '.' definiert.
+                
+  FileType      - Hier wird der offizielle GDOS-Suffix-Typ ausgegeben. Er ist
+                  GdosTypes zu entnehmen. 
+                  
+  VolumeKennung - Jedes File des GDOS befindet sich in einem Volume auf einem
+                  Drive. Damit ist der Ort des Files auf einem Datenträger
+                  für das GDOS schon einmal enger eingegrenzt. Die Volume-
+                  kennung ist nicht unmittelbar im Directory-Eintrag des Files
+                  zu finden, da ja schließlich jedes Directory das Directory
+                  eines ganz bestimmten Volumes auf einem ganz bestimmten
+                  Drive ist, also weiß, wo es hingehört. Diese Angabe wird
+                  vor allen Dingen dann benötigt, wenn dem System beim Program-
+                  mieren oder eben hier im Filer erst klargemacht werden muß,
+                  wo sich denn eigentlich das gewünschte File befindet.
+                  
+  Full Filename - Setzt man die vier Komponenten eines Filenamens zusammen,
+                  so erhält man den vollen Filenamen :
+                  <VolumeKennung> + <Filename> + '.' + <Suffix>.
+                  Seine Länge beträgt nach Adam Riese also maximal 42 Zeichen
+                  (12 + 25 + 1 + 4). Dieser besondere STRING-Typ ist ebenfalls 
+                  in GdosTypes vordefiniert und heißt 'FileStr'. Auch seine
+                  Komponenten haben dort Typ-Namen erhalten, die tunlichst
+                  Verwendung in eigenen Programmen finden sollten.  
+  
+  FileLength    - Filelänge in GDOS-Blocks á 1024 Byte.
+  
+  FileStart     - Die Nummer des Starteintrags der Datei in der VTOC. Diese 
+                  Nummer stimmt mit der Nummer des Startblocks des Files auf 
+                  dem Datenträger überein. Die Einträge in der VTOC sind je-
+                  weils so lang wie ein CARDINAL, sind aber eigentlich Zeiger
+                  auf die nächste Eintragung in der VTOC, die auch noch zum
+                  File gehört. Dem entspricht dann gerade wieder die Nummer
+                  des nächsten physikalischen Blocks, der zum File gehört.
+                  Das Ende des Files wird durch ein $FFFF markiert. Weitere
+                  Einzelheiten siehe Definitions-Modul GdosVTOCStuff.
+  
+  FileStatus    - Für Geheimniskrämer, Sicherheitsbedürftige, Geschwindigkeits-
+                  süchtige und Informationshungrige hat man eine Reihe von
+                  Statusinformationen in ein BITSET gepackt. Ein gesetztes Bit
+                  in diesem Set entspricht einem gesetzten Flag, es entspricht 
+                  dem Vorhandensein einer bestimmten Eigenschaft.
+                  
+                  Bit 0     - Das File ist 'locked', d. h. jeder Versuch, die
+                              Eintragung dieses Files aus dem Directory zu
+                              löschen, wird vom GDOS unterbunden.
+                  Bit 1     - Das File hat 'fast code', d. h. das GDOS wird
+                              den Code, der in diesem File abgelegt ist, in
+                              den schnellen Speicher z. B. eines 68020-Systems
+                              laden, wenn er ausgeführt werden soll.
+                  Bit 2     - Das File ist 'open', d. h. es ist für den Zugriff
+                              durch einen Anwender geöffnet. 
+                  Bit 3     - Das File ist 'new', d. h. gerade neu angelegt
+                              und dann auch offen.
+                  Bit 4     - Das File hat die Schreib-Zugriffsmöglichkeit
+                              'append only', d. h., daß bei Schreibzugriffen
+                              auf dieses File Daten immer nur an das bestehende
+                              File angehängt werden können.
+                  Bit 5     - Das File ist 'hidden', d. h., daß es bei gewöhn-
+                              lichen File-Transaktionen vor dem Benutzer des
+                              GDOS versteckt ist. 
+                  Bit 6     - Das File hat als einzige Zugriffsmöglichkeit
+                              das 'read only', d. h. es kann nur gelesen 
+                              werden : also weder Löschen noch Ändern ist 
+                              möglich.
+                  Bit 7     - Das File ist vom FileSearch des Moduls GdosFile-
+                              Stuff ausgeschlossen. Diese Option hilft, wenn
+                              von einem Modul mehrere Versionen im GDOS zugreif-
+                              bar sind. Das so markierte File wird bei Such-
+                              operationen stets ignoriert.
+                  Bit 31    - Das File ist 'not modified', d. h., daß keine
+                              Änderungen an ihm erfolgten.
+                              
+                  Weitere Statusbits sind zur Zeit nicht definiert.
+                  
+                  
+  DateCreated   - Datum der Fileerzeugung 
+  
+  TimeCreated   - Zeitpunkt der Fileerzeugung
+  
+  DateUpdate    - Datum der letzten Manipulation am File
+  
+  TimeUpdate    - Zeitpunkt der letzten Änderung am File
+  
+  
+  Über diese Kenndaten der Files wird wie gesagt im Directory eines Volumes
+  in einem Drive buchgeführt. Der Filer bietet nun eine Vielzahl von Möglich-
+  keiten, bloß lesend oder auch verändernd auf diese Daten zuzugreifen.
+  
+  L(ist dir:
+  
+  Ein schneller und kurzer Überblick über die in einem Directory eines Volumes
+  versammelten Files bietet die Option, die über die Taste <L> erreichbar ist.
+  Man wird aufgefordert, eine Volumekennung oder einen Volumenamen einzugeben.
+  Nach dem abschließenden Doppelpunkt (siehe unten !) können einige Parameter 
+  angehängt werden.
+  Eine Darstellung aller Möglichkeiten bietet die oberste Bildschirmzeile.
+  Folgenden Optionen muß ein Semicolon als Trennungszeichen vorangehen.
+  
+  (a) A(ll       - Es werden wirklich alle Files, also auch die versteckten
+                   ('hidden' siehe oben), aufgelistet. Beispiel :
+                   '#a0:;a'
+                   
+  (b) L(ength    - Die Files werden nicht wie in der Defaulteinstellung alpha-
+                   betisch sortiert dargestellt, sondern der Länge nach. Ein
+                   nachgestelltes '-' sortiert nach abfallender Länge. 
+                   Beispiel : 'SYSTEM:;L-'
+  
+  (c) V(alues    - Neben den eigentlichen Fileinformationen werden auch solche
+                   Dinge aufgelistet, die die Fileverwaltung als Rahmenbedin-
+                   gungen beeinflussen : die Block- und die Directory-Anzahlen
+                   des betrachteten Volumes.
+                   Bei den Blockgrößen werden ausgegeben :
+                   (i) die beim Formatieren allozierte Anzahl von GDOS-Blöcken
+                       für das gesamte Volume (alloc), 
+                   (ii) die Anzahl der VTOC-Blöcke des Volumes (VTOC),
+                   (iii) die Anzahl der Directory-Blöcke des Volumes (Dir),
+                   (iv) die Anzahl der benutzten Blöcke des Volumes (used),
+                   (v) die Anzahl der verfügbaren Blöcke des Volumes (avail),
+                   (vi) die Anzahl der schlechten Blöcke des Volumes (bad).
+                   Bei den Directory-Größen findet man :
+                   (i) die beim Formatieren allozierte Anzahl von Directory-
+                       Einträgen für das gesamte Volume (directory entries),
+                   (ii) die Anzahl der benutzten Dir-Einträge (used),
+                   (iii) die Anzahl der freien Dir-Einträge (free).
+                   
+  Das Komma als Trennungszeichen verwendet man bei der nächsten Option.
+  
+  (d) 'Name'     - Es wird ein FileName mit Suffix (im allgemeinen wohl 'Text')
+                   angegeben. In dieses File werden dann sämtliche Ausgaben
+                   dieser Option geschrieben. Eine nette Möglichkeit, sich ein
+                   Überblicksfile über seine sämtlichen Disketteninhalte zu-
+                   sammenzustellen. Schneller beim Bearbeiten ist allerdings die
+                   Utility MultiCatalog aus dem FORUM, die hier wärmstens
+                   empfohlen sei. Die Ausgabe kann übrigens natürlich auch
+                   auf eine Unit wie z. B. den Printer% umgeleitet werden !
+                   Beispiele : '#h08:,Directories.Text', 'DEF_TEXT:,Printer%'.
+                   
+  Bislang wurde allerdings nur die halbe Wahrheit erzählt. Alle Optionen 
+  tendieren dazu, alle Directory-Einträge des Volumes aufzulisten (Ausnahmen
+  sind hier höchstens die 'hidden' Files). Interessiert man sich aber nur
+  für alle Text-Files, die ein Volume enthält, so wirken die dazwischen auch
+  noch mit ausgegebenen Code- oder Defn-Files äußerst störend. Deshalb bietet
+  das GDOS an verschiedenen Stellen, so auch hier im Filer, die Möglichkeit,
+  mit Hilfe sogenannter Wildcards die Auswahl von vornherein auf eine ge-
+  wünschte Teilmenge aller Files einzuschränken. Die für Programmierer interes-
+  santen Details dieses GDOS-Features entnehme man dem Definitions-Modul von
+  GdosHelp (Match, ReplaceMatch, SelectMultipleFiles). Der Anwender des Filers 
+  möge sich mit der folgenden Beschreibung zufriedengeben.
+  
+  Es gibt für die (Datei-) Auswahl zwei Wildcards. Eine Wildcard ist ein Stell-
+  vertreter für Teilzeichenketten eines gesuchten STRINGs, insbesondere bei
+  Filenamen samt Suffix. Diese Stellvertreter können auch mehrfach in einem
+  Ausdruck verwendet werden.
+  
+  '='            - ersetzt in einem STRING eine Teilzeichenkette (oder auch 
+                   mehrere). Alle STRINGs, die in einer vorgegebenen Menge
+                   (z. B. alle FileNamen eines Directories) liegen und die mit 
+                   dem Wildcard-STRING MODULO Wildcards zur Deckung gebracht 
+                   werden können, lassen sich auf diese Weise selektieren.
+                   Beispiele :  
+                   'Gdos='  liefert in dem Volume DEFN: alle Definitions-Module,
+                            die im FileNamen mit 'Gdos' anfangen und dann eine
+                            beliebige Fortsetzung haben.
+                   '=.Text' liefert in dem Volume SYSTEM: alle Files, deren
+                            Suffix sie als Text-File kennzeichnet. Im allge-
+                            meinen wird dabei wohl nur das File 'ModulaErrors.
+                            Text' gefunden.
+                   '=x='    liefert alle Files, die an irgendeiner Stelle im
+                            FileNamen ein 'x' besitzen.
+  
+  '?'            - wirkt wie das Gleichheitszeichen, nur daß die so gewählte
+                   Teilmenge der STRINGs noch einmal in einem SelectFile-Menue
+                   zur Auswahl angeboten wird. Es werden nur die dort ausge-
+                   suchten STRINGs selektiert.
+                   
+  Das Gleichheitszeichen ermöglicht also eine Teilmengenbildung und damit Grob-
+  selektion, das Fragezeichen dient darüber hinaus dem verfeinernden Handver-
+  lesen der STRINGs.
+  
+  Wie benutzt man nun genau diese Wildcards im Filer ?
+  
+  Überall dort, wo letztlich einzelne Files angesprochen werden sollen und die
+  Eingabe eines Volumenamens oder einer VolumeKennung verlangt ist, kann man
+  stattdessen einen vollen Filenamen (Full FileName) angeben, der im Namens-
+  oder Suffix-Teil Wildcards enthält. Unterläßt man dabei das Hinschreiben
+  der Volumeangabe, so geht das GDOS davon aus, daß das Prefix-Volume gemeint
+  ist. Selbstverständlich können statt der VolumeKennung oder des VolumeNamens
+  auch die oben erwähnten ShortVolumes verwendet werden.
+  
+  Nach den hoffentlich stattgefundenen Experimenten mit den eben beschriebenen
+  Möglichkeiten haben Sie sicher genug Kraft und Ausdauer zu hören, daß Sie 
+  erst drei Viertel der Wahrheit gehört haben.
+  
+  Ein zweiter FileName + Suffix hinter einem '/', das an den ersten FileNamen +
+  Suffix angehängt wird, arbeitet wie ein Exclusions-Operator. Alle STRINGs, die
+  mit dem zweiten FileNamen, der auch wieder Wildcards enthalten kann, zur
+  Kongruenz gebracht werden können, werden aus der über den ersten STRING 
+  selektierten Menge wieder ausgegliedert. Es sei noch einmal darauf hinge-
+  wiesen, daß das Ganze (ohne SelectMultipleFiles natürlich) nicht nur mit 
+  Filenamen funktioniert, sondern mit allen STRINGs.
+  
+  Nach den langen, aber notwendigen Umwegen zurück zur Benutzung der L(ist-
+  Option. Die Tabelle, die man auf dem Bildschirm und / oder auf einem anderen
+  Medium dargestellt bekommt, enthält jeweils folgende Informationen.
+  
+  (e) Identifikation - Die VolumeKennung und der VolumeName, die zum ausgege-
+                       benen Directory gehören, werden in eine erste Über-
+                       schrift gesetzt.
+                       
+  (f) SubDirectory   - Die nächste Überschriftszeile stammt vermutlich aus
+                       einer Zeit, als die Einführung von Subdirectories kurz
+                       bevor stand.
+                       Der VolumeName wird wiederholt und das Directory als
+                       Root-Directory gekennzeichnet. Es folgen die Anzahl 
+                       der noch freien Blöcke und der noch freien Directory-
+                       Einträge dieses Volumes. Wurde die Option ';v' gewählt,
+                       so stehen nachfolgend alle in Abschnitt (c) beschriebenen
+                       Informationen.
+                       
+  (g) File-Eintrag   - FileName + Suffix + Länge in GDOS-Blocks der in diesem 
+                       Directory verwalteten Files.
+                       
+  (h) Statistik      - Es werden die Anzahl der gelisteten, der versteckten,
+                       gelisteten, der im Directory befindlichen und der als 
+                       'hidden' gekennzeichneten Files dieses Directories 
+                       aufgeführt (List / Lst Hid / in Dir / Hidden).
+                       
+  Sollten mehr Files in dem Directory sein, als Platz zur Darstellung auf dem
+  Bildschirm ist, so wird die Bildschirmdarstellung in der letzten Zeile
+  unterbrochen und gemeldet, daß das System auf einen Tastendruck wartet.
+  Zur Fortsetzung der Ausgabe drücke man <SPACE>, das den Bildschirm löscht 
+  und so Platz für neue Ausgaben schafft. Zum Abbruch führt <ESCKey>, der die 
+  zuletzt ausgegebene Bildschirmseite auf dem Schirm beläßt.
+  Danach ist man wieder auf der Hauptebene des Filers.
+  
+  
+  
+  E(xtended dir:
+  
+  Will man detailliertere Informationen über die einzelnen Files haben, so
+  drücke man die Taste <E>, gebe eine eventuell Wildcard-durchsetzte Volume-
+  File-Angabe ein, benutze die in der obersten Zeile zur Auswahl stehenden
+  Parameter und sehe sich dann eine Tabelle an, die immer die Einträge (e)-(h)
+  der Option L(ist dir umfaßt und zusätzlich die durch die Parameter gesteuer-
+  ten zusätzlichen Angaben.
+  
+  (a) A(ll       - Es werden wirklich alle Files, also auch die versteckten
+                   ('hidden' siehe oben), aufgelistet. Beispiel :
+                   '#a0:;a'
+                   
+  (b) L(ength    - Die Files werden nicht wie in der Defaulteinstellung alpha-
+                   betisch sortiert dargestellt, sondern der Länge nach. Ein
+                   nachgestelltes '-' sortiert nach abfallender Länge.
+                   Beispiel : 'SYSTEM:;L-'
+  
+  (c) V(alues    - Neben den eigentlichen Fileinformationen werden auch solche
+                   Dinge aufgelistet, die die Fileverwaltung als Rahmenbedin-
+                   gungen beeinflussen : die Block- und die Directory-Anzahlen
+                   des betrachteten Volumes. (siehe L(ist Dir Punkt (c))
+  
+  Von den folgenden vier Parametern wird stets nur der in der Parameterliste
+  zuerst genannte ausgewertet :
+                   
+  (d) T(ype      - Die Files werden nicht wie in der Defaulteinstellung alpha-
+                   betisch sortiert dargestellt, sondern dem Typ nach (Reihen-
+                   folge wie unter FileType festgelegt). Ein nachgestelltes 
+                   '-' sortiert in umgekehrter Reihenfolge.
+                   Beispiel : 'SYSTEM:;T-'
+  
+                   
+  (e) C(rea      - Die Files werden nicht wie in der Defaulteinstellung alpha-
+                   betisch sortiert dargestellt, sondern dem Erzeugungsdatum 
+                   nach. Ein nachgestelltes '-' sortiert nach fallender Aktua-
+                   lität. Beispiel : 'SYSTEM:;C-'
+  
+                   
+  (f) U(pd       - Die Files werden nicht wie in der Defaulteinstellung alpha-
+                   betisch sortiert dargestellt, sondern nach dem Datum des 
+                   letzten Updates. Ein nachgestelltes '-' sortiert nach 
+                   fallender Aktualität. Beispiel : 'SYSTEM:;U-'
+  
+  (g) S(tatus    - Während die vorigen Optionen nur die Anzahl und die Sortier-
+                   art und -reihenfolge der File-Informationen beeinflussen, 
+                   der prinzipielle Aufbau der ausgegebenen Tabelle aber immer 
+                   gleich ist (FileName + Suffix + Länge in GDOS-Blocks + 
+                   FileTyp + Create-Datum + Create-Uhrzeit + Update-Datum + 
+                   Update-Uhrzeit), werden über diesen Schalter alle Datums- 
+                   und Uhrzeitangaben ersetzt durch einen Überblick über die 
+                   im BITSET der Statusinformationen (siehe oben) vorgefundenen 
+                   File-Daten. 
+                   Da zur Zeit nur 8 für den Benutzer sichtbare Statusbits 
+                   verwaltet werden, sind im Normalfall 8 Minuszeichen zu 
+                   sehen als Hinweis darauf, daß kein Bit gesetzt ist und 
+                   damit kein besonderer Status vorliegt.
+                   Sind (fast) alle Bits gesetzt, so sieht die Ausgabe so aus :
+                   L F O N A H R X .
+                   Die Reihenfolge der Buchstaben entspricht der Reihenfolge 
+                   der Bits wie in FileStatus beschrieben (siehe oben). 
+                   (L = Locked, F = Fast code, O = Open, N = New, A = Append
+                   only, H = Hidden, X = Excl. Search)
+  
+  Das Komma als Trennungszeichen verwendet man beim nächsten Parameter.
+  
+  (h) 'Name'     - Es wird ein FileName mit Suffix (im allgemeinen wohl 'Text')
+                   angegeben. In dieses File werden dann sämtliche Ausgaben
+                   dieser Option geschrieben. Die Ausgabe kann übrigens wie üb-
+                   lich auch auf eine Unit wie z. B. den Printer% umgeleitet 
+                   werden ! 
+                   Beispiele : '#h08:,Directories.Text', 'DEF_TEXT:,Printer%'.
+                   
+  Für das ausführliche Directory-Verzeichnis gelten dieselben Anmerkungen
+  bezüglich Wildcards wie bei der L(ist dir - Option.
+  
+  
+  
+  P(ath:
+  
+  Eine Art Gegenoperation zum Auflisten aller Files eines Directories liefert
+  das Drücken der Taste <P>. Es wird nach einem FileNamen + Suffix gefragt,
+  und das System wird sich bemühen, alle Vorkommen dieses FileNamens in 
+  irgendeinem Directory zu ermitteln und dem Benutzer darzustellen. 
+  Es ist bei dieser Option jetzt möglich, Wildcards zu benutzen und so nach 
+  mehreren Files gleichzeitig zu suchen oder aber nur mit einem erinnerten 
+  Teil-STRING alle etwaigen Kandidaten für das gesuchte Objekt vorgeschlagen 
+  zu bekommen. 
+  Es gibt zusätzliche Parameter, die die Suche beeinflussen :
+  
+  (a) A(ll       - Es werden wirklich alle Files, also auch die versteckten
+                   ('hidden' siehe oben), aufgelistet. Beispiel :
+                   'GDOS=;a'
+                   
+  (b) N(ew       - Es werden nur solche Files gelistet, die das Statusbit 3   
+                   gesetzt haben. Dies sind im allgemeinen solche Files, die
+                   bei völlig mißglückten Fileoperationen eines Anwendungs-
+                   programmes nicht vom System geschlossen werden konnten.
+                   (Siehe auch R(emove - Option !)
+  
+  (c) S(earch    - Bei 'Gdos=;S-' werden Files, die das Statusbit 7 gesetzt
+      excl (+/-)   haben nicht gelistet. Defaulteinstellung ist ';S+'. Dadurch
+                   sind auch solche Files in der Liste, die eigentlich 
+                   übergangen würden, sie erhalten aber die zusätzliche 
+                   Kennzeichnung '(Excl. Search)'.
+  
+  Die Ausgabe ist eine Liste, die folgenden Aufbau hat :
+  [(Excl. Search) + ] VolumeKennung + FileName + <.> + Suffix + (VolumeName)
+  für jeden Directory-Eintrag, der mit dem Vorgabestring übereinstimmt.
+  
+  
+  
+  T(ransfer:
+  
+  Eine sehr wichtige Fähigkeit des Filers steht nun zur Erklärung an : das
+  Kopieren eines (oder mehrerer) Files von einem Volume in ein anderes. 
+  
+  Nach Aufruf dieser Option durch <T> wird gefragt, welches File transferiert
+  werden soll. Die Antwort muß ein voller Filename sein, bei dem allerdings
+  für die Volumeangabe dasselbe gilt wie beim L(ist dir - Kommando. Sie kann
+  weggelassen werden - dann nimmt das System das Prefix-Volume - oder durch ein
+  ShortVolume ersetzt werden, und es müssen für FileName und Suffix die 
+  Bedingungen für die Verwendung von Wildcards eingehalten werden. Wildcards
+  bewirken, daß eventuell auch mehrere Files übertragen werden.
+  
+  Da die Bedienung wieder über FormatIO.EditString erfolgt, wird die Eingabe 
+  durch <EnterKey> akzeptiert, <ESCKey> storniert alles.
+  
+  Das System muß nun natürlich wissen, wohin diese Files geschickt werden 
+  sollen. Daher die Frage nach dem Zielvolume. Die Antwort ist wiederum ein
+  voller FileName wie oben. Es müssen allerdings an den Stellen, an denen im
+  ersten FileNamen Wildcards verwendet wurden, ebenfalls solche auftreten,
+  sonst meckert das System. Diese Maßnahmen laufen dann auf ein Kopieren mit
+  gleichzeitigem Umbenennen hinaus.
+  Der Normalfall dürfte es allerdings sein, daß man nur das Volume neu 
+  bestimmen möchte und der FileName insgesamt erhalten bleiben soll. In 
+  diesem Fall verwende man eine besondere Wildcard, die nur als Zielfile-
+  Wildcard erlaubt ist : das Dollarzeichen nach der Volumeangabe.
+  
+  Will man sich die Nachfrage nach dem Zielvolume sparen, so schreibe man
+  alles in eine Zeile und trenne den ersten Filenamen vom zweiten durch ein 
+  Komma. 
+  Beispiele : '#a0:Gdos.Syst,#b0:$' kopiert das File Gdos.Syst vom Volume
+              #a0: zum Volume #b0:.
+              'DEFN:=,#j0:$' kopiert alle Files vom Volume DEFN: in das Volume
+              #j0: unter Beibehaltung der FileNamen.
+              'DEF_TEXT:=Gdos?,#a0:=MyDos=' listet alle Files des Volumes
+              DEF_TEXT: , die den Teil-STRING 'Gdos' enthalten, in einem
+              SelectMultipleFiles-Menue und kopiert die dort getroffene
+              Auswahl nach #a0: , wobei der Teil-STRING 'Gdos' in 'MyDos'
+              gewandelt wird. Das Anfangs- und Endstück des Filenamens
+              bleiben erhalten.
+              
+  Auch bei dieser Filer-Option werden in der ersten Zeile eine Reihe von
+  Parametern aufgelistet, die das Verhalten des Systems beim Kopieren steu-
+  ern. Die Parameter gehören hinter die beiden FileNamen nach einem Semicolon.
+  
+  (a) A(ll       - Es werden wirklich alle Files, also auch die versteckten
+                   ('hidden' siehe oben), kopiert. Beispiel :
+                   '#a0:?,#b0:$;a' stellt wirklich alle Files zur Auswahl.
+                   
+  (b) S(ingle drive copy
+                 - Für Besitzer nur eines (funktionstüchtigen) Laufwerks :
+                   Der Benutzer wird zum Diskjockey, da er für jedes zu
+                   kopierende File zwischen Originaldatenträger und dem
+                   Kopiedatenträger wechseln muß. Das System fordert ihn 
+                   jeweils auf, den richtigen Datenträger im richtigen Drive
+                   zu deponieren.
+ 
+  (c) B(ackup    - Es wird geprüft, ob das File schon auf dem Ziel-Volume 
+                   vorhanden ist. Ist dies nicht der Fall, so wird kopiert.
+                   Ist eine Datei gleichen Namens vorhanden, so wird nur
+                   dann transferiert, wenn das File auf dem Ziel-Volume älter
+                   ist als auf dem Quell-Volume. Bei der sofortigen Ausführung
+                   wird die alte Datei auf dem Ziel-Volume gelöscht.
+                   
+  (d) U(pdate    - Es werden nur die Files kopiert, die auf dem Ziel-Volume
+                   schon vorhanden waren und bei denen das Quell-Volume die
+                   neuere Fassung enthielt.
+                   
+  (e) P(age      - Bei Ausgaben auf eine Unit (Printer% z. B.) kann hiermit
+                   ein Seitenvorschub am Ende des T(ransfers angeordnet 
+                   werden. Jede übertragene Datei beginnt also auf einer
+                   neuen Seite.
+                   
+  (f) H(ide dest - Die übertragenen Files werden auf dem Ziel-Volume mit
+                   dem Status 'hidden' versehen, werden also unsichtbar für
+                   den Normalzugriff.
+                   
+                   
+  Es sollte klar sein, daß auf dem Quell-Volume das zu kopierende Original
+  erhalten bleibt.
+  
+  
+  
+  
+  M(ove:
+  
+  Genau diese Eigenschaft des Erhaltens der Source-Datei wird bei dem über <M> 
+  erreichbaren Befehl M(ove nicht (unbedingt) gewährleistet. Diese Option hat 
+  anfangs genau den gleichen Verlauf wie die T(ransfer - Option und kann mit den
+  gleichen Parametern gesteuert werden. Nach Beendigung des Transfer-Teils
+  wird allerdings eine Liste aller der Files des Quell-Volumes geboten, die
+  übertragen wurden und nun zur Löschung auf dem Quell-Volume anstehen.
+  Es wird die Sicherheitsnachfrage gestellt, ob wirklich gelöscht werden
+  soll. Wenn mit Ja geantwortet wird, verschwinden die Files aus dem Directory
+  des Quell-Volumes. (Sie werden nicht wirklich gelöscht, es werden in der 
+  VTOC aber die bisher belegten Blöcke freigegeben).
+  Bei einem Nein ist das Ergebnis genauso wie beim T(ransfer : eine Kopie des
+  Files befindet sich sowohl auf dem Quell- als auch auf dem Ziel-Volume. 
+  
+  
+  
+  R(emove:
+  
+  Genau diese zweite Hälfte des obigen M(ove - Befehls stellt die über <R>
+  erreichbare Option des File-Löschens zur Verfügung. Es wird wie üblich
+  nach einem vollständigen FileNamen (eventuell mit Wildcards) gefragt.
+  Diese ausgesuchten Files werden gelistet und damit zum Entfernen aus dem
+  Directory angeboten. Wird die Frage nach dem Löschen bejaht, so geschieht
+  dies dann auch, bei Verneinung landet man wieder auf der Hauptebene des
+  Filers.
+  Es gibt beim R(emoven von Files zwei Parameter, die nach einem Semicolon
+  an den vollen FileNamen angehängt werden können.
+  
+  (a) A(ll       - Es werden auch die versteckten Files gelistet und gelöscht.
+  
+  (b) N(ew       - Es werden die neuen, noch offenen Files (mit gesetztem
+                   Statusbit 3) gelöscht.
+  
+  
+  
+  N(ew Name:
+  
+  Wie bereits beim T(ransfer - Befehl angedeutet, kann der Filer auch dazu 
+  mißbraucht werden, Schönheitsoperationen an Files durchzuführen. Gefällt der
+  Name eines oder mehrerer Files nicht mehr, so drücke man <N> und gebe auf
+  die Frage, welches File umbenannt werden soll, einen vollständigen File-
+  namen, also mit Volumeangabe, Namen und Suffix ein. Dieser darf Wildcards
+  enthalten. Nach Eingabeabschluß durch <EnterKey> fragt das System nach den
+  neu zu erzeugenden Namen. Dieser muß natürlich an den Stellen, wo Wildcards
+  standen, wiederum ein Gleichheitszeichen stehen haben. Es sei darauf hinge-
+  wiesen, daß diese Umbenennerei arge Konsequenzen haben kann, wenn man nicht
+  aufpaßt, wie die Wildcards zu wählen sind. Das Schlimmste, nämlich das 
+  Löschen eines bereits existierenden Files mit dem gleichen, nun aber neu 
+  erzeugten Namen, wird durch Rückfrage abgemildert.
+  
+  Will man nicht FileNamen, sondern VolumeNamen ändern, so benutze man den
+  bisherigen VolumeNamen oder einfacher die VolumeKennung (mit Doppelpunkt)
+  und gebe einen neuen VolumeNamen (mit Doppelpunkt) ein.
+  
+  Zur Vereinfachung kann man den alten und neuen Namen auch in eine Zeile 
+  schreiben, und zwar durch ein Komma getrennt. Dann gibt es keine lästigen
+  Zwischenfragen des Systems. Parameter kennt diese Option nicht.
+  
+  
+  
+  S(et Status:
+  
+  Die in dem BITSET definierten Statusinformationen eines Files (siehe
+  E(tended dir) können nicht nur gelesen, sondern zum Teil auch geändert werden,
+  und zwar über die Taste <S>. Es wird wieder nach einem vollständigen FileNamen
+  gefragt, und die Beantwortung läuft unter FormatIO.EditString. Wildcards
+  sind erlaubt. Die erste Zeile gibt darüber Auskunft, welche Bits vom
+  Filer aus gesetzt werden können, indem man einen einbuchstabigen Parameter
+  sowie einen Schalter (+/- für Setzen / Nicht Setzen) hinter ein Semicolon 
+  hinter den vollen FileNamen setzt.
+  
+  (a) H         - bei + : Das File erhält den Status 'hidden'.
+                  bei - : Das File ist normal im Directory verzeichnet.
+                  Beispiel : '#a0:=Syst;H+'
+                  
+  (b) L         - bei + : Das File erhält den Status 'locked'.
+                  bei - : Das File ist nicht mehr ge'locked'.
+  
+  (c) R         - bei + : Das File ist im 'read only' - Status (protected).
+                  bei - : Es kann wieder normal auf das File zugegriffen 
+                          werden. 
+  
+  (d) F         - bei + : Das File erhält den Status 'fast code'.
+                  bei - : Der Inhalt des Files wird als normal schnell ein-
+                          gestuft.
+                          
+  (e) P         - bei + : Das File wird beim Schreiben nur als 'append only'
+                          behandelt.
+                  bei - : Das File kann wieder normal beschrieben werden.
+                          
+  (f) X         - bei + : Das File wird beim FileSearch ausgeschlossen.
+                  bei - : Das File wird wieder gesucht.
+                  
+  Die Bits 2, 3 können nicht geändert werden. Damit auch versteckte Files
+  mit den anderen Parametern belegt werden können, gibt es auch hier die
+  Möglichkeit, alle selektierten Files auch zu bearbeiten.
+  
+  (h) A         - Alle, auch die 'hidden' Files werden im Status verändert
+                  durch die nachfolgenden Parameter.
+  
+  Die Änderungen im FileStatus werden für jedes einzelne File ohne Nennung
+  der Art der Änderung auf dem Bildschirm mitprotokolliert.
+  
+  
+  
+  C(reate:
+  
+  Als vorletzte Option soll der Schöpfungsakt über <C> besprochen werden. 
+  In manchen Programmen braucht man z. B. ein Datenfile, in das irgendetwas
+  vom Programm geschrieben werden soll. Um nun nicht zwei Varianten des
+  Programms schreiben zu müssen, eines mit FileCreate und eines mit File-
+  Open, wird die Erzeugung des Datenfiles in den Filer verlegt und gleich
+  darauf zugegriffen. 
+  
+  Das System verlangt wie immer einen vollen FileNamen (mit Volumeangabe,
+  FileNamen und Suffix) im FormatIO.EditString - Modus. Wildcards sind
+  nicht erlaubt. 
+  Das System schaut nach erfolgreicher Eingabe des vollen FileNamens im
+  Ziel-Volume nach, wieviel Platz dort noch ist, und meldet die gefundene
+  Anzahl GDOS-Blocks. Der Benutzer wähle nun eine Blockzahl zwischen eins
+  und diesem Maximum. Und schon gibt es ein File mehr im Ziel-Volume.
+  
+  Als einzigen Parameter kann man hier ein ';Z' an den vollen FileNamen
+  anhängen, um zu erzwingen, daß die dem File in der VTOC zugeordneten
+  Blocks auf dem Datenträger mit lauter Nullen ge'Zero'ed werden.
+  
+  Es sei erwähnt, daß die Erzeugung von Textfiles tunlichst einem Editor
+  überlassen bleibt, da nur diese den notwendigen Header-Block korrekt
+  erzeugen.
+  
+  
+  
+  Q(uit:
+  
+  Das Drücken der <Q>-Taste bewirkt den Rücksturz in die Hauptkommando-
+  ebene des GDOS oder auch die RückKehr in das aufrufende Programm.
+  
+  
+  Diese Dokumentation erstellte kpr, die ach so notwendigen Korrekturen
+  besorgten mgr und kdz.
+  
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+ 

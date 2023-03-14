@@ -1,0 +1,44 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                          Namen                           │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+  
+  
+  Alphabetische Liste der Namenskürzel im GDOS 1.52
+  
+  Kürzel   Name
+  
+  as       Albert Schwarte
+  bh       Bernd Heyer
+  ch       Carlos Hofmann
+  ek       Elmar Krüger
+  fm       Frank Mersmann
+  hjh      Hans-Jörg Himmeröder
+  jg       Jan Gottschick
+  jh       Jürgen Heil
+  jha      Jörg Hattenhauer
+  jm       Jürgen Müller
+  jn       Jörg Noack
+  kpr      Klaus-Peter Reimers
+  kdz      Klaus-Dieter Zamow
+  mgr      Michael Geyer
+  ms       Meinolf Schneider
+  msp      Manfred Spüler
+  tb       Torsten Beyer 
+  tt       Thomas Tempelmann
+  ur       Ulf Reimann
+  uw       Uwe Werner
+  wgn      Wulf-Gerd Neumann
+ 
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+ 

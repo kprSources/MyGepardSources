@@ -1,0 +1,1606 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                     GepStar (V 4.07)                     │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+
+  (0) Das GEPARD - Textverarbeitungsprogramm GepStar (Überblick)
+  
+  
+  (1) Installation
+  
+  (2) Einführung
+  
+  (3) Beschreibung aller Kommandos
+  
+  (4) Anhang
+  
+  
+  Der GepStar wird von der Hauptkommandoebene der Shell aus durch das Betätigen
+  der <G>-Taste aufgerufen. Er meldet sich mit einem Prompt, das Auskunft über
+  Versionsnummer und Copyright gibt. Außerdem wird protokolliert, welche Dinge
+  bei der Installation des Programms gefunden oder vermißt wurden. Ein einfacher
+  Tastendruck führt dann in das eigentliche Haupt-Menue des GepStar. Zuvor noch
+  einige Anmerkungen zur Installation.
+  
+  
+  
+  (1)        Installation 
+
+  Das System - Programm GepStar ist als solches ein autarkes Modul, das in sich
+  eine Standard-Installation hinsichtlich aller Parameter mitführt, die zum
+  Betrieb notwendig sind. Da für eine individuelle Anpassung aber Einflußmög-
+  lichkeiten vorgesehen werden können, lassen sich in drei namentlich vordefi-
+  nierten Files Parameter ablegen, die die Bedienungsoberfläche des GepStar
+  durch den Benutzer beeinflussen.
+  
+  Das Hauptärgernis vieler Textverarbeitungsprogramme ist, daß man seine (!)
+  Tastaturbelegung, die man vom ersten Textsystem an gewohnt ist, nicht wieder-
+  findet. Um diese Umgewöhnung zu vermeiden, gibt es ein Programm, das die 
+  einzelnen Funktionen des GepStar jeweils individuell wählbaren Tasten-
+  kombinationen zuweist.
+  
+  Die vier erwähnten Files finden Sie auf dem UTILITY:-Volume unter den Namen :
+  
+  GepStarInstall.Code      Es wird benötigt zur Modifikation der Tastenbelegung.
+                           Dieses Programm erzeugt das Datenfile
+                           `GepStarInst.4.07.Data'.
+  
+  GepStarInst.4.07.Data    liefert beim Start des Programms die mit Hilfe von
+                           `GepStarInstall' erstellte optimale Tastenbelegung.
+                           Fehlt dieses File, erscheint beim Laden des GepStar
+                           die Meldung `Keyboard standard installation'.
+  
+  GepStarInst.4.07.Setp    liefert beim Start des Programms eine bewährte Stan-
+                           dard-Formatierung für die Text- und Druck-Parameter.
+                           Fehlt dieses File, erscheint beim Laden des GepStar
+                           die Meldung `No special startup installation'.
+                           Mit der Hauptmenue-Option <S> kann jede beliebige
+                           Formatierung jeweils unter einem anderen Namen
+                           abgespeichert und mit <L> wieder geladen werden.
+  
+  GepStarInst.4.07.Text    enthält eine beliebig modifizierbare Übersetzungs-
+                           tabelle für Attribute.
+                           Fehlt dieses File, erscheint beim Laden des GepStar
+                           die Meldung `Attribut standard installation'.
+                           Dieses File kann nur mit Hilfe des System-Editors
+                           oder mit GepStar selbst verändert werden.
+                           
+  Will man also den GepStar individuell konfigurieren, so kopiere man die drei
+  nun den eigenen Wünschen angepaßten Files auf das SYSTEM:-Volume.
+  
+  
+  (2)        Einführung
+
+  Die hier vorgestellten Kommandos sind weitestgehend `WordStar-kompatibel'.
+  Falls zwei Kommandos pro Funktion angegeben sind, bezieht sich das zweite
+  jeweils auf die in der GCD (GEPARD Character Definition) und in GdosTypes
+  festgelegten Tastendefinitionen.
+  
+  Alle mit '*' versehenen Kommandos sind noch nicht implementiert bzw. noch
+  im Entstehen. Es ist daher anzuraten, diese Kommandos/Optionen nicht zu
+  verwenden.
+  
+  <^?>  bedeutet in dieser Dokumentation: Die <Ctrl?Key>-Taste des GDOS ist
+  gemeint. Zumeist wird es sich dabei um die Kombination <CTRL>-Taste gleich-
+  zeitig gedrückt mit der dahinterstehenden Buchstabentaste handeln :
+  <CTRL>-<?>.
+  
+  
+  Das Hauptmenue:
+  
+  Aus dem Hauptmenue kann man die einzelnen GepStar-Funktionen anwählen:
+  
+       'N'       Bearbeiten eines Nicht-Dokuments
+       'D'       Bearbeiten eines Dokuments
+       'R'       Rückkehr in die Textbearbeitung
+       'S'       Abspeicherung der momentanen Parameter
+       'L'       Laden einmal festgelegter Parameter
+       'P'       Ausdruck einer Datei --> Printer-Menue
+       'F'       Aufrufen des Filers
+       'Q'       Beenden des Programms
+  
+  Nach Anwahl der Optionen 'N' oder 'D' erscheint ein GEPARD-spezifisches File-
+  Select-Menue, das in bekannter Weise die Auswahl einer vorhandenen Textdatei
+  ermöglicht. Auch eine neue Datei kann angelegt werden, indem man <EnterKey>
+  betätigt und anschließend den neuen Namen eingibt.
+  
+  (a) D          - Bei dieser Option `Document mode' erscheint oben auf dem
+                   Bildschirm das `Lineal'. Man hat hier also die Möglichkeit,
+                   den linken (<^O> <L>) und den rechten Rand (<^O> <R>) zu
+                   setzen und die Tabulatorposition zu toggeln (<Func3Key>,
+                   <^O> <TabRightKey>).
+                   Außerdem erlaubt dieser Modus das Einstellen einer bestimmten
+                   Absatzjustierung : Leftform, Rightform, Blockform oder
+                   Centerform (<^O> <B>) und die damit verbundene Möglichkeit,
+                   einen Block vollständig neu zu formatieren (<^B>). Nicht
+                   möglich ist dagegen die Einschaltung des speziellen Features
+                   `Autotabulator Ein', das auch nur bei Programm-Texten sinn-
+                   voll erscheint.
+  
+  (b) N          - Der `Non-document mode' ist gedacht zum Entwickeln von Pro-
+                   gramm-Texten für eine strukturierte Programmierung. Denn in
+                   diesem Modus ist es möglich, eine Auto-Tabulator-Funktion
+                   einzuschalten. Dafür fehlt das `Lineal', und alle übrigen
+                   Tabulator- und Rand-Operationen sind unterbunden.
+                   
+  (c) R          - Diese Option funktioniert selbstverständlich nur dann, wenn
+                   sich bereits eine Arbeitsdatei im Speicher befindet. In
+                   diesem Fall steht im Hauptmenue oben auf dem Bildschirm
+                   'Workfile : <Dateiname>'.
+                   
+  (d) S          - Hiermit kann man bewährte Parameter sowohl für das Editieren,
+                   z.B. `Auto TAB' oder `rechten Rand', als auch für das Druk-
+                   ken, z.B. TopMargin und BottomMargin, abspeichern.
+                   Wählt man dabei den Namen `GepStarInst', werden diese Para-
+                   meter beim nächsten Aufruf von GepStar automatisch wieder
+                   gesetzt. Aber auch andere häufig benutzte Formate können
+                   unter einem anderen Namen abgespeichert und mit Hilfe der
+                   Option 'L' jederzeit wieder geladen werden.
+                   Was genau im Setup abgespeichert wird, ist im Anhang 6 wie-
+                   dergegeben.
+  
+  (e) L          - Besorgt das Laden der eben erwähnten SetUp-Dateien über ein
+                   SelectFile-Menue.
+                   
+  (f) P          - Da hier ein eigenes Sub-Menue angeboten wird, gibt es dazu
+                   unten einen eigenen Absatz.
+                   
+  (g) F          - Der Filer wird als mächtiges Dienstprogramm zur Verfügung
+                   gestellt, um z.B. eine neue Diskette zu formatieren, wenn
+                   die alte den abzuspeichernden Text nicht mehr fassen kann.
+                   
+  (h) X          - Der Ausstieg aus dem GepStar. Dies kann auch durch Drücken
+                   der <Q>-Taste erreicht werden.
+  
+  
+  Das P-Menue:
+  
+  Nach Anwahl der Option 'P' erscheint das bekannte SelectFile-Menue. Nach
+  Auswahl der auszudruckenden Datei wird man zunächst gefragt, ob man die
+  Druckparameter änderen will oder nicht. Nach Eingabe von `j' oder `y' gelangt
+  man in das sogenannte P-Menue, in dem alle erforderlichen Druck-Parameter
+  neu gesetzt werden können. (Diese Parameter-Einstellungen können allerdings
+  auch durch in den Text geschriebene `Punkt-Befehle' beeinflußt werden, deren
+  Erläuterung weiter unten folgt.)
+  Im Normalfalle wird der Text auf den Drucker (Printer%) geleitet. Man kann
+  ihn aber auch auf Diskette ausgeben, indem man einen Dateinamen angibt.
+  
+  Einige Hinweise zur Bedienung des Option-'P'-Menues:
+  
+  (a) Die Editierung der einzelnen Felder erfolgt in der vom System her bekann-
+      ten Weise:
+  
+      <DELKey>                      löscht Zeichen unter dem
+                                    Cursor;
+      <BSKey>                       löscht Zeichen links vom
+                                    Cursor;
+      <EnterKey>                    übernimmt Zeile, wie sie
+                                    sichtbar ist;
+      <ETXKey>                      übernimmt bis zum Cursor;
+      <INSKey>                      macht Platz für ein weite-
+                                    res Zeichen;
+      <ClrLnKey>                    löscht gesamte Linie;
+      <ClrEoLnKey>                  löscht bis zum Ende der
+                                    Zeile;
+      <UpKey>                       springt ein Feld zurück;
+      <DownKey>                     springt ein Feld weiter;
+      usw. siehe FormatIO.Editstring.
+      
+  (b) Nicht konsistente Eingaben, wie z.B. Fußzeile .FM ist größer als Seiten-
+      länge .PL, werden nicht akzeptiert. Sollten aus irgend welchen Gründen 
+      durch `GepStarInst.Vers.SetP' bereits nicht zusammenpassende Werte vor-
+      gegeben sein, gibt es spätestens beim Verlassen des P-Menues die Fehler-
+      meldung `Parameters are not consistent'.
+  
+  (c) Der gesamte Anpassungs-Vorgang kann jederzeit mit <ESCKey> abgebrochen 
+      werden.
+  
+  (d) Beim Verlassen des P-Menues wird u.a. die Möglichkeit geboten, die ge-
+      wählten Parameter unter einem beliebigen Namen, z.B. `GepStar.Epson',
+      als Textfile abzuspeichern. Dieses Textfile enthält dann alle relevanten
+      Einstellungen in Form von Punktbefehlen, so daß man es mit Hilfe des
+      Kommandos <^K> <R> an den Anfang eines beliebigen Textes kopieren kann,
+      der dann mit eben diesen Parametern ausgedruckt wird!
+  
+  
+  Bearbeitung von Text:
+   
+  Im folgenden Abschnitt werden alle Textbearbeitungsfunktionen kurz darge-
+  stellt. Es empfiehlt sich, an dieser Stelle den GepStar zu laden, die Option
+  'D' anzuwählen und einen beliebigen Dateinamen (z.B '#A0:Test') einzugeben,
+  um eine Probe-Datei bearbeiten zu können, bei der man die nachfolgend be-
+  schriebenen Befehle ausprobieren kann.
+  
+  (a) Die Statuszeile
+  
+  Nach dem Aufruf einer Datei aus dem Haupt-Menue verzweigt GepStar zur eigent-
+  lichen Textbearbeitung mit zwei besonderen Zeilen am oberen Rand des Bild-
+  schirms. Bei der obersten Zeile handelt es sich um die sogenannte Status-
+  zeile, die z.B. folgendermaßen aussehen kann:
+  
+         Line    1  Column  24/ 81  Leftform    Insert  xxx Bytes
+  
+  'Line' und 'Column' zeigen an, wo sich der Cursor derzeit in dem Text befin-
+  det. Bei `Column' sind zwei Werte angegeben: (max. 80 / max. 135). Der erste
+  Wert gibt die momentane X-Koordinate des Bildschirms an. Bei dem zweiten Wert
+  handelt es sich um die aktuelle Position im Text, d.h. um die tatsächliche
+  X-Position in der betreffenden Zeile. Diese beiden Werte können von einander
+  verschieden sein, z.B. dann wenn man mit <^O> <M> die Ränder freigegeben und 
+  über den sonst üblichen rechten Rand hinausgeschrieben hat.
+  
+  'Leftform' macht eine Aussage über den derzeit eingestellten Formatierungs-
+  modus. Insgesamt gibt es die vier Modi : `Blockform', `Leftform', `Rightform'
+  und `Centerform'. Das Weiterschalten gelingt mit <^O> <B>.
+  
+  `Insert' gibt darüber Auskunft, daß sich GepStar zur Zeit im 'Insert'-Modus
+  befindet. Neben `Insert' gibt es noch den `Overwrite'-Modus. Toggeln mit <^V>.
+  
+  Falls hinter `Insert' oder `Overwrite' (nur im `Document-Modus) noch `No-
+  Margins' steht, bedeutet das, daß die Ränder freigegeben wurden.
+  
+  Falls hinter `Insert' oder `Overwrite' (nur im Nicht-Dokument-Modus) noch
+  `Auto TAB' steht, bedeutet das, daß automatisch eingerückt wird.
+  
+  `2577215 Bytes' (oder ein anderer Wert am Ende der Zeile) gibt die sogenannte
+  `TextSize' an, d.h. den Speicherplatz, der für die Text-Verarbeitung tatsäch-
+  lich noch zur Verfügung steht.
+  
+  Nur im `Dukument-Modus' gibt es als zweite Zeile eine Art Lineal, in dem mit
+  '+' die Tabulator-Stops markiert sind. 'L' und 'R' geben den linken bzw.
+  rechten Rand des Textes an.
+  
+  Der Raum unterhalb der Statuszeile bzw. des Lineals wird zur Darstellung
+  des Textes verwendet. Bei einer neu angelegten Datei ist dieser Teil des
+  Bildschirms leer, andernfalls werden dort die ersten Zeilen der Textdatei
+  gezeigt.
+  
+  (b) Texteingabe
+  
+  Text wird ganz normal durch Schreiben eingegeben. Alle Zeichen, die man ohne
+  die <CONTROL>-Taste eingibt, werden direkt in den Text eingefügt. Das im
+  Normalfalle dabei hörbare `Klicken' kann auf Wunsch im Haupt-Menue abgeschal-
+  tet werden. Wenn man im <D>-Modus über den gesetzten rechten Textrand hinaus-
+  schreibt, schaltet GepStar in eine neue Zeile um. Angefangene Worte werden
+  auf die neue Zeile mitgenommen. Wenn die Zeile (linker bis rechter Rand des
+  Lineals) über 80 Zeichen lang ist, wird nach dem 80. Zeichen der Bildschirm
+  auf die Spalten 58 - 135 umgeschaltet. Man sieht nun die Spalten 58 - 135 
+  auf dem Bildschirm. Vorher sah man die Spalten 1 - 80. Der Bildschirm wird 
+  also wie ein Fenster über den Text geschoben. Mit der <EnterKey>-Taste 
+  schließt man die Texteingabe in einer Zeile ab.
+  Sobald <EnterKey> gedrückt wird, bewegt GepStar den Cursor an den Anfang der
+  nächsten Zeile, die man jetzt beschreiben kann. Um Korrekturen oder
+  Einfügungen vorzunehmen, bewegt man den Cursor an die entsprechende Stelle
+  und schreibt den neuen Text einfach hin.
+  
+  Wenn die Betriebsart 'Insert' eingeschaltet ist und der Cursor auf einem
+  bereits geschriebenen Zeichen steht, wird zuerst das geschriebene Zeichen
+  nach rechts geschoben und dann das neue Zeichen eingefügt. Diese Betriebs-
+  art kann mit <^V> ein- oder ausgeschaltet werden. Wenn 'Insert' ausgeschaltet
+  ist - in der Statuszeile steht dann `OverWrite'-, wird jedes neu eingegebene
+  Zeichen direkt an der Cursorposition in den Text geschrieben. Das hat zur
+  Folge, daß eventuell dort schon stehende Zeichen überschrieben werden.
+  
+  (c) Einfügen von Zeilen
+  
+  Man kann auf verschiedene Weise Leerzeilen in den Text einfügen. Wenn man am
+  Ende einer Zeile <EnterKey> eingibt, wird automatisch eine neue Zeile in den
+  Text eingefügt, allerdings nur, wenn die Betriebsart 'Insert' eingeschaltet
+  ist.
+  Durch die Eingabe von <^N> wird die Eingabe einer neuen Zeile an der Cursor-
+  position erzwungen.
+  
+  (d) Bewegung des Cursors
+  
+  Mit den Kommandos <^S> (<LeftKey>) bzw. <^D> (<RightKey>) kann man den Cursor
+  um ein Zeichen nach links bzw. nach rechts bewegen. <^A> (<WordLeftKey>) und
+  <^F> (<WordRightKey>) bewegen den Cursor jeweils nach links bzw. rechts zum
+  nächsten Wortanfang. Mit <^E> (<UpKey>) und <^X> (<DownKey>) kann man sich im
+  Text auf- und abwärts bewegen.
+  
+  (e) Löschen von Zeichen
+  
+  Unerwünschte Zeichen können durch Betätigen von <^G> (<DELKey>) gelöscht
+  werden. Dabei wird der rechts vom Cursor stehenden Text entsprechend `nachge-
+  zogen', so daß keine Lücken entstehen.
+  Links vom Cursor stehende Zeichen können durch das Betätigen der <BSKey>-
+  Taste gelöscht werden.
+  Mit <^T> wird das komplette rechts neben dem Cursor stehende Wort gelöscht.
+  <^Q> <Z> löscht die Zeile von der Cursorposition bis zum Zeilenende.
+  <^Z> löscht eine gesamte Zeile.
+  
+  Versehentlich gelöschter Text läßt sich durch die Eingabe von <^Q> <N> wieder
+  herstellen, allerdings nur, wenn man die Zeile zwischenzeitlich mit dem Cursor
+  nicht verlassen hat.
+  
+  (f) Ansehen des Textes
+  
+  Mit <^W> und <^Y> läßt sich der Bildschirm wie ein Fenster über dem Text auf-
+  und abbewegen. Auch mit <^E> (<UpKey>) und <^X> (<DownKey>) kann man den
+  Bildschirm um eine Zeile verschieben, wenn man sich in der obersten bzw. der
+  untersten Zeile befindet. Mit <^R> (<PageUpKey>) und <^C> (<PageDownKey>)
+  kann man seitenweise vor- und zurückblättern.
+  
+  (g) Abspeichern des Textes
+  
+  Im Normalfall verläßt man den Editor mit Abspeicherung des eingegebenen
+  Textes durch den Befehl <^K< <D>.
+  
+  Mit <^K> <Q> kann man die Textverarbeitung abbrechen, ohne den eingegebenen 
+  Text abzuspeichern.
+  
+  In beiden Fällen verzweigt das Programm anschließend wieder in das HauptMenue.
+  
+  Weiterhin gibt es noch die Möglichkeit, mit <^K> <S> den Text auf Diskette
+  abzuspeichern, ohne die Textbearbeitung zu verlassen. Dieses Kommando erweist
+  sich als nützlich, wenn man zwischendurch eine Sicherheitskopie erstellen
+  will.
+  
+  
+  (3)         Beschreibung aller Kommandos
+  
+  Die folgenden Tastenkombinationen als Auslöser der entsprechenden GepStar-
+  Kommandos sind durch die Vorbelegung innerhalb des Programms gegeben. Wenn
+  Sie eine andere Installation über die o.a. Parameter-Files benutzen
+  (wollen), dann drucken Sie sich mit Hilfe von GepStarInstall das gültige,
+  nachzuladende Tastensortiment aus !
+  
+  In dieser Beschreibung sind die GDOS-Standardtasten-Belegungen als zweite
+  Eingabemöglichkeit angegeben (1.Spalte, unterer Eintrag).
+  
+  Cursor-Bewegungen:
+   
+  
+  Kommando :     Funktion :        Beschreibung :
+  ---------------------------------------------------------------
+  
+  <^S>           Cursor Zeichen    Bewegt den Cursor zum
+  <LeftKey>      links             vorhergehenden Zeichen
+                                   im Text.
+  
+  <^D>           Cursor Zeichen    Bewegt den Cursor zum nächsten
+  <RightKey>     rechts            Zeichen im Text.
+  
+  <^E>           Cursor Zeile auf  Bewegt den Cursor in die
+  <UpKey>                          vorhergehende Zeile,
+                                   falls sie existiert.
+  
+  <^X>           Cursor Zeile ab   Bewegt den Cursor in die
+  <DownKey>                        folgende Zeile, falls
+                                   sie existiert.
+  
+  <^Q> <S>       Cursor an  Zei-   Bewegt den Cursor an den
+  <SoLnKey>      lenanfang         Anfang der Zeile, auf der er
+                                   sich gerade befindet.
+  
+  <^Q> <D>       Cursor an Zei-    Bewegt den Cursor ans Ende der
+  <EoLnKey>      lenende           Zeile, auf der er sich gerade
+                                   befindet. Ist diese Zeile
+                                   breiter als der Bildschirm,
+                                   dann wird auf die 2. Bild-
+                                   schirmhälfte umgeschaltet.
+  
+  <^Q> <E>       Cursor an Sei-    Bewegt den Cursor an den
+                 tenanfang         Anfang der ersten, auf dem
+                                   Bildschirm dargestellten
+                                   Zeile.
+  
+  <^Q> <X>       Cursor an Sei-    Bewegt den Cursor an den
+                 tenende           Anfang der letzten, auf dem
+                                   Bildschirm dargestellten
+                                   Zeile.
+  
+  <^Q> <L>       Cursor auf Zei-   XXXX bezeichnet eine maximal
+                 le Nr. XXXX       vierstellige, ganze positive
+                                   Zahl. GepStar fragt Sie bei
+                                   diesem Kommando nach der
+                                   Zeilennummer, auf die der
+                                   Cursor gesetzt werden soll.
+                                   Existiert diese Zeile nicht,
+                                   bleibt der Cursor an seiner
+                                   ursprünglichen Position.
+  
+  <^A>           Cursor Wort       Setzt den Cursor zurück auf den
+  <WordLeftKey>  links             Anfang des vorangehenden Wortes. 
+                                   Falls der Cursor am Anfang einer
+                                   Zeile steht, wird er durch
+                                   diesen Befehl ans Ende der
+                                   vorangehenden Zeile bewegt.
+  
+  <^F>           Cursor Wort       Setzt den Cursor auf den
+  <WordRightKey> rechts            Anfang des nächsten Wortes.
+                                   Falls der Cursor am Ende einer
+                                   Zeile steht, so wird er durch
+                                   diesen Befehl an den Anfang
+                                   der nächsten Zeile - falls
+                                   diese existiert - gebracht.
+  
+  <^Q> <R>       Cursor an Text-   Bewegt den Cursor an den
+  <HomeKey>      anfang            Anfang der Datei.
+  
+  <^Q> <C>       Cursor an Text-   Bewegt den Cursor ans Ende der
+                 ende              Datei.
+  
+  <^Q> <B>       Cursor an Block-  Bewegt den Cursor an den durch
+                 anfang            das Kommando <^K> <B> festgelegten
+                                   Blockanfang.
+  
+  <^Q> <K>       Cursor an Block-  Bewegt den Cursor an das durch
+                 ende              das Kommando <^K> <K> festgelegte
+                                   Blockende.
+  
+  <^K> <J>       Marker setzen     Bei diesem Befehl fragt
+                                   GepStar nach einer Zahl
+                                   zwischen 0 und 9 (alle ande-
+                                   ren Zahlen werden ignoriert).
+                                   Gibt man eine in diesem
+                                   Bereich liegende Zahl ein,
+                                   wird der der Zahl entsprechen-
+                                   de Marker an die augenblick-
+                                   liche Cursorposition gesetzt.
+                                   Im weiteren Verlauf kann man
+                                   diese Textstelle mit dem näch-
+                                   sten Befehl direkt anspringen.
+                                   Man kann also maximal 10 ver-
+                                   schiedene Textstellen beson-
+                                   ders markieren. Dieser Befehl
+                                   ist dann von Vorteil, wenn man
+                                   sich öfter ein und dieselben
+                                   Textstellen ansehen muß.
+  
+  <^Q> <J>       Cursor nach       Bei  diesem  Befehl fragt
+                 Markerposition    GepStar nach einer Zahl
+                                   zwischen 0 und 9. Gibt man
+                                   eine solche Zahl ein,
+                                   wird der Cursor an die durch
+                                   den entsprechenden Marker
+                                   ausgewählte Textstelle
+                                   gesetzt. Voraussetzung ist
+                                   selbstverständlich, daß man 
+                                   diese Textstelle vorher 
+                                   markiert hat.
+  
+  <^Q> <P>      Cursor an Fehler-  Bewegt den Cursor an die
+                Position           Position, an der der letzte
+                                   Fehler vom Compiler gefunden
+                                   wurde.
+  
+  ---------------------------------------------------------------
+  
+  
+  Rollen des Bildschirms:
+  
+  Kommando :     Funktion :        Beschreibung :
+  ---------------------------------------------------------------
+  
+  <^Y>           Rollen : Zeile    Rollt den Bildschirm eine
+  <ScrollUpKey>  auf               Zeile hoch. Oben am Bild-
+                                   schirmanfang verschwindet eine
+                                   Zeile und unten am Bildschirm-
+                                   ende wird eine neue sichtbar.
+                                   Dieses Kommando arbeitet nur,
+                                   wenn die letzte Zeile noch
+                                   nicht auf dem Bildschirm
+                                   sichtbar ist.
+  
+  <^W>           Rollen : Zeile    Rollt den Bildschirm eine
+  <ScrollDownKey> ab               Zeile abwärts. Unten am Bild-
+                                   schirm- ende verschwindet eine 
+                                   Zeile, und oben am Bildschirmanfang
+                                   wird eine neue Zeile sichtbar.
+                                   Dieses Kommando arbeitet nur,
+                                   wenn die erste Zeile noch
+                                   nicht auf dem Bildschirm
+                                   sichtbar ist.
+  
+  <^R>           Blättern : Seite  Blättert den Bildschirm eine
+  <PageUpKey>    auf               Seite herauf, wobei die letzte
+                                   Zeile der vorherigen Seite nun
+                                   als erste Zeile auf dem Bild-
+                                   schirm steht. Dieses Kommando
+                                   funktioniert nicht, wenn die
+                                   letzte Seite bereits sichtbar
+                                   ist.
+  
+  <^C>           Blättern : Seite  Blättert den Bildschirm eine
+  <PageDownKey>  ab                Seite herab, wobei die erste
+                                   Zeile der vorherigen Seite nun
+                                   als letzte Zeile auf dem Bild-
+                                   schirm erscheint. Dieses
+                                   Kommando funktioniert nur,
+                                   wenn die erste Seite noch
+                                   nicht sichtbar ist.
+  
+  -----------------------------------------------------------------
+  
+  
+  Texteingabe:
+  
+  Kommando :    Funktion :         Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^V>          Insert/Overwrite   Bestimmt, ob die geschriebenen
+  <INSKey>                         Zeichen in den Text eingefügt
+                                   und eventuell vorhandener Text
+                                   'beiseite' geschoben (Insert)
+                                   oder ob bereits bestehender
+                                   Text überschrieben werden soll
+                                   (Overwrite).
+                                   <^V> schaltet zwischen diesen
+                                   beiden Modi hin- und her. Wel-
+                                   cher Modus zur Zeit aktiv ist,
+                                   ersieht man aus der Status-
+                                   zeile.
+  
+  <TabRightKey> Tabulieren         *  Bei `Bearbeiten eines
+                                   *  Nicht-Dokuments' :
+                                   Springt unter den nächsten
+                                   Wortanfang der vorherigen
+                                   Zeile.
+  
+  <TabRightKey> Tabulieren         *  Bei `Bearbeiten eines
+                                   *  Dokuments' :
+                                   Cursor springt auf nächste
+                                   Tabulator-Position.
+                                   Im Insert-Modus : Einfügen von
+                                   Leerzeichen bis Tabulator-
+                                   position.
+                                   Im Overwrite-Modus : reine
+                                   Cursorbewegung ohne Textänderung
+  
+  <^Q> <I>     Auto TAB Ein/Aus    *  Nur bei `Bearbeiten eines
+                                   *  Nicht-Dokumentes' :
+                                   Bestimmt, ob bei der Eingabe
+                                   von <EnterKey> der Cursor an den
+                                   Anfang der darauffolgenden
+                                   Zeile gesetzt wird (Auto TAB
+                                   Aus), oder ob unter den Anfang
+                                   des ersten Wortes der vorheri-
+                                   gen Zeile gesprungen wird.
+                                   <^Q> <I> schaltet zwischen diesen
+                                   beiden Modi immer hin- und
+                                   her. Welcher Modus zur Zeit
+                                   selektiert ist, ersieht man
+                                   aus der Statuszeile.
+  
+                                   Achtung!
+                                   Die Text-Formatierung funktio-
+                                   niert möglicherweise nicht
+                                   korrekt, wenn dieser Modus
+                                   eingeschaltet ist!
+  
+  Für's Tabulieren ist auch der folgende Format-Befehl wichtig :
+  
+  <^O> <TabRightKey>
+               Tabulatur toggeln   Wenn an der angegebenen Position
+                                   ein Tab gesetzt ist, so wird
+                                   dieser gelöscht, sonst wird an
+                                   der angegebenen Position ein
+                                   Tabulator gesetzt.
+  
+  <Func3Key>   Tabulator toggeln   Kurz-Version, - ermöglicht ein
+                                   Toggeln des Tabulators an der
+                                   Cursor-Position ohne weitere
+                                   Rückfrage.
+  
+  <^N>        Zeile einfügen       Fügt an der Cursorposition
+                                   eine neue Zeile ein. Der
+                                   Cursor steht nach Durchführung
+                                   des Kommandos am Anfang der
+                                   neuen Zeile.
+  
+  <EnterKey>  Zeilenabschluß       <EnterKey> schließt die aktuelle
+                                   Eingabezeile ab und bewegt den
+                                   Cursor in die nächste Zeile.
+                                   Falls 'Insert' an ist, wird
+                                   links vom Cursor ein Zeilen-
+                                   trenner eingefügt (d.h., daß an
+                                   dieser Stelle die Zeile zu
+                                   Ende ist), eine Leerzeile
+                                   wird in den Text eingefügt, und
+                                   der restliche Text wird mit in
+                                   die neue Zeile genommen. Ist
+                                   'Insert' aus, arbeitet
+                                   <EnterKey> ähnlich wie <^X>. Der
+                                   Cursor wird lediglich an den
+                                   Anfang der nächsten Zeile
+                                   gebracht.
+  
+  -----------------------------------------------------------------
+  
+  
+  Text Löschen:
+
+  Kommando :    Funktion :         Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^G>          Lösche Zeichen     Löscht das Zeichen, auf dem
+  <DELKey>                         der Cursor steht. Falls rechts
+                                   vom Cursor noch Text steht,
+                                   wird dieser nachgezogen. Steht
+                                   der Cursor vor Ausführung von
+                                   <^G> am Ende einer Zeile, so
+                                   wird die nachfolgende Zeile
+                                   mit dieser verbunden, falls
+                                   beide Zeilen zusammen weniger
+                                   als 136 Zeichen haben.
+  
+  <BSKey>      Lösche Zeichen      Löscht das Zeichen links vom
+               links               Cursor. Falls rechts vom
+                                   Cursor noch Text steht,
+                                   wird dieser nachgezogen. Steht
+                                   der Cursor vor Ausführung von
+                                   <BSKey> am Anfang einer Zeile,
+                                   wird diese mit der vorherigen
+                                   Zeile verbunden, falls
+                                   beide Zeilen zusammen weniger
+                                   als 136 Zeichen haben.
+  
+  <^T>         Löschen Wort        Löscht das Wort, auf dem sich
+               rechts              der Cursor befindet ab der
+                                   Cursorposition. Ansonsten wie
+                                   <^G>.
+  
+  <^Z>         Löschen Zeile       Löscht die Zeile, auf der sich
+  <ClrLnKey>                       der Cursor gerade befindet.
+  
+  <^Q> <Z>     Löschen bis         Löscht ab der Cursorposition
+  <ClrEolnKey> Zeilenende          bis zum Zeilenende.
+  
+  <^Q> <N>     Wiederherstellen    Stellt eine Zeile unter fol-
+  <UndoKey>    Zeile               genden Voraussetzungen wieder
+                                   her: Die Zeile wurde nicht mit
+                                   <^Z> gelöscht, die Zeile wurde
+                                   nicht zwischenzeitlich verlas-
+                                   sen.
+  
+  <^K> <Z>     Block löschen       Löscht den gesamten zuvor
+                                   markierten Block.
+  
+  -----------------------------------------------------------------
+  
+  
+  Abbrechen und Sichern:
+  
+  Kommando :   Funktion :          Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^K> <S>     Text sichern        Sichert den bisher eingegebe-
+                                   nen Text auf Diskette und
+                                   kehrt an die letzte Position
+                                   in der Textbearbeitung zurück.
+  
+  <^K> <D>     Text sichern        Sichert den bisher eingegebe-
+               und Beenden         nen Text auf Diskette, beendet
+                                   die Texteingabe und kehrt ins
+                                   HauptMenue von GepStar zurück.
+  
+  
+  <^K> <Q>     Abbrechen           Beendet die Texteingabe, ohne
+                                   den Text auf Diskette abzu-
+                                   speichern, und kehrt ins Haupt-
+                                   Menue von GepStar zurück.
+  
+  <^K> <N>     Text mit neuem      Sichert den Text unter neuem
+               Namen sichern       Namen und verzweigt ins Haupt-
+               und Beenden         Menue von GepStar.
+  
+  -----------------------------------------------------------------
+  
+  
+  Suchen und Austauschen:
+  
+  Kommando :   Funktion :          Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^Q> <F>     Suchen              Fragt nach einem Suchbegriff.
+                                   Wird dieser gefunden , wird
+                                   der Cursor an den Anfang des
+                                   gefundenen Begriffs gesetzt.
+  
+  <^Q> <A>     Suchen und          Fragt nach einem Suchbegriff,
+               Austauschen         einem Austauschbegriff und
+                                   nach Optionen (Erklärung der
+                                   Optionen siehe Ende dieser
+                                   Tabelle). Wird der Suchbegriff
+                                   im Text gefunden, wird er
+                                   durch den Austauschbegriff
+                                   ersetzt.
+  
+  <^L>         Wiederhole          Wiederholt die Funktion Suchen
+               Suchen              (<^Q> <F>) mit den bereits einge-
+                                   gebenen Parametern.
+  
+  Erklärung der Optionen :
+  
+  Die im folgenden beschriebenen Optionen bestimmen das Verhalten
+  der  oben  vorgestellten  Such-  bzw. Austauschfunktionen. Alle
+  Optionen  können  in beliebieger Reihenfolge miteinander kombi-
+  niert werden. Außerdem ist es unerheblich, ob man die Eingaben
+  in Groß- oder Kleinschrift macht.
+  
+   Option :    Funktion :          Beschreibung :
+  -----------------------------------------------------------------
+  <n>          Nicht Fragen        Nur bei 'Suchen und Austau-
+                                   schen' wirksam. Normalerweise
+                                   fragt GepStar vor jedem
+                                   Tauschvorgang, ob wirklich
+                                   getauscht werden soll. Diese
+                                   Option nun unterbindet dieses
+                                   Fragen, und GepStar tauscht
+                                   in jedem Fall aus. Bei dieser
+                                   Option zeigt GepStar den Aus-
+                                   tauschvorgang auf dem Bild-
+                                   schirm nicht (!) an. Lediglich
+                                   die Zahl der bisher durchge-
+                                   führten Austauschungen er-
+                                   scheint in der obersten Zeile.
+                                   Zur Unterbrechnung des
+                                   Austauschvorgangs während der
+                                   Durchführung genügt es, auf
+                                   irgendeine Taste zu drücken.
+                                   GepStar hält dann an und
+                                   fragt, ob man weitermachen
+                                   will oder ob man tatsächlich
+                                   aufhören will.
+  
+  
+  <g>          Global Suchen       Normalerweise sucht GepStar
+                                   von der augenblicklichen
+                                   Cursorposition zum Textende
+                                   hin. Mit der 'g'-Option wird
+                                   GepStar veranlaßt, Global,
+                                   also vom Dateianfang an zu
+                                   suchen.
+  
+ *<w>          Wortweise           Mit dieser Option wird wort-
+                                   weise gesucht. Ohne diese
+                                   Option findet GepStar auch
+                                   Teilworte (Wurde beispiels-
+                                   weise 'wer' als Suchbegriff
+                                   eingegeben, und wird die
+                                   Option 'w' nicht verwendet, so
+                                   findet GepStar sowohl 'werden'
+                                   als auch 'wer' oder 'Stüwer'.
+                                   Ist die 'w' Option jedoch
+                                   gesetzt, findet GepStar nur
+                                   'wer').
+  
+  <i>          Groß-/Kleinschrift  Wird diese Option verwendet,
+               ignorieren          unterscheidet GepStar nicht
+                                   zwischen Groß- und Klein-
+                                   schrift. D.h. bei Suche nach
+                                   'wer' wird sowohl 'wer' als
+                                   auch 'Wer' oder 'wEr' etc.
+                                   gefunden. Ohne diese Option
+                                   unterscheidet GepStar zwischen
+                                   Groß- und Kleinschrift. Da
+                                   GepStar mit dieser Option
+                                   etwas langsamer als normal
+                                   sucht, sollte die Benutzung
+                                   von 'i' nach Möglichkeit
+                                   vermieden werden.
+  
+  XXX          XXX - mal           XXX bezeichnet eine maximal
+               überspringen        dreistellige ganze positive
+                                   Zahl. GepStar sucht dann nach
+                                   dem XXX'-ten Auftauchen des
+                                   Suchbegriffs im Text. Taucht
+                                   der Suchbegriff nicht XXX -
+                                   mal auf, springt GepStar
+                                   an die Stelle des letzten
+                                   Auftretens dieses Suchbe-
+                                   griffs.
+  
+  -----------------------------------------------------------------
+  
+  
+  Blockbefehle:
+  
+  Um größere Textteile effektiv bearbeiten zu können, kann man
+  Textblöcke benutzen. Blöcke sind markierte Textteile, deren
+  Größe prinzipiell nicht beschränkt ist. Der kleinste sinnvoll
+  mögliche Block ist gerade ein Zeichen lang, der längste Block
+  kann maximal den ganzen Text umfassen.
+  
+  
+  Kommando :   Funktion :          Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^K> <B>     Blockanfang         Der Blockanfang wird auf die
+               setzen              augenblickliche Cursorposition
+                                   gesetzt. Um dem Benutzer die
+                                   erfolgreiche Ausführung des
+                                   Befehls zu signalisieren,
+                                   piept der Computer einmal.
+  
+  <^K> <K>     Blockende           Das Blockende wird auf die
+               setzen              augenblickliche Cursorposition
+                                   gesetzt. Um dem Benutzer die
+                                   erfolgreiche Ausführung des
+                                   Befehls zu signalisieren,
+                                   piept der Computer zweimal.
+  
+  <^K> <H>     Blockmarker         Die mit <^K> <B> und <^K> <K>
+               löschen             gesetzten Blockmarkierungen
+                                   werden gelöscht.
+  
+  <^K> <R>     Block von Disk      Die angegebene Datei wird als
+                                   Block gelesen und ab der Cursor-
+                                   Position in den Text eingefügt.
+  
+  <^K> <W>     Block auf Disk      Der markierte Block wird
+               schreiben           auf Diskette geschrieben,
+                                   wobei man vorher einen Datei-
+                                   Namen eingeben muß. Dieser
+                                   Befehl eignet sich zusammen mit
+                                   <^K> <R> sehr gut zur Erstellung
+                                   und Verwaltung von Textbau-
+                                   steinen.
+  
+  <^K> <Z>     Block löschen       Der markiert Block wird
+                                   gelöscht.
+  
+  <^K> <V>     Block verschieben   Der markierte Block wird im
+                                   Text derart verschoben, daß
+                                   nach Durchführung des Komman-
+                                   dos der markierte Textblock ab
+                                   der Cursorposition im Text
+                                   steht. An der ursprünglichen
+                                   Position wird der Block ge-
+                                   löscht.
+  
+  <^K> <C>     Block kopieren      Der markierte Block wird im
+                                   Text derart kopiert, daß nach
+                                   Durchführung des Kommandos der
+                                   Textblock ab der
+                                   Cursorposition im Text steht.
+                                   Jedoch wird der Block an
+                                   seiner ursprünglichen Position
+                                   nicht gelöscht (Hierdurch
+                                   unterscheidet sich dieser
+                                   Befehl von <^K> <V>). Mit diesem
+                                   Feature lassen sich sehr
+                                   schnell Textkopien von bereits
+                                   Geschriebenem erstellen.
+  
+  <^K> <G>     Blockgröße          Gibt die Blockgröße in Byte
+                                   und den zum abspeichern benö-
+                                   tigten Diskettenplatz an.
+                                   Falls kein Block markiert ist,
+                                   wird die Länge des gesamten
+                                   Textes angegeben.
+  
+  <^K> <A>     Blockadjust         Dieser Befehl ermöglichst es,
+                                   einen markierten Block seit-
+                                   lich im Text zu bewegen. Beim
+                                   Aufruf wird gefragt, ob man
+                                   nach rechts (+) oder nach
+                                   links (-) verschieben will.
+                                   Beim Schieben nach rechts
+                                   fragt GepStar nach der
+                                   Zeichenfolge, mit der die
+                                   einzelnen Zeilen des Blocks
+                                   aufgefüllt werden sollen. Beim
+                                   Schieben nach links, fragt
+                                   GepStar lediglich nach der
+                                   Zahl der Zeichen, um die die
+                                   einzelnen Zeilen des Blocks
+                                   nach links eingerückt werden
+                                   sollen. Wenn man also einen
+                                   Block einfach nur nach rechts
+                                   schieben will, wird man im
+                                   Normalfall einfach nur die
+                                   gewünschte Anzahl von Blanks
+                                   eingeben, um die die einzelnen
+                                   Zeilen verschoben werden
+                                   sollen.
+  
+  
+  <^K> <L>     Zeile als Block     Dieser Befehl markiert die
+                                   Zeile, in der der Cursor
+                                   steht, als Block.
+  
+  <^K> <T>     Wort als Block      Dieser Befehl markiert das
+                                   Wort, auf dem der Cursor
+                                   steht, als Block.
+  
+  Und hier einige Wiederholungen :
+  
+  <^Q> <B>       Cursor an Block-  Bewegt den Cursor an den durch
+                 anfang            das Kommando <^K> <B> festgelegten
+                                   Blockanfang.
+  
+  <^Q> <K>       Cursor an Block-  Bewegt den Cursor an das durch
+                 ende              das Kommando <^K> <K> festgelegte
+                                   Blockende.
+  
+  <^K> <Z>       Block löschen     Löscht den gesamten zuvor
+                                   markierten Block.
+  
+  -----------------------------------------------------------------
+  
+  
+  Formatbefehle:
+  
+  Bei  den  folgenden  Kommandos,  die  im  übrigen zum Teil nur im
+  <D>-Modus  (`Bearbeiten  eines  Dokuments') funktionieren, - wird
+  jeweils nach der gewünschten Spaltenposition gefragt. Als Antwort
+  gibt es 2 Möglichkeiten:
+  
+  1. Man gibt <ESCKey> ein. GepStar akzeptiert dann die augenblick-
+  liche Cursorposition als Eingabe.
+  
+  2. Man gibt eine Zahl ein. In diesem Fall betrachtet GepStar
+  die durch die Zahl festgelegte Spalte als Eingabe.
+  
+  Kommando :   Funktion :          Beschreibung :
+  -----------------------------------------------------------------
+  
+  <^O> <TabRightKey>
+               Tabulatur toggeln   Wenn an der angegeben Position
+                                   ein Tab gesetzt ist, so wird
+                                   dieser gelöscht, sonst wird an
+                                   der angegebenen Position ein
+                                   Tabulator gesetzt.
+  <Func3Key>   Tabulator toggeln   Kurz-Version, - ermöglicht ein
+                                   Toggeln des Tabulators an der
+                                   Cursor-Position ohne weitere
+                                   Rückfrage.
+  
+  <^O> <L>     Linken Rand         Der linke Rand wird auf die
+               setzen              angegebene Position gesetzt.
+  
+  <^O> <R>     Rechten Rand        Der rechte Rand wird auf die
+               setzen              angegebenen Position (max.133)
+                                   gesetzt.
+  
+  <^O> <B>     Leftform/Rightform  GepStar schaltet bei Eingabe
+               Centerform/         dieses Kommandos vom links-
+               Blockform           bündigen zum rechtsbündigen
+                                   Flattersatz, vom Flattersatz
+                                   zum zentrierten Satz und von
+                                   dort aus in den Blocksatz, von
+                                   dort aus wieder zum linksbün-
+                                   digen Flattersatz. Dadurch
+                                   ändert sich das Verhalten der
+                                   Formatierungsfunktionen von
+                                   GepStar. Im linksbündigem
+                                   Flattersatz wird beim Über-
+                                   schreiten des rechten Randes
+                                   lediglich das angefangene
+                                   Wort in die nächste Zeile
+                                   gezogen. Die alte Zeile wird
+                                   dabei nicht formatiert. Im
+                                   rechtsbündigem Flattersatz
+                                   wird beim Überschreiten der
+                                   Zeile die vorherige Zeile nach
+                                   rechts gerückt. Beim zentrier-
+                                   ten Satz wird die vorherige
+                                   Zeile in die Mitte gerückt.
+                                   Beim Blocksatz werden Leer-
+                                   schritte eingefügt, bis der
+                                   linke und rechte Rand erreicht
+                                   sind.
+  
+  <^B>         Absatz formatieren  Ein Absatz ist ein Textab-
+                                   schnitt zwischen zwei Leer-
+                                   zeilen. Dieser Befehl gestal-
+                                   tet den Text neu - z.B. nach
+                                   Einfügungen, Löschungen oder
+                                   Änderung der Formatier-
+                                   parameter durch <^O> <L> oder
+                                   <^O> <R>.
+  
+  <^O> <N>     Ränder freigeben    Dieser Befehl gibt die Ränder
+               / feststellen       frei bzw. setzt sie wieder fest.
+                                   Normalerweise   ist   es   nicht
+                                   möglich, außerhalb der gesetzten
+                                   Ränder  zu  schreiben.  Wenn man
+                                   nun  kurzzeitig  über die Ränder
+                                   hinausschreiben  will,  so  kann
+                                   man   mit  diesem  Befehl  diese
+                                   Einschränkung  aufheben. GepStar
+                                   zeigt  die  freigegebenen Ränder
+                                   durch    'NoMargins'    in   der
+                                   Statuszeile an. Die Formatierung
+                                   wird   für   die   Dauer  dieses
+                                   Befehls aufgehoben.
+  
+  Die folgenden Kommandos funktionieren auch im <N>-Modus
+  (`Bearbeiten eines Nicht-Dokuments'):
+  
+  <ESCKey>     Kontrollzeichen     Nach der Eingabe von <ESCkey> er-
+  <Func1Key> + ... bzw.            scheint ein AuswahlMenue für
+  <Func2Key> + ...                 Attribute, die zur Hervor-
+                                   hebung von Textteilen (Unter-
+                                   streichung, Hoch- und Tief-
+                                   stellen von Zeichen) zur Ver-
+                                   fügung stehen. Wenn im Be-
+                                   triebssystem ein für einen be-
+                                   stimmten Drucker geeigneter
+                                   Treiber installiert ist, wer-
+                                   den diese Attribute beim Aus-
+                                   drucken in sinnvoller Weise
+                                   berücksichtigt. Die Kontroll-
+                                   zeichen, die diese Attribut-
+                                   einstellung bewirken, werden
+                                   auf dem Bildschirm als inverse
+                                   Zeichen dargestellt. Mit <ESCKey>
+                                   oder <SPACE> kann man das Menu
+                                   ohne Änderung wieder verlas-
+                                   sen.
+                                   Die Attribut-Codes können
+                                   auch über die ursprünglich
+                                   im System-Editor definierten
+                                   Funktionstasten <Func1Key>
+                                   bzw. <Func2Key> mit Zusätzen
+                                   eingegeben werden (siehe
+                                   Anhang).
+                                   
+  <^O> <D>     Text darstellen     Nach diesem Befehl werden die
+  <Func6Key>                       Kontrollzeichen zur Attribut-
+                                   einstellung bei der Abbildung
+                                   des Textes auf dem Schirm
+                                   interpretiert, d.h. der Text
+                                   erscheint so, wie er mit
+                                   Unterstreichungen, Hoch- und
+                                   Tiefstellungen usw. ausge-
+                                   druckt wird. Drücken einer
+                                   weiteren Taste schaltet wieder
+                                   auf den normalen Texteingabe-
+                                   modus um.
+  
+  <^O> <A>     Text reorganisieren Der Text wird bezüglich der
+                                   verwendeten Steuercodes für
+                                   Attribute wie Unterstreichen
+                                   An/Aus, Hochstellen (Super-
+                                   script) An/Aus u.ä. überarbei-
+                                   tet. Unnötige Steuercodes (z.
+                                   B. mehrfaches Abschalten des-
+                                   selben Textattributs) werden
+                                   eliminiert. Die am Ende einer
+                                   Zeile bestehende Attribut-
+                                   einstellung wird für den ge-
+                                   samten folgenden Text des
+                                   betreffenden Abschnitts über-
+                                   nommen.
+  
+  <^O> <K>    Tastenklick an- /    Schaltet Tastenklick zur
+              abschalten           akustischen Rückkopplung bei der
+                                   Eingabe an bzw. wieder aus.
+  
+  -----------------------------------------------------------------
+  
+  
+  Steuerung der Druckformatierung:
+  
+  Die Formatierung wird über sog. Punktbefehle gesteuert. Ein Punktbefehl hat 
+  die Form .CC, wobei CC einer der nachfolgend beschriebenen Kommando-Codes 
+  ist. Punktbefehle beginnen grundsätzlich auf der ersten Spalte einer Zeile. 
+  Ein eventuell in dieser Zeile stehender zusätzlicher Text wird beim Aus-
+  drucken ignoriert. Einige Punktbefehle erforden zusätzliche Argumente. Diese 
+  Argumente müssen in der gleichen Zeile wie der zugehörige Befehl stehen. Sie 
+  können, müssen aber nicht durch Blanks von ihrem Befehlscode getrennt sein.
+  
+  Folgende Punktbefehle sind z.Z. implementiert :
+  
+   Befehl     Argumente       Beschreibung
+  -----------------------------------------------------------------
+   .PO        ganze Zahl      Gibt die Druckspalte an, in der das
+                              erste Zeichen gedruckt werden soll.
+                              Standardwert ist 8.
+
+   .PN        ganze Zahl      Setzen der Seitennummer. Normaler-
+                              weise beginnt man bei Seite 1.
+                              Manchmal möchte man jedoch mit einer
+                              anderen Seitennummer anfangen. Dafür
+                              ist dieser Befehl gedacht.
+  
+   .OP        0 oder 1        Schaltet die Seitennummerierung ein
+                              (1) oder aus (0). Standardwert ist 1.
+  
+   .PC        ganze Zahl      Legt die Spalte fest, in der die
+                              Seitennummer ausgegeben werden
+                              soll. Standardwert ist 40.
+  
+   .PL        ganze Zahl      Legt die Seitenlänge fest. Stan-
+                              dardwert ist 72 Zeilen.
+  
+   .MT        ganze Zahl      Legt den oberen Textrand fest. Ab
+                              dieser Zeile wird der eigentliche
+                              Text gedruckt. Standardwert ist 6.
+                              Dieser Wert muß größer sein als der
+                              Wert für .HM (s.u.).
+  
+   .MB        ganze Zahl      Analog zu .MT legt dieser Befehl
+                              den unteren Druckrand fest. Bis zu
+                              der angegebenen Zeile wird eine
+                              Seite bedruckt. Dieser Wert muß
+                              kleiner als .PL sein. Standardwert
+                              ist 67.
+  
+   .HM        ganze Zahl      Legt die Zeile fest, in der die
+                              Überschrift steht. Dieser Wert muß
+                              kleiner sein als der Wert für den
+                              .MT - Befehl. Standardwert ist die
+                              3. Zeile.
+  
+   .FM        ganze Zahl      Legt analog zu .HM die Position der
+                              Fußzeile fest. Dieser Wert muß
+                              größer als .MB und kleiner als .PL
+                              sein. Standardwert ist Seitenlänge - 2.
+                              
+  
+   .HE        Zeichenkette    Setzen einer Überschrift. Die
+                              diesem Befehl folgende Zeichenkette
+                              wird als Überschrift auf jeder
+                              neuen Seite ausgegeben. Enthält die
+                              Zeichenkette das '#' Zeichen, so
+                              wird beim Drucken an Stelle des '#'
+                              die aktuelle Seitennummer ausgege-
+                              ben. Soll in der Überschrift das
+                              '#' gedruckt werden, so ist in der
+                              Zeichenkette '\#' einzugeben.
+  
+   .FO        Zeichenkette    Setzen einer Fußzeile. Analog zu
+                              .HE wird mit diesem Befehl eine
+                              Fußzeile definiert, die auf jeder
+                              Seite am Ende ausgegeben wird. Es
+                              gelten für die Verwendung von '#'
+                              in der Fußzeile die gleichen Regeln
+                              wie bei .HE.
+  
+   .PA                        Dieser Befehl löst einen Seiten-
+                              vorschub aus.
+  
+   .FF        ganze Zahl      Dieser Befehl löst dann einen
+                              Seitenvorschub aus, wenn nicht mehr
+                              Platz für die angegebene Zahl von
+                              Zeilen auf der Seite ist.
+  
+   .CF        Dateiname       Mit diesem Befehl wird eine Komman-
+                              dodatei mit dem angegebenen Namen
+                              eröffnet. In dieser Kommandodatei
+                              können alle hier aufgeführten
+                              Punktbefehle stehen. Auf diese
+                              Weise ist es möglich, häufig
+                              benutzte Kommandosequenzen einmal
+                              in eine Datei zu schreiben und
+                              diese Datei später im zu formatie-
+                              renden Text einfach mit dem .CF-
+                              Befehl anzugeben. In einer Komman-
+                              dodatei dürfen keine weiteren
+                              Kommandodateien eröffnet werden.
+  
+   .MF        Dateiname       Mit diesem Befehl wird eine Mail-
+                              mergedatei eröffnet.
+  
+   .MV        Variablenliste  Mit diesem Befehl wird die Struk-
+                              tur einer Mailmergedatei festge-
+                              legt.
+  
+   .MD        Zeichen         Dieser Befehl setzt das Zeichen, an
+                              dem GepStar bei Mailmerge die
+                              Variablen erkennt. Standardmäßig
+                              haben Variablen die Form
+                              '$'<Variablenname>'$'. Wer jedoch
+                              aus irgendeinem Grund das '$'-Zei-
+                              chen in anderem Zusammenhang
+                              benötigt, kann mit .MD dieses Er-
+                              kennungszeichen auf einen anderen
+                              Wert setzen.
+  
+  -----------------------------------------------------------------
+  
+  
+  Alle Befehle, die als Argument eine ganze Zahl erwarten, können relativ oder 
+  absolut wirken (mit Ausnahme von .FF, das nur absolut arbeitet). Soll ein 
+  Befehl relativ wirken, so ist der ganzen Zahl ein '+ ' oder ein '- ' (je nach 
+  gewünschter Wirkungsweise) voranzustellen. Der bisherige Wert für den Befehl
+  wird dann um den Argumentwert geändert. Soll ein Befehl absolut wirken, so 
+  darf bloß die ganze Zahl (ohne irgendwelche Vorzeichen) als Argument benutzt 
+  werden. Der Wert für den angegebenen Befehl wird dann auf den Argumentwert 
+  gesetzt. Beispiel: .PO 8  setzt die Druckspalte auf Spalte 8, 
+                     .PO +2 erhöht den augenblicklichen Wert 
+                            für die Druckspalte um 2, 
+                     .PO -2 vermindert den augenblicklichen Wert 
+                            für die Druckspalte um 2. 
+  Es ist zu beachten, daß bei relativen Argumenten zwischen dem Vorzeichen und 
+  der Zahl keine (!!) Leerzeichen stehen dürfen.
+  
+  Sollten bei relativen Änderungen negative Werte entstehen, wird die Änderung 
+  ignoriert. (Also bei Druckspalte 10 würde .PO -12 nichts bewirken, da durch 
+  Ausführung dieses Befehls die Druckspalte auf -2 gesetzt würde).
+  
+  
+  
+  (4)        Anhang
+  
+  
+  Das Installationsprogramm `GepStarInstall':
+  
+  Falls Ihnen die zur Ausführung der Kommandos einzugebenden Zeichenfolgen 
+  nicht gefallen, können Sie sich Ihren eigenen Befehlssatz generieren. Dazu 
+  rufen Sie das Programm 'GepStarInstall' (siehe UTILITY:-Volume) auf. 
+  Über ein Menue geführt, haben Sie dann die Möglichkeit, dem Programm mitzu-
+  teilen, von welchem Volume Sie die Installationsdatei laden wollen, die ab-
+  geändert werden soll. Wird die entsprechende Frage durch eine VolumeKennung
+  beanwortet, die kein zu änderndes 'GepStarInstall.Vers.Data' liefert, bietet 
+  das Installationsprogramm die Standard-Grund-Installation, wie oben definiert,
+  als Vorschlag an.
+  
+  Bei der Installation ist folgendes zu beachten :
+  
+       0.  Der GepStar rechnet bei allen Eingaben, die für eine Kommandosequenz
+           erfolgen, intern große und kleine Buchstaben in die entsprechenden
+           <CONTROL>-Codes um. Beispiel :
+           Die für das Markieren eines Blockanfangs in der Standard-Grund-In-
+           stallation vorgesehene Tastenkombination <^K> <B> ist für den Gepstar
+           gleichbedeutend mit <^K> <b>, und beides wird intern als <^K> <^B>
+           dargestellt und so auch weiterverarbeitet. Daher ist in dem Installa-
+           tionsfile auch diese letzte Kommandosequenz gespeichert. Wundern Sie
+           sich also bitte nicht, wenn Ihnen das Installationsprogramm Ihre
+           eingegebenen Buchstaben sofort in <CONTROL>-Codes umrechnet und
+           auch so darstellt. Es paßt sich da ganz den Gepflogenheiten des
+           GepStar an. 
+           Auch die Darstellung der Tasten ist noch nicht GDOS-konform bis in 
+           die letzten Einzelheiten. So heißt der <CtrlAKey> hier Ctrl A, und 
+           <ESCKey> wird mit ESC abgekürzt usw.
+  
+       1.  Logischerweise kann es sich bei dem ersten Zeichen einer Kommando-
+           folge nur immer um ein nicht-druckbares Zeichen handeln (<ESCKey>, 
+           <Func?Key>, <Ctrl?Key> ...). 
+       
+       2.  Jede Zeichenfolge darf maximal 4 Zeichen umfassen.
+  
+       3.  Jede Eingabe ist mit <EnterKey> abzuschliessen.
+  
+       4.  Falls Sie eine Zeichenfolge eingeben, die länger als ein Zeichen ist,
+           darf das 1. Zeichen dieser Zeichenfolge nicht in Kommandos von der 
+           Länge eines Zeichens verwendet werden.
+           Beispiel : Sie möchten das Kommando 'Cursor an Textanfang' mit 
+           <ESCKey> <A> auslösen. Dann darf kein anderes Kommando durch 
+           <ESCKey> allein ausgelöst werden.
+           Gleichgültig, welches dieser beiden Kommandos als erstes installiert 
+           worden ist, wird beim Versuch, die zweite Folge zu installieren, eine
+           Fehlermeldung ausgegeben.
+  
+       5.  Für eine Reihe von Editierfunktionen existieren neben den instal-
+           lierten Befehlen gleichzeitig noch standardisierte GDOS-Tasten 
+           (Cursorbewegungen, <InsKey>, <DELKey>, <Undokey>, usw. usw. usw.). 
+           Diese Standardbefehle werden bei Ausgabe der Liste der installierten 
+           Befehle auf ein File oder auf den Drucker mit ausgegeben. Bei der 
+           Installation von eigenen Befehlsfolgen sollte man tunlichst zumin-
+           dest beim ersten Befehl der Sequenz keine dieser vom System vor-
+           definierten Tasten verwenden, obwohl dies, wenn man die entsprechende
+           Warnung ignoriert, jetzt möglich ist.
+  
+  Nach einer Neu-Installation muß der Befehlssatz natürlich noch abgespei-
+  chert werden. Dann wird der GepStar in Zukunft mit den neuen Kommandosequen-
+  zen steuerbar sein, die durchaus von den oben beschriebenen WordStar-kompa-
+  tiblen Kommandos abweichen können.
+  Nachfolgend finden Sie die Ausgabe des Install-Programmes für die Standard-
+  Grund-Installation des GepStar mit den eben besprochenen Eigenheiten.
+  
+  
+  Liste der aktuellen GepStar-Kommandos:
+   
+   
+   1. Cursor Zeichen links ----------  Ctrl S                   Gdos : Left
+   2. Cursor Zeichen rechts ---------  Ctrl D                   Gdos : Right
+   3. Cursor Wort links -------------  Ctrl A                   Gdos : WordLeft
+   4. Cursor Wort rechts ------------  Ctrl F                   Gdos : WordRight
+   5. Cursor Zeile hoch -------------  Ctrl E                   Gdos : Up
+   6. Cursor Zeile tief -------------  Ctrl X                   Gdos : Down
+   7. Scroll Zeile tief -------------  Ctrl W                   Gdos : ScrollDwn
+   8. Scroll Zeile hoch -------------  Ctrl Y                   Gdos : ScrollUp
+   9. Cursor Seite hoch -------------  Ctrl R                   Gdos : PageUp
+  10. Cursor Seite tief -------------  Ctrl C                   Gdos : PageDown
+  11. Cursor Zeilenanfang -----------  Ctrl Q    Ctrl S         Gdos : SoLn
+  12. Cursor Zeilenende -------------  Ctrl Q    Ctrl D         Gdos : EoLn
+  13. Cursor Seitenanfang -----------  Ctrl Q    Ctrl E
+  14. Cursor Seitenende -------------  Ctrl Q    Ctrl X
+  15. Cursor Textanfang -------------  Ctrl Q    Ctrl R         Gdos : Home
+  16. Cursor Textende ---------------  Ctrl Q    Ctrl C
+  17. Cursor Blockanfang ------------  Ctrl Q    Ctrl B
+  18. Cursor Blockende --------------  Ctrl Q    Ctrl K
+  19. Cursor nach Zeile <x> ---------  Ctrl Q    Ctrl L
+  20. Löschen bis Zeilenende --------  Ctrl Q    Ctrl Z         Gdos : ClrEoLn
+  21. Einfügen Ein/Aus --------------  Ctrl V                   Gdos : INS
+  22. Zeile einfügen ----------------  Ctrl N
+  23. Zeile löschen -----------------  Ctrl Z                   Gdos : ClrLn
+  24. Blockmarker löschen -----------  Ctrl K    Ctrl H
+  25. Wort rechts löschen -----------  Ctrl T
+  26. Zeichen unter Cursor löschen --  Ctrl G                   Gdos : DEL
+  27. Zeichen links löschen ---------  BS                       Gdos : BS
+  28. Blockanfang markieren ---------  Ctrl K    Ctrl B
+  29. Blockende markieren -----------  Ctrl K    Ctrl K
+  30. Text sichern ------------------  Ctrl K    Ctrl S
+  31. Text verwerfen ----------------  Ctrl K    Ctrl Q
+  32. Block kopieren ----------------  Ctrl K    Ctrl C
+  33. Block verschieben -------------  Ctrl K    Ctrl V
+  34. Block löschen -----------------  Ctrl K    Ctrl Z
+  35. Block lesen -------------------  Ctrl K    Ctrl R
+  36. Block schreiben ---------------  Ctrl K    Ctrl W
+  37. Editor verlassen --------------  Ctrl K    Ctrl D
+  38. Tabulieren --------------------  TabRight                 Gdos : TabRight
+  39. Autotabulator Ein/Aus ---------  Ctrl Q    Ctrl I
+  40. Zeile wiederherstellen --------  Ctrl Q    Ctrl N         Gdos : Undo
+  41. Suchen ------------------------  Ctrl Q    Ctrl F
+  42. Suchen und Austauschen --------  Ctrl Q    Ctrl A
+  43. Suchen wiederholen ------------  Ctrl L
+  44. Blockgröße anzeigen -----------  Ctrl K    Ctrl G
+  45. Linken Rand setzen ------------  Ctrl O    Ctrl L
+  46. Rechten Rand setzen -----------  Ctrl O    Ctrl R
+  47. Tabulatorposition toggeln -----  Ctrl O    TabRight       Gdos : Func3
+  48. Block-/Flattersatz toggeln ----  Ctrl O    Ctrl B
+  49. Marker setzen -----------------  Ctrl K    Ctrl J
+  50. Cursor nach Marker ------------  Ctrl Q    Ctrl J
+  51. Block justieren ---------------  Ctrl K    Ctrl A
+  52. Block formatieren -------------  Ctrl B
+  53. Zeile als Block markieren -----  Ctrl K    Ctrl L
+  54. Wort als Block markieren ------  Ctrl K    Ctrl T
+  55. Cursor zur Fehlerposition -----  Ctrl Q    Ctrl P
+  56. Text speichern mit neuem Namen   Ctrl K    Ctrl N
+  57. Ränder freigeben (Toggle) -----  Ctrl O    Ctrl N
+  58. Einleitung für Ctrl-Zeichen ---  ESC                      Gdos : ESC
+  59. Attribute interpretieren ------  Ctrl O    Ctrl D         Gdos : Func6
+  60. Tasten-Klick toggeln ----------  Ctrl O    Ctrl K
+  61. Attribut-Codes reorganisieren -  Ctrl O    Ctrl A
+  
+  
+  
+  Der Umgang mit Blöcken:
+  
+  Da der Umgang mit den Blöcken vielleicht etwas kompliziert ist, hier ein 
+  Beispiel. Angenommen, Sie haben folgenden Text vor sich :
+  
+             " Vier Werkstattgrundsätze :
+             1. Der Schraubenschlüssel oder Bohrer, den
+                Du gerade brauchst, wird genau der sein,
+                der im Werkzeugkasten fehlt.
+             2. Für die meisten Vorhaben werden drei
+                Hände gebraucht.
+             3. Muttern passen nie auf überzählige Schrau-
+                ben.
+             4. Je sorgfältiger Du ein Vorhaben planst, desto
+                größer ist die Verwirrung, wenn etwas daneben
+                geht."
+  
+  Wollen Sie den 2. Absatz des Textes als Block markieren, so gehen Sie 
+  dazu zuerst mit dem Cursor auf die "2" und geben <^K> <B> ein. Auf 
+  dem Bildschirm ändert sich zwar nichts, GepStar aber weiß jetzt, daß an der 
+  "2" ein Block beginnt. Gehen Sie nun als nächstes mit dem Cursor hinter 
+  "gebraucht." und geben Sie <^K> <K> ein. Wieder wird auf dem Bildschirm 
+  nichts passieren. GepStar weiß nun aber auch, wo der bei "2" beginnende 
+  Block endet. Mit dem so markierten Block kann man nun arbeiten. Wenn Sie nun 
+  z.B mit dem Cursor hinter das letzte Zeichen im Text gehen und <^K> <V> ein-
+  geben, wird nach sehr kurzer Zeit der 2. Absatz des obigen Textes hinter dem 
+  4. Absatz stehen. Wenn Sie nun hinter den ersten Absatz gehen und <^K> <C>
+  eingeben, wird der 2. Absatz wieder an seiner ursprünglichen Stelle und 
+  zusätzlich noch am Textende stehen. Geben Sie nun <^K> <Z> ein, wird der 
+  markierte Block gelöscht. Die Reihenfolge der Absätze ist nun 1, 3, 4, 2.
+  
+  
+  
+  Der Umgang mit `Mailmerge':
+  
+  Ab Version 4.06 des GepStar funktioniert jetzt das Mailmerge-Kommando 
+  vernünftig. Folgende Änderungen wurden vorgenommen :
+  
+  1.  Die Grundstruktur der Mailmerge-Datei, die die Namen, Anschriften usw. 
+      der anzuschreibenden Personen o.ä. enthält, muß jetzt am Anfang der 
+      Mailmerge-Datei in einer einzigen Zeile angegeben werden. Wie bisher 
+      sind die Variablennamen durch Kommata voneinander abzutrennen. 
+      Groß-/Kleinschreibung spielt keine Rolle. Ein ".MV" kannn, muß aber nicht 
+      verwendet werden. Der Punktbefehl ".MV" im auszudruckenden Text wird
+      ignoriert.
+  
+  2.  Die Daten in der Mailmerge-Datei (Namen, Anschriften usw.) brauchen jetzt 
+      nicht mehr in einer Zeile zu stehen, sondern können über mehrere Zeilen 
+      verteilt werden. Sie können aber auch wie bisher in einer Zeile stehen, 
+      durch Kommata getrennt. Wie die Beispiele im File "Namen.Text" zeigen,
+      können die Angaben beliebig in Zeilen zusammengefaßt oder auf mehrere 
+      Zeilen verteilt werden. Am Ende einer Zeile kann, muß aber nicht ein 
+      einzelnes Komma stehen. Jedes weitere Komma wird jedoch als Abtrennung 
+      einer Leereingabe interpretiert.
+  
+  3.  Um die Mailmerge-Datei noch besser strukturieren zu können, dürfen belie-
+      big viele Leerzeilen zwischen die Textzeilen eingefügt werden. Eine Zeile,
+      die nur ein einzelnes Komma enthält, wird jedoch als Eingabe einer Varia-
+      blen mit leerem Inhalt interpretiert.
+  
+  4.  Es kann nun gesteuert werden, welche Namen, Anschriften usw. tatsächlich 
+      beim Ausdruck berücksichtigt werden sollen. Eine Folge von Eingaben in 
+      die diversen Variablen wird nur dann ausgewertet, wenn in der Zeile, in 
+      der die Eingabe zur letzten Variablen steht, oder in der darauffolgenden 
+      Leerzeile das Zeichen steht, an dem die Variablen im auszudruckenden Text 
+      erkannt werden (Standard : $, durch Befehl ".MD" anders zu besetzen). 
+      Natürlich wird dies Steuerzeichen beim Ausdruck aus dem Text eliminiert.
+  
+  5.  Bei den Variablennamen darf es jetzt auch Überschneidungen in der Auf-
+      einanderfolge von Zeichen geben : Eine Folge von Variablennamen wie : 
+      Vorname,Name,Vor,Na,Me wird jetzt richtig verarbeitet.
+  
+  Folgende Beispiele illustrieren die Möglichkeiten: 
+  Kommentare in solchen (* ... *) Klammern.
+  Der auszudruckende Serienbrief "Mailmerge.Test" sehe z.B. so aus:
+  
+  ────────────────────────────────────────────────────────────────────────────
+  
+  .MF #b0:Mailmerge.Namen.Text
+  .MV Titel,Vorname,Name,Anrede,Firma,Abteilung,Straße,PLZ,Ort
+  
+  (* Diese Zeile kann wegbleiben, wenn man weiß, wie man seine Variablen in der 
+     Mailmerge-Datei genannt hat. *)
+  
+  
+  $Titel$$Vorname$ $Name$
+  $Firma$
+  $Abteilung$
+  $Straße$
+  
+  $PLZ$ $ORT$
+  
+  
+  
+  $Anrede$ $Titel$$Name$,
+  
+  hiermit verbleibe ich mit den besten Grüßen
+  
+  
+  ────────────────────────────────────────────────────────────────────────────
+  
+  
+  Und die zugehörige Mailmerge-Datei "Mailmerge.Namen":
+  
+  
+  .mv Titel,Vorname, Name,Anrede,Firma, Abteilung,Straße,PLZ,Ort,
+  
+  (* .Mv kann wegbleiben, Leerzeichen werden ignoriert, ebenso
+     ein einzelnes Komma am Ende der Zeile. Die Folge der
+     Variablennamen muß am Begin der Mailmerge-Datei stehen. *)
+  
+  Dr. ,Heinz,Ohnefuß
+  Sehr geehrter Herr,
+  Discont-Kauf,Einkauf
+  Am Wald 3
+  5678,Unterstadt
+  
+  (* Ein Brief an Dr. Ohnefuß wird nicht ausgedruckt, da nicht das
+     definierte Steuerzeichen in der letzten Zeile oder der
+     darauffolgenden Zeile steht. *)
+  
+  (* Leerzeilen werden ignoriert *)
+  
+  
+  ,Karl,Bleibtreu,
+  Lieber Herr,
+  KaufMalWas,Buchhaltung,
+  Im Wald 53
+  5897, Oberstadt $
+  
+  (* Für den Titel ist hier nichts eingegeben. Die Aufteilung der
+     Information auf eine oder mehrere Zeilen spielt keine Rolle
+     (siehe auch unten). Da hier ein $ in der letzten Zeile steht,
+     wird der Brief ausgedruckt. Ein einzelnes Komma am Ende einer
+     Zeile schadet nichts *)
+  
+  
+  ,Charlotte,
+  Schmielde,Sehr geehrte Frau
+  
+  GeldRaus,Rechnungswesen,Finanzstr. 5
+  5678,Unterstadt
+  $
+  
+  (* Auch hier erfolgt ein Ausdruck. *)
+  
+  
+  ────────────────────────────────────────────────────────────────────────────
+  
+  
+  Die beiden Briefe sehen dann so aus :
+  
+  
+  
+          Karl Bleibtreu
+          KaufMalWas
+          Buchhaltung
+          Im Wald 53
+  
+          5897 Oberstadt
+  
+  
+          Lieber Herr Bleibtreu,
+  
+          hiermit verbleibe ich mit den besten Grüßen
+  
+  
+  
+                    (* Seitenvorschub *)
+  
+  
+  
+          Charlotte Schmielde
+          GeldRaus
+          Rechnungswesen
+          Finanzstr. 5
+  
+          5678 Unterstadt
+  
+  
+          Sehr geehrte Frau Schmielde,
+  
+          hiermit verbleibe ich mit den besten Grüßen
+  
+  
+  
+  
+                    (* Seitenvorschub *)
+  
+  ────────────────────────────────────────────────────────────────────────────
+  
+  
+  Anmerkung zur Eingabe von Attributen:
+  
+  Ab der Version 4.03 ist es auch möglich, die Attribute über die Tasten 
+  <Func1Key> und <Func2Key> einzugeben, wie man das vom GEPARD-System-Editor 
+  her gewöhnt ist!
+  
+  Die Attribute sind mit <Func1Key> und <Func2Key> und einer zweiten Taste zu 
+  erreichen:
+  
+   zweite Taste  │       F1         │       F2          │
+  ───────────────┼──────────────────┼───────────────────┼────────
+      'R'        │ RstAttrChar      │ RstAttrChar       │ reset
+      'U'        │ UnderLineOnChar  │ UnderLineOffChar  │ under
+      'I'        │ InverseOnChar    │ InverseOffChar    │ invers
+      'B','E'    │ ExtraBoldOnChar  │ ExtraBoldOffChar  │ bold
+      'S'        │ SlantOnChar      │ SlantOffChar      │ slant
+      DownKey ³  │ SubScriptChar    │ NormalScriptChar  │ sub
+      UpKey  ²   │ SuperScriptChar  │ NormalScriptChar  │ super
+      '-','N'    │ NormalScriptChar │ NormalScriptChar  │ normal
+      'L'        │ GCDletterChar    │ GCDletterChar     │ abcde
+      'G'        │ GCDgraphicChar   │ GCDletterChar     │ ab cd ef
+      'M'        │ GCDmathChar      │ GCDletterChar     │ mathe
+  
+  Beispiel: 
+  <Func1Key> <U> aktiviert Unterstreichung, <Func2Key> <U> deaktiviert sie 
+  wieder. Alle Attribute kann man mit <Func1Key> <R> oder <Func2Key> <R> 
+  abschalten.
+  
+  Im Text werden die Attribute durch inverse Zeichen dargestellt, die sich 
+  direkt aus der Funktion ergeben : R = ResetAttribut, U / u Underline an- / 
+  abschalten, usw..
+  
+  
+  Inhalt der Setup-Datei:
+  
+  Mit Standard- oder vom Benutzer festgelegten Einstellungen für das Editieren 
+  und den Ausdruck :
+  
+    -  Formatierung (Blockformat, linksbündig, rechtsbündig,
+                     zentriert)
+    -  Tabulatorpositionen
+    -  rechter Rand im Lineal
+    -  linker Rand im Lineal
+    -  AutoTabulator an oder aus
+    -  INSERT oder OVERWRITE - Modus
+    -  Tastenklick an oder aus
+    -  die Einstellungen des DruckMenues 
+  
+  
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+   
+        

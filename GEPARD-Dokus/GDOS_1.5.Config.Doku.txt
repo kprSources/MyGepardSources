@@ -1,0 +1,793 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                     Config (V 2.16)                      │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+ 
+   Das Programm Config meldet sich nach Aufruf aus der Shell durch <CTRL>-<N> 
+   mit einem Prompt, das unter anderem folgendes Hauptmenu darbietet.
+   
+    
+                                 MAIN - MENUE
+                                 ============
+                  
+        (1)                D(rive information table
+        (2)                U(nit information table
+        (3)                M(iscellaneous information
+        (4)                L(oad ramdisk, modules, static directories
+                  
+        (5)                Q(uit / Store Config
+                  
+   Auf einer zweiten Seite, nach Wahl der 5. Option, sieht man zusätzlich :
+   
+        (5.1)              C(hange Misc-Volume. Current ist #A00:
+        (5.2)              S(ave the file "GDOS_1.5.Misc"
+        (5.3)              Q(uit und update the file "GDOS_1.5.Misc"
+        (5.4)              E(xit without updating
+        (5.5)              R(eturn to configuration
+        
+   Die Auswahl geschieht - wie bei der System-Shell - durch Eingabe 
+   eines Zeichens aus der angebotenen Palette (D, U, M, L, Q) bzw. (C, S, Q,
+   E, R).
+                  
+                  
+   (1)               D(rive information table
+ 
+   Ein Drive im Sinne des GDOS ist eine blockorientierte Ein- bzw. Ausgabe-
+   Einheit. Zu den Drives gehören Diskettenlaufwerke, Festplatten und RAMdisks.
+   Sie alle sind dadurch gekennzeichnet, daß beim Zugriff des Betriebssystems
+   auf diese Einheiten nicht ein einzelnes Zeichen in einem seriellen Vorgang
+   bearbeitet wird, sondern stets mehrere in einem Block zusammengefaßte.
+   Die Drive-Informations-Tabelle dient dabei der Konfiguration des GDOS 
+   hinsichtlich der vom Betriebssytem verwalteten Disk-Laufwerke, Festplatten 
+   und RAMdisks. Es sind maximal 10 Drives mit den Kennungen #A bis #J 
+   festlegbar.  
+      
+   Zum Ansprechen der Drives müssen in die drive-information-table (dit,
+   siehe auch GdosKernel) verschiedene Parameter eingetragen werden. Config 
+   stellt nun für jedes Drive einen eigenen Eintrag, in dem die Hardware 
+   beschrieben wird, bereit.
+    
+   
+   Erklärung der Spaltenüberschriften und Konfigurationshinweise 
+   
+   (a) DN          - (DriveNo) Drive-Kennungen von #A bis #J. 
+   
+   (b) Blocks      - Anzahl der Blöcke á 1024 Bytes, die dieses Drive dem 
+                     GDOS zur Verwaltung überläßt.
+                     Hier wird eingetragen, wieviel KB Speicherkapazität auf 
+                     diesem Drive vorhanden sind. Z. B. sind es bei einem 
+                     üblichen Sony-Laufwerk 800 KB, also muß dort eine 800 
+                     stehen. Für APPLE-Laufwerke mit 35 Spuren, z.B. die 
+                     Original-Laufwerke, sind es (35 Spuren mal 16 Sektoren
+                     mal 1/4 KB) 140 KB; also 140 eintragen. 
+                     Wer sich getraut hat, andere Laufwerke an den APPLE 
+                     (gilt auch für den GEPARD) anzuschließen, sollte auch 
+                     wissen, welche Kapazität sich für die darin benutzten
+                     Disketten ergibt.
+                     Bei RAMdisks ist hier die gewünschte Größe einzutragen,
+                     bei Harddisks gilt auch Zylinder mal Sektorzahl mal   
+                     Sektorgröße mal Seiten (Köpfe).
+      
+   Die folgenden Einträge (Sec,Tracks,Sd,pS) werden nicht vom GDOS verwendet,
+   sondern können vom Drive-Treiber verwendet werden. Ein RAMdisk-Treiber
+   braucht die Daten z.B. nicht, dagegen braucht der Harddisktreiber "GepHDC"
+   die Informationen, da er sich damit flexibel an verschiedene Harddisks
+   anpassen kann. 
+      
+   (c) Sec         - (Sectors) Anzahl physikalischer Sektoren auf jeder Spur
+                     (als Ergebnis des Formatierens unter GDOS).
+                     Hier wird angegeben, wieviele Sektoren sich auf einer
+                     Spur (Track) des Drives befinden. Mit Sektoren sind nicht 
+                     die GDOS-1KB-Blöcke gemeint, sondern die einzelnen Einhei-
+                     ten auf jeder Spur, die einen Datenblock fassen.
+                     Das sind für GEPARD Sony- und Panasonic-Laufwerke jeweils 
+                     1KB-Blocks, fünf an der Zahl, also bitte 5 eintragen. Für 
+                     APPLE-Laufwerke sind es acht 512 Byte-UCSD-PASCAL-Blöcke 
+                     (man beachte die Hinweise unter pS!) pro Spur, also eine 
+                     8 eintragen.
+                     Bei den Harddisks, so wie sie von dem Treiber "GepHDC"
+                     formatiert werden, sind es auch Sektoren mit jeweils
+                     512 Byte. Bei der 20 MB Harddisk passen 17 solcher Sek-
+                     toren in eine Spur, also gehört eine 17 in den Eintrag.
+    
+   (d) Tracks      - Anzahl der Spuren des Drive, d. h. wieviele Spuren das 
+                     Laufwerk / Zylinder die Harddisk im physikalischen Sinne
+                     sein / ihr eigen nennen kann.
+                     Sicher erwarten Sie nun, bei Ihren GEPARD-LW den Wert
+                     80 eingetragen zu sehen. Ist aber nicht so. Stattdessen
+                     steht dort 160. Dies hat historische Gründe: Der Treiber
+                     selbst nämlich, der ja schon unter GDOS 1.3 lief, will
+                     hier die logische Anzahl der Tracks und nicht die physi-
+                     kalische übergeben bekommen. Wenn man hier 80 eintrüge, 
+                     formatiert der Treiber nur noch die halbe Disk.
+                     Also, für GEPARD-Laufwerke gehört hier 160 rein, sonst
+                     immer die physikalische Spurenzahl: für Original-APPLE-
+                     Laufwerke eine 35, bei der 20MB Harddisk eine 615 
+                     (Zylinderanzahl).
+                     Wie schon anfangs gesagt, wird einzig und allein der 
+                     Eintrag "Blocks" vom GDOS zur Kapazitätsbestimmung 
+                     verwendet. Die anderen Werte sind für die Treiber gedacht 
+                     und können auch nur von ihnen richtig interpretiert 
+                     werden. Der RAMdisk-Treiber z.B. braucht die Werte 
+                     überhaupt nicht, hier können Sie im Prinzip irgendetwas 
+                     eintragen. 
+    
+   (e) Sd          - (Sides) Anzahl der physikalischen Seiten eines Drives.
+                     Für zweiseitige Laufwerke wie z.B. die Sony-Laufwerke
+                     für den GEPARD gehört jedenfalls eine 2 in dieses Feld,
+                     für einseitige Laufwerke eine 1, bei RAMdisk sollte
+                     dieser Wert ebenfalls 1 sein.
+                     Bei Harddisks (jedenfalls für den Treiber "GepHDC")
+                     kommt hier die Kopfanzahl hin.
+                       
+   (f) pS          - (Phys. sector/logical sector) Anzahl der physikalischen
+                     Sektoren, die einen GDOS-1-KB-Block ergeben.
+                     Diese Angabe hat nur einen Sinn, wenn auch schon
+                     die Formatierroutine der RWTS flexibel mit diesem Wert
+                     umgehen könnte. Aber das kann bisher keine (bis auf den
+                     RAMdisktreiber), und so ist dieser Wert durch jeden
+                     Treiber festgelegt und könnte hier wegfallen.
+                     Bei GEPARD-Laufwerken gehört hier eine 1 rein, weil
+                     der Controller auch 1KB-Blöcke schreibt. Bei APPLE-
+                     Laufwerken muß hier eine 2 stehen, weil das UCSD-PASCAL-
+                     System mit 512-Byte-Blöcken arbeitet, die von diesem dann
+                     intern in 256-Byte-APPLE-Sektoren umgerechnet werden.
+                     Auch "GepHDC" formatiert die Harddisk mit 512-Byte-Sek-
+                     toren, weshalb auch hier eine 2 einzutragen ist.
+                     Der Treiber VC1541 braucht diese Daten auch alle nicht, 
+                     da die Sektorenaufteilung beim C64-LW gar nicht mit 
+                     diesen paar Einträgen zu beschreiben ist. 
+    
+   (g) DT          - (DriverType) Treiber ist zu aktivieren / nicht zu 
+                     aktivieren beim Bootvorgang.
+                     In diesem Feld wird nur ausgewertet, ob dort eine 0
+                     steht. Wenn Ja, wird das Laufwerk nicht konfiguriert,
+                     steht ein anderer Wert darin, wird das Laufwerk
+                     konfiguriert.
+                     Nur wenn das Laufwerk "konfiguriert" ist, ist es auch
+                     ansprechbar bzw. wird angesprochen, weshalb z.B. Anwen-
+                     der mit nur einem Floppy-LW am GEPARD hier bei LW #B
+                     eine Null eintragen sollten, damit das GDOS nicht dauernd
+                     darauf zuzugreifen versucht.
+                       
+   (h) Ty          - (DriveType) Kennzeichnet den Typ des Drive.
+                     Vordefiniert und vom GDOS auch an wichtiger Stelle aus-
+                     gewertet sind hier im Moment nur zwei Werte :
+                     12 bedeutet eine RAMdisk, die im normalen Speicherbereich
+                     des GDOS angelegt wird; 25 eine (resetfeste) RAMdisk, bei 
+                     der vom Hauptspeicher getrennter, "externer", Speicher 
+                     verwendet wird. 
+                     (Siehe auch Locate and initiate, InitFixMem unten.)
+                     Bei normalen Laufwerken sollte hier ein von 12 und 25
+                     verschiedener Wert eingetragen werden, z. B. 0.
+                     Der Filer zeigt diese Werte unter D(rives an.
+                       
+      
+   (i) lD          - (Log. DriveNo) Die Nummer, unter der dieses Drive vom 
+                     Drive-Controller angesprochen wird. 
+                     Für das erste Drive an einem Controller muß hier eine 
+                     0 stehen, für das zweite eine 1 und so weiter, je nachdem, 
+                     wieviele Drives an einem Controller anzuschließen bzw.
+                     angeschlossen sind.
+                     Wie Sie sicher schon erkannt haben, ist dieser Eintrag
+                     auch vollkommen hardwarespezifisch, das GDOS interessiert
+                     sich dafür nicht. Beim RAMdisktreiber ist der Wert sinn-
+                     vollerweise 1. Für APPLE-Benutzer: Das UCSD-PASCAL-System 
+                     wird im GDOS als Drive-Controller interpretiert !
+                     Also muß hier die Laufwerksnummer des UCSD-PASCAL
+                     eingetragen werden, weil ja das Terminal-Programm nicht
+                     direkt die Disk-Controller im APPLE anspricht, sondern
+                     nur über das UCSD-PASCAL-System. Für das erste Laufwerk
+                     am Controller im Slot 6 (UCSD-PASCAL #4:) muß daher eine
+                     4 eingetragen werden, für das zweite Laufwerk 5; für 
+                     weitere Laufwerke entsprechend 9, 10, 11, 12; genau wie 
+                     das UCSD-PASCAL-System die Laufwerke nummeriert.
+                     
+   (j) HDF         - (HasDoorFunction) Das Drive hat die Fähigkeit zu erkennen,
+                     ob ein Wechsel des Datenträgers vorgenommen wurde.
+                     Wenn hier "Yes" steht (d. h. 'Y' eingegeben wurde), bietet 
+                     der Treiber selbst eine Funktion, über die er mitteilen 
+                     kann, ob der Datenträger gewechselt wurde. Wenn hier "No" 
+                     steht, wird der Treiber nicht gefragt, sondern das GDOS 
+                     liest ein paar Mal den Block Null des Drive, um ihn mit 
+                     dem zuletzt gelesenen Block zu vergleichen. Auf diese Art 
+                     wird ein Datenträgerwechsel erkannt.
+                     Die Treiber für die GEPARD-Sony-Laufwerke, Hard-
+                     disklaufwerke und RAMdisks haben diese Funktion.
+                     Letztere teilen dem GDOS natürlich immer mit, daß kein
+                     Wechsel stattgefunden hat. 
+                     Bei APPLE-Laufwerken geht das leider nicht, also muß
+                     hier ein 'N' ("No") eingegeben werden.
+                     Beim LW VC1541 kann hier ein "Yes" stehen.             
+                     
+    (k) SVT        - (Static VTOC) Statisches VTOC (Volume Table Of Contents)
+                     anlegen oder nicht.
+                     Das GDOS legt normalerweise für jedes Volume eines Drive
+                     eine solche VTOC dynamisch, d. h. dann an, wenn ein
+                     Zugriff mittels GDOSFilestuff auf ein File dieses 
+                     Volumes erfolgt. Dabei kann es passieren, daß nicht mehr 
+                     genügend Speicher von anderen Programmen, die ebenfalls 
+                     dynamisch und verschwenderisch (Editoren etwa) über den 
+                     Speicher verfügen, freigelassen wurde. Die Folge ist, 
+                     daß sich z. B. Files nicht mehr öffnen lassen ('No buffer 
+                     in system', IOResult # 9). 
+                     Es ist daher empfehlenswert, diesen Speicher bereits beim
+                     Booten des Systems als statisches VTOC vom GDOS bereit-
+                     stellen zu lassen (Eintragung "Yes"). Ein kleiner weiterer
+                     Vorteil dieser statischen VTOCs ist es, daß Zugriffe auf
+                     Files etwas schneller erfolgen können, da die VTOCs nur
+                     beim Wechseln des Datenträgers erneut gelesen werden
+                     müssen. Man hat so eine ähnliche Situation wie bei den
+                     Directories : Für alle Directories gibt es einen festen 
+                     Speicherbereich, wo sie eingelesen werden können, denn 
+                     sie werden nur kurz während der Prozeduren FileOpen/
+                     FileCreate und FileClose gebraucht. Die VTOC muß jedoch 
+                     solange im Speicher sein, wie die Datei geöffnet ist. 
+                     Bei Harddisklaufwerken ist eine statische VTOC unbedingt 
+                     notwendig.
+                       
+   (l) Ref         - (Reference-byte) Die Kennung der Controller-Karte.
+                     Für den GEPARD-Disk-Controller steht hier $20, für 
+                     APPLE-Laufwerke $E oder $F, je nach Boot-ROM-Karte.
+                     Für RAMdisks wird 0 eingetragen. 
+   
+   (n) CN          - (ControllerNumber) Nummer des Controllers.
+                     Sind mehrere GEPARD-Disk-Controller im System, wird hier 
+                     eingetragen, an welchem Controller die Laufwerke ange-
+                     schlossen sind: erster Controller 0, zweiter Controller 
+                     1 u.s.w. Die Reihenfolge bestimmt sich aus der Höhe der 
+                     Adressen der Controller - niedrigste Adresse zuerst. 
+                     
+   (o) Driver-Name - Name des Drive-Treibers.
+                     Drive-Treiber werden mit 'RWTS' (Read-Write-Track-Sector)
+                     als Suffix im Filenamen als solche gekennzeichnet. Hier 
+                     bitte den Namen der RWTS-Routine eintragen, die für den 
+                     Drive-Controller vorgesehen ist. Die Standard-Bezeich-
+                     nungen für die mitgelieferten RWTS' sind:
+                       - für die GEPARD-Laufwerke : Floppy312;
+                       - für APPLE-Laufwerke      : APPLE;
+                       - für den GEPARD-HDC       : GepHDC;
+                       - für die RAMdisk          : RAMdisk.
+                     Zu beachten ist, daß der Name der RWTS ohne Volumeangabe
+                     und ohne Suffix einzugeben ist, da 1. die RWTS ohnehin 
+                     auf dem  Boot-Laufwerk vorhanden sein und 2. die RWTS
+                     unbedingt den Suffix 'RWTS' haben muß.
+                        
+                        
+ 
+   (2)               U(nit information table
+    
+   Eine Unit im Sinne des GDOS ist eine zeichenorientierte Ein- bzw. Ausgabe-
+   Einheit. Zu den Units zählen der Bildschirm, die Tastatur, der Drucker, 
+   der Plotter, die serielle oder die parallele Schnittstelle und vieles mehr. 
+   
+   Das Unit-Konzept des GDOS ist so gestaltet, daß es eine Differenzierung 
+   zwischen dem hardware-abhängigen und dem hardware-unabhängigen Teil des 
+   Zugriffs auf eine solche zeichenorientierte Einheit gestattet. Diese 
+   Möglichkeit ist allerdings noch nicht für alle Units stringent durchgeführt. 
+   Der Haupt-Treiber der Unit 'Screen' ("Screen.Unit") z. B. enthält alle 
+   Routinen, die benötigt werden, um irgendeinen Bildschirm mit irgendwelchen 
+   Zeichen zu beschreiben. 
+   Soll allerdings auf einem bestimmten Bildschirm wirklich etwas sichtbar 
+   werden, so muß noch ein Sub-Treiber, das ist eine Unit, die ausschließlich 
+   den hardwareabhängigen Teil des Zugriffs auf die Einheit Bildschirm liefert, 
+   hinter die Aktivität der Unit 'Screen' gesetzt werden (Einzelheiten siehe 
+   die Dokumentation des Treiberkonzeptes bzw. noch tiefgehender in der des 
+   Unitkonzeptes). Ein solcher Treiber existiert z. B. für die 80-Zeichen-
+   Textkarte des GEPARD, an die bestimmte Bildschirme angeschlossen und mit 
+   ihrer Hilfe betrieben werden können.
+   Die Unit-Informations-Tabelle dient also der Konfiguration des GDOS 
+   hinsichtlich der vom Betriebssytem verwalteten Bildschirme, Tastaturen,    
+   Drucker etc. Es sind maximal 32 Units mit den Nummern #0 bis #31
+   festlegbar.  
+        
+   Zum Ansprechen der Unit müssen in die unit-information-table (uit,
+   siehe auch GdosKernel) verschiedene Parameter eingegeben werden. Wie bei   
+   den Drives gibt es für jede Unit einen eigenen Eintrag, in dem die Einheit  
+   beschrieben wird.
+   
+   Erklärung der Spaltenüberschriften und Konfigurationshinweise 
+   
+   (a) Unit        - die Nummer der Unit.
+                     Mit Hilfe der Cursortasten Up/Down wird eine Unitnummer
+                     und damit die zu editierende Unit selektiert. Nach 
+                     dieser Wahl können durch die Taste <E> (E(dit) die
+                     eigentliche Konfiguration der Unit erfolgen oder durch
+                     <M> (M(odify unitname/type) die anderen beiden Spalten
+                     der Tabelle geändert werden. 
+    
+   (b) Type        - Mit Unit-Type wird festgelegt, ob die Unit Daten aus
+                     dem Rechner nach draußen gibt (output, Eintrag : 1), 
+                     Daten aus der Umwelt in den Rechner hereinholt (input,
+                     Eintrag : 2) oder beides kann (input/output, Eintrag : 3).
+                     Um der besonderen Rolle der Units für den Bildschirm
+                     ('Screen'), die Tastatur ('Keyboard') und die Drucker 
+                     ('Printer') gerecht zu werden, haben diese drei Units
+                     innerhalb des GDOS auch besondere Unit-Typ-Zahlen 
+                     zugewiesen bekommen :
+                     17 - Screen;
+                     34 - Keyboard;
+                     49 - Printer.
+                     Bald eingeführt werden :
+                     65, 66, 67 - für diverse Graphic-Devices.
+                     
+   (c) UnitName    - Der Name der Unit.
+                     Da jedes Betriebssystem wenigstens eine Eingabe- und
+                     eine Ausgabeeinheit für den Benutzer bereithalten muß,
+                     sind die Units 'Screen' und 'Keyboard' bei jeder Konfi-
+                     guration obligatorische Bestandteile. Zumindest diese
+                     Unit-Namen müssen also in der Liste auftauchen.
+                     Ein weiterer Name mit bereits vordefinierter Bedeutung
+                     ist 'Printer'.
+                     
+   Hat man sich für eine Unit-Nummer entschieden und mit <E> das Editieren
+   der eigentlichen Unit-Informationen gewählt, so zeigt sich wiederum eine
+   Tabelle mit diesmal 10 möglichen Einträgen #0 bis #9.
+   Das Intelligente am Gdos 1.52 ist nämlich, daß für eine Unit unterschiedliche
+   Treiber-Software zuständig sein kann, ohne daß die Benutzer-Programme sich 
+   darum kümmern müssen. Das GDOS sucht sich beim Booten, gesteuert durch die 
+   uit und damit durch die Vorgaben des Benutzers, jeweils diejenigen Treiber 
+   aus dieser Tabelle für eine Unit aus, die bei der gegebenen Hardware-
+   Konfiguration möglich sind. Sind für eine Unit mehrere Treiber eingetragen, 
+   wird nur der erste hardwaremäßig aktivierbare benutzt, denn es macht keinen 
+   Sinn, wenn mehrere Treiber an der gleichen Einheit aktiv sind.
+   Es ist aber durchaus möglich, mehrere ähnliche Units (z. B. 'Screen',
+   'ScreenG', 'ScreenM', 'ScreenA') zu konfigurieren, die alle für einen
+   Bildschirm zuständig sind (also den Unit-Type 17 haben), deren hardware-
+   unabhängiger Treiber jeweils 'Screen.Unit' heißt und deren hardware-
+   abhängiger Sub-Treiber sich nach der verwendeten Karte richtet :
+   'Screen'  --> Ausgabe auf Bildschirm an der 80Z-Textkarte;
+   'ScreenG' --> Bildschirmausgabe über die GDC-Karte;
+   'ScreenM' --> Darstellung von Texten auf der Monochrom-Karte;
+   'ScreenA' --> Benutzung des Bildschirms am APPLE über die BootROM-Karte.
+   Sollen allerdings alle vier Units gleichzeitig aktiv sein, so müssen sie
+   jeweils unter ihrer Unit-Nummer in der nun zu besprechenden Tabelle an
+   erster Stelle eingetragen werden, natürlich auf Seiten der Hardware 
+   überhaupt aktivierbar sein und von einem Benutzerprogramm auch tatsächlich
+   angesprochen werden.
+   Das GDOS selbst erlaubt das parallele Benutzen mehrerer unabhängiger 
+   Text-Bildschirmeinheiten nur im Zusammenhang mit den Shell-Optionen 
+   debug-output und monitor-output (<CTRL>-<D> und <CTRL>-<M>); siehe 
+   entsprechende Dokumentation.
+ 
+   
+   Erklärung der Spaltenüberschriften und Konfigurationshinweise 
+   
+   (a) Tbl         - (Table-Number) Die Nummer des Unit-Treibers.
+                     Hier läßt sich direkt nichts ändern bzw. eintragen. 
+                     Gewisse Manipulationen sind aber doch über die Optionen 
+                     S(wap, C(lear, M(ove, I(nsert, D(elete möglich
+                     (siehe Erklärung unten).
+   
+   (b) Ref         - (Reference-Byte) Die Hardware-Kennung der GEPARD-Karte, 
+                     für die diese Unit in dieser Zeile der Tabelle konfi-
+                     guriert werden soll (z.B. $28 bei der Text-Karte, $0E 
+                     oder $0F für die BootROM-Karte zum APPLE).
+                   
+   (c) Nr          - (Number) Kartennummer.
+                     Die wievielte Karte mit der eben eingegebenen Kennung
+                     soll benutzt werden ? Folglich können z. B. mehrere
+                     80Z-TextKarten parallel verwendet werden.
+   
+   (d) DriverVolume  - Das Volume, auf dem sich die Treiber dieser Unit   
+                     befinden.
+                     Ist in diesem Feld keine Angabe, wird der Treiber
+                     auf allen konfigurierten Drives gesucht. Ist ein
+                     Volumename eingetragen, wird der Treiber nur (!) auf dem
+                     eingetragenen Volume gesucht. 
+                     
+   (e) Drivername  - Der Name des (zumeist hardwareunabhängigen) Haupt- 
+                     Treibers.
+                     Eingetragen wird auch hier nur der File-Name des Treibers
+                     ohne Volume oder Suffix.
+                     Volume braucht man hier nicht, dafür gab es das vorige 
+                     Feld. Das Suffix muß bei allen Unit-Treibern, die an 
+                     dieser Stelle eingetragen werden, ".Unit" sein.
+                     Für die obligatorische Bildschirm-Unit ist der Haupt-
+                     Treiber immer 'Screen.Unit' oder ein eigener Treiber.
+                   
+   (f) log.        - (logische) Unit-Nummer dieser Einheit auf der Karte.
+                     Können an eine Karte mehrere Geräte angeschlossen werden,
+                     trägt man hier ein, welches der Geräte man meint.
+                     Bei der EA-Karte also 0 für die erste parallele Schnitt-
+                     stelle, eine 1 für die zweite Parallel-Schnittstelle. 
+                     Der Eintrag hier in diesem Feld entspricht also der 
+                     Segment-Nummer der Einheiten auf einer GEPARD-Karte,
+                     wie im Modul Slothandler definiert.
+   
+   (g) Init        - Soll der Treiber nach dem Einladen sofort initialisiert
+                     werden : Ja oder Nein ?
+                     Damit besteht die Möglichkeit, einen Treiber direkt nach
+                     dem Booten zu initialisieren. Ansonsten wird er vom GDOS
+                     automatisch beim ersten Zugriff auf die Unit initialisiert.
+                     
+   (h) UnitControl - Dies ist das Verbindungsstück zur Konfiguration von
+                     Sub-Treibern. Auf einer neuen Bildschirmseite wird eine
+                     editierbare Maske angeboten, die folgende Eintragsmög-
+                     lichkeiten enthält :
+                     
+  (i) Subdriver name - Der Name des zugehörigen Subdrivers.
+                     Nur der Haupt-Unit-Treiber weiß etwas mit diesem Ein-
+                     trag anzufangen. So werten die üblichen Druckertreiber
+                     wie etwa der beigefügte Haupt-Treiber 'EPSON-FX85.Unit',
+                     (dies ist zwar ein von der Software des Druckers abhängi-
+                     ger Treiber, aber die Aufbereitung der GEPARD-Zeichen in 
+                     entsprechende Codes, die der Drucker versteht, geschieht 
+                     eben nur softwaremäßig, ohne daß der Drucker oder die 
+                     zugehörige Druckerkarte angesprochen werden) diesen 
+                     String als Namen der Unit aus, auf den die umgewandelten 
+                     Codes nun wirklich ausgegeben werden sollen. Diese
+                     Sub-Unit wird meistens 'PrtBin' genannt und hat als 
+                     Haupt-Treiber einen echten Hardware-Treiber (z. B. 
+                     'ParallelMTH.Unit'). 'PrtBin' muß dazu ebenfalls in die 
+                     uit zur Konfiguration eingetragen werden.
+                     Der wirklich hardwareunabhängige Bildschirmtreiber 
+                     'Screen.Unit' nimmt dagegen diesen Wert als Dateinamen 
+                     für seinen Sub-Treiber, dem er den aufbereiteten 
+                     'virtuellen' Bildschirm zur Anzeige übergibt.
+                     Die Tastaturtreiber "Keyboard_xxxx" werten diesen Eintrag
+                     zur Zeit gar nicht aus. 
+                     Ist in diesem Feld ein Unit-Name eingetragen, dann ist
+                     die Reihenfolge der Units in der Tabelle unerheblich.
+                     
+                     Es werden erst alle Unit-Treiber geladen und danach,
+                     abhängig von obigem Feld 'Init', initialisiert.
+   
+   Die nächsten Eintragungen beeinflussen das Bitset UnitControl, das sich in
+   der uit als RECORD-Komponente findet :
+ 
+           
+   (j) Evaluate GCD-control characters 
+                   - Bewertung der GCD (GEPARD Character Definition) - Kon-
+                     troll - Zeichen.
+                     Verändert in UnitControl das Bit, das in den jeweiligen 
+                     Treibern angibt, ob Steuerzeichen wie z.B. DLE 
+                     ausgewertet werden sollen oder nicht.
+                   
+   (k) Baudrate    - 
+   (l) Format      - 
+   (m) Handshake   - 
+           
+                     Werden nur bei Geräten mit seriellen Schnittstellen benö-
+                     tigt. Setzen die entsprechenden Bits in UnitControl. 
+                     Einzelheiten siehe Beschreibung der zugehörigen Karten.
+ 
+              
+              
+   (3)               M(iscellaneous information
+               
+   Hier sind die verschiedenen Angaben zusammengefasst, die das Betriebssystem
+   sonst noch beim Booten berücksichtigt. Zum Teil kann man sie auch nachträg-
+   lich, in der Shell oder im Filer ändern.
+   
+   Die Eingabe der verschiedenen Parameter erfolgt über FormatIO.EditString.
+   Einschlägige Erfahrungen mit 'unerklärlichen' Fehlermeldungen nach der
+   Bootphase, kurz vor dem Sichtbarwerden der Shell, haben folgenden Tip 
+   veranlaßt. Will man ganz sicher sein, daß man bei der Texteingabe keine
+   unsichtbaren Steuerzeichen (aus Versehen) oder zum Textlöschen nicht ge-
+   eignete Leerzeichen hinterlassen hat, so betätige man vor einer Neueingabe
+   den <ETXKey>. Nur er bereinigt das Textfeld von allen Fehlermeldungen 
+   erzeugenden Überresten. Dieser Tip gilt auch für den Punkt (4).
+ 
+   Erklärung der Zeilennüberschriften und Konfigurationshinweise 
+   
+ 
+   (a) Dateform,
+   (b) Timeform    - Die Einstellung der Datums- und Uhrzeitanzeigeformate sind
+                     wohl klar und werden auch über Hilfe-Menüs erläutert.
+   
+   (c) Shortvolumes
+       :           - das Prefix-Volume              
+       !           - das System-Volume
+       -           - das Definitionsmodul-Volume
+       ^           - das Treiber-Volume
+       &           - das Bibliotheks-Volume
+       @           - das Work-Volume mit Workfilename
+       
+                     Kurzbezeichnungen für einige sehr häufig benutzte Disk-
+                     Volume-Namen. Außer bei @ werden nur Volume-Namen 
+                     erwartet, bei @ ein Vol-Filename. Bei Angabe eines 
+                     Disk-Volumenamens, z.B. 'SYSTEM', darf KEIN Doppelpunkt 
+                     angefügt sein, dagegen MUSS ein Doppelpunkt dranhängen, 
+                     wenn nur eine Laufwerkskennung angegeben wird, z.B. 
+                     '#A0:'.
+               
+   (d) First compiler - der erste Compiler wird resident ins System geladen. 
+                     Dies dürfte zumeist der MODULA-2 - Compiler von Jürgen 
+                     Müller und tt sein. Dieser hat den Filenamen 
+                     'Compiler.Syst'.
+                     Einzutragen ist nur 'Compiler'. Bei anderen Eintragungen
+                     muß das File-Suffix im Directory ebenfalls '.Syst' lauten -
+                     erzeugt mit entsprechender Compiler-Option. Der Eintrag 
+                     selbst darf weder Volume noch Suffix enthalten.
+                     Aufruf von der Shell aus durch <C>.
+                     
+   (e) Other compiler - ein zweiter (?) Compiler für den GEPARD wird resi-
+                     dent ins System integriert.
+                     Hier kann ein eigener Compiler oder sonst irgendein
+                     Programm, das von der Shell aus gestartet werden soll,
+                     genannt werden. Namenskonvention wie bei First Compiler.
+                     Aufruf von der Shell aus durch <O>.
+               
+               
+   (f) PreInit volume/filename - Volume- und Filename eines Programms, das 
+                     direkt nach dem Booten, noch vor der Standard-Begrüßung 
+                     ausgeführt wird.
+                     Besonderer Vorteil: Während des Programmstarts sind
+                     noch alle Interrupts gesperrt. Dadurch ist es möglich,
+                     ein Pre-Init-Programm zu starten, das selbstgebastelte
+                     Hardware vor der Interruptfreigabe erst noch initiali-
+                     siert.
+                     Ist auf dem Bootvolume ein Programm mit dem Namen
+                     'TurnKey.Syst', wird es (nach dem PreInit-File und anstelle
+                     der üblichen Begrüßung) ausgeführt. Dies wird schon mit 
+                     freigegebenen Interrupts ausgeführt.
+               
+   (g) Belldriver volume/filename
+   (h) Clockdriver volume/filename - Volume- und FileName für die Hardware-
+                     Treiber der Tonausgabe und Uhr mit der Multifunktions-
+                     Karte.
+                     Standard sind 'MultifunctionBell' und 'MultifunctionClk'.
+                     Auch hier gilt : Keine Volumenamen oder Suffices. Die
+                     entsprechenden Filenamen im Directory müssen allerdings
+                     '.BelD' und '.ClkD' als Suffix haben.
+   
+   (i) Number of directories - Anzahl der residenten Directories.
+                     Hiermit wird im System Platz für das Speichern von 
+                     Directories reserviert. Je mehr Directories man resident 
+                     hat, desto schneller werden die Disk-Zugriffe, desto mehr 
+                     Speicherplatz geht verloren.
+                     Normalwert ist 1, wer mehr (RAM) hat, kann mehr zeigen.
+                     Optimaler Wert ist die Anzahl Volumes, die man beim
+                     normalen Arbeiten im Zugriff hat. Beispiel:
+                     Man hat eine RAMdisk (1 Volume), zwei Floppy-LW, in denen 
+                     man üblicherweise zwei Disks drin hat, wovon die eine 1 
+                     und die andere 2 Volumes hat und eine Harddisk mit 3 
+                     Volumes. Dann sollte hier 1+1+2+3= 7 eingetragen werden.
+                     Zusätzlich sollte die unter (x) in diesem Abschnitt
+                     beschriebene Option berücksichtigt werden !
+               
+   (j) Graphic screen,
+   (k) Graphic hardcopy device - Die Grafikausgabe des GEPARD besitzt nun
+                     (dank Carlos Hoffmann) eine auf dem Treiber-Konzept 
+                     basierende Struktur. Die Angaben hier gehörten eigentlich
+                     in die uit. Graphic screen gibt den Namen der Grafik-Unit
+                     an, die die Ausgabe auf einen Bildschirm regelt. Das
+                     Graphic hardcopy device ist im allgemeinen ein Drucker-
+                     Treiber oder Plotter-Treiber, der es gestattet, das auf 
+                     einem graphic screen Gezeichnete als Hardcopy zu Papier 
+                     zu bringen. 
+   
+   (l) Locate and init extra RAM - Über dieses Flag wird gesteuert, ob beim 
+                     Booten vom Hauptspeicher getrenntes RAM gesucht und 
+                     initialisiert werden soll. Dies ist solches, das nicht 
+                     schon vom Boot-ROM erkannt wird. 
+                     Normalerweise erkennt das System beim Booten nur einen 
+                     zusammenhängenden RAM-Bereich, je nach ROM unten begin-
+                     nend nach oben oder oben beginnend nach unten. Sobald 
+                     die erste Lücke auftritt, wird die Suche beendet.
+                     Das Modul FixStorage kann jetzt auch zusätzliches RAM 
+                     suchen und erkennen. Aber :
+                     Vorsicht ist geboten:
+                     Es gibt RAM-Karten, bei denen die Adress-Selektion nicht 
+                     vollständig durchgeführt ist, so daß man also denselben 
+                     RAMbereich unter verschiedenen Adressen wiederfinden kann,
+                     z.B. die umgebaute RAM-Karte nach der Anleitung Müller/
+                     Neumann von FORUM 5. 
+                     Diesen Effekt nennt man Spiegelung.
+                     
+                     Das Fix-Storage Modul erkennt solche Spiegelungen nicht, 
+                     sondern meint, Extra-RAM gefunden zu haben. Dieser Be-
+                     reich wird dann auch initialisiert, also mit 0 gelöscht. 
+                     Leider wird dabei nicht nur der gespiegelte Adreßbereich, 
+                     sondern auch, in der Natur der spiegelnden RAM-Karte
+                     liegend, der originale Bereich gelöscht.
+                     Dabei wird dann auch der Prozessor-Stack und ähnliches
+                     überschrieben. Wenn jetzt der Prozessor mit einem RTS 
+                     wieder zurück ins StdSysConfig will, um weiter zu kon-
+                     figurieren, dann landet er in der Wüste; meistens jedoch 
+                     mit einem Adress-Error im Monitor. Und da man den Monitor 
+                     jetzt noch nicht mit <Q> verlassen kann (weil das Gdos 
+                     noch nicht fertig geladen ist), bleibt also nur noch der 
+                     RESET-Taster.
+                     Also nochmals: bevor InitFixmem auf Yes gesetzt wird,
+                     erst überlegen.
+                     Wenn man also eine weitere RAM-Karte, z.B. 1MB hat,
+                     sollte man eine größere Lücke vor der Spiegelung 
+                     selektieren; erstens, um zu verhindern, daß sie an das 
+                     untere SystemRAM oder den gespiegelten Bereich angrenzt, 
+                     und zweitens, um zu erreichen, daß diese RAM-Karte vor 
+                     der Spiegelung gefunden wird. 
+                     Zur Information: InitFixMem sucht nur einmalig und von 
+                     "unten" nach "oben". 
+                     Daß man nicht auf Original-Disketten rumkonfiguriert, 
+                     sondern nur auf Kopien, sollte sich inzwischen 
+                     herumgesprochen haben.
+                 
+                 
+    (m) Load Accessories (Accr) - Accessories werden beim Booten geladen und
+                     vom Gdos unterstützt.
+                     Accessories sind mehr oder weniger nützliche Programme,
+                     die fest ins System geladen werden und dort auf Tastendruck
+                     abrufbar sind.
+                     Beispiele sind ModListAccessory oder Uhrzeit.
+                     Da es zum Sinn einer Konfiguration gehört, das System dem
+                     Anwender nach dem Booten 'anwenwendungsfertig' zu überge-
+                     ben, wäre es sinnvoll, Accessories beim Booten gleich 
+                     einzulesen und zu starten.
+                     Genau dies kann über diese Eintragung gesteuert werden.
+                     Es gibt drei Möglichkeiten zur Auswahl:
+                       - none      : es werden keine Accessories geladen;
+                       - all       : es werden alle Accessories der Boot-Disk 
+                                     geladen;
+                       - selected  : der Anwender kann mit dem MultipleFile-
+                                     Select-Menü selbst bestimmen, welche 
+                                     Accessories geladen werden und welche 
+                                     nicht.
+                     Accessories haben stets das Suffix '.Accr'.
+                     Wer also selbst Accessories schreiben will, vergesse darin
+                     nicht die Compiler-Option (*$ S Accr *).
+                     Genaugenommen gilt dies nur für Accessories, die beim
+                     Booten geladen werden sollen. Accessories können sich 
+                     auch in einem normalen Code-File verstecken. Aber dann 
+                     eben nicht beim Booten.
+                     
+   Nach dem Drücken eines <+> erscheint eine Übersicht über alle Systempro-
+   gramme, die zur Installation als residente Module anstehen. Man verläßt
+   diese Seite wiederum durch ein <+>.
+   
+   (n) Install Filer,
+   (o) Install Compiler,
+   (p) Install Editor, etc.
+                      - Mit diesen Flags kann man steuern, ob Editor, Filer,
+                     Compiler usw. als residente Module im Speicher instal-
+                     liert werden sollen.
+                     Dies geht auch nachträglich aus der Shell (mit <I>).
+   
+   (x) Minimum Dir-Space (KB)
+                      - Das GDOS 1.52 erlaubt eine maximale Anzahl von
+                      Directory-Einträgen von 4095. Das bedeutet, daß für
+                      ein einzelnes Volume bis zu 256 KB RAM benötigt werden,
+                      um das zugehörige Directory bearbeiten zu können. Da
+                      es - wie bekannt - speicherfressende Programme gibt
+                      (Editoren z.B.), muß eine gewisse Reserve für die
+                      dynamische Allozierung des dazu benötigten Speichers
+                      bereitgehalten werden. Der Benutzer kann hier - nach
+                      Abwägen seiner Systemressourcen und der Wünsche für
+                      die maximale Directory-Länge - die Zahl der KiloBytes
+                      eingeben, die als letzter Rest vor den speicherhungrigen
+                      Programmen (das sind solche, die mit LargestMemAvail
+                      den größten freien Speicherblock ermitteln und dann
+                      allozieren) versteckt werden, solange bis ein neues
+                      Directory größeren Umfanges benötigt wird, das nicht
+                      mehr mit der unter (i) eingeführten Anzahl von
+                      Directories abdeckbar ist. Wenn die gewählte Zahl
+                      für die hier gesetzte Variable FreeDirSpace aus 
+                      GdosKernel zu klein ist, kann es passieren, daß der
+                      allseits beliebte Fehler 'No buffer in system !' beim
+                      Benutzen des Editors, des Compilers, des Filers oder
+                      der Routine FileCopy aus GdosHelp auftritt.
+                     
+   (4)               L(oad ramdisk, Modules, StatDirs
+         
+     
+   Es können beim Booten des Systems :
+   - Files in die zum System-Volume ('!') erhobene RAMdisk geladen werden;
+   - Module in den Speicher resident geladen werden;
+   - Directories für bestimmte Volumes statisch angelegt werden.
+   Dazu stellt uns das Config-Programm drei Tabellen zur Verfügung:
+   - 20 Einträge für LoadRAMdisk;
+   - 20 Einträge für LoadModules;
+   - 10 Einträge für statische Directories.
+     
+   Die Eingabe bei diesen drei Tabellen ist ähnlich, daher wird nur der
+   Teil LoadRAMdisk beschrieben, die Eingaben bei LoadModules und StatDir
+   sind identisch, zu beachten ist nur, daß bei den 10 statischen Directories
+   nur der Volumename eingegeben werden kann.
+   
+   Eine Besonderheit gilt es aber am Anfang hervorzuheben. Die RAMdisk, in
+   die die Files kopiert werden sollen, muß unter der Rubrik 'Miscellaneous
+   information' das Shortvolume '!', also die Eigenschaft des System-Volumes
+   zugewiesen bekommen haben. Nur in dieses Volume können beim Booten Files
+   kopiert werden. Außerdem achte man darauf, daß dieses Volume tatsächlich 
+   auf einer konfigurierten RAMdisk liegt.
+   
+   Die Tabelle LoadRAMdisk hat 20 Einträge. Es sind zwar nur 10 zu sehen, 
+   die zweiten zehn kommen aber im Laufe der Eingabe noch zum Vorschein.
+   Einzutragen ist:
+                 
+   (a) Volume      - Das Volume, von dem die Files kopiert werden sollen.
+                     (VolumeKennung oder VolumeName)
+   
+   (b) Filename    - Ein Name eines Files, das kopiert werden soll.
+                     Die Filenamen können (wie beim Filer) Wildcards (= oder ?)
+                     enthalten. Auch der Exclude-Wildcard (/) kann im Filenamen
+                     enthalten sein.
+                     Der Wildcard-Effekt entspricht dem beim Filer: bei = werden
+                     alle Files, die dem Wildcard entsprechen, kopiert; bei 
+                     ? wird nachgefragt, indem ein SelectMultipleFiles-Menue
+                     angeboten wird. Man kann so das Laufwerk, von dem die
+                     Files geholt werden, während des Bootens wählen.
+                     Benutzt man das '?'-Wildcard in mehreren Zeilen der
+                     Tabelle, so kann man sich von verschiedenen Disketten
+                     die gewünschten Files in die RAMdisk zusammenholen.
+                     Ist die Option ;H angegeben, dann wird abhängig vom
+                     Filestatus des kopierten Files beim File in der RAMdisk
+                     der Status "hidden" gesetzt.
+                     
+   (c) Display     - Wenn Y eingegeben ist, wird der Filename beim Kopieren
+                     angezeigt, bei N erfolgt das Kopieren ohne Meldung auf dem
+                     Bildschirm.
+                     
+                     
+   Irgenwann geht auch einmal die schönste Konfigurationssitzung zu Ende oder
+   man entdeckt, daß auf einem ganz anderen Volume des Systems ja eine nahezu
+   perfekte Systemkonfiguration gespeichert ist, die nur noch kleiner Wandlungen
+   bedarf, um beim nächsten Booten Verwendung zu finden. Dann sollte man 
+   folgende Option wählen :
+   
+   (5)               Q(uit / Store Config
+   
+   Es zeigt sich ein neues Menu, das alle wohlvertrauten Möglichkeiten bietet,
+   das Programm geordnet zu verlassen und die neue Variante, ein bereits 
+   erstelltes MiscInfo-File von einem anderen Volumes zu laden und zu 
+   bearbeiten.
+   
+   (5.1)             C(hange Misc-Volume. Current is #A00:
+
+   Bei Anwahl dieses Punktes wird angeboten, über FormatIO.EditString, den
+   Namen des voreingestellten MiscInfo-Volumes, also zumeist #a00:, durch einen
+   VolumeNamen oder eine VolumeKennung eigener Wahl zu ersetzen. Auf diesem
+   Volume sollte sich dann tunlichst ein brauchbares MiscInfo-File befinden.
+   Dieses wird, bei erfolgreicher Suche, geladen und steht zur Überarbeitung
+   zur Verfügung. Wird das Misc-Volume nicht erneut geändert, so kann dieses
+   File zum Schluß des Programms auf das Volume zurückgeschrieben werden, von
+   dem es geholt wurde ! Das MiscInfo-File des eigentlichen Bootvolumes wird
+   dann keinerlei Veränderung unterliegen. Mit dieser Option ist es möglich
+   geworden, MiscInfo-Files für verschiedenste Anwendungen zu gestalten, ohne
+   jedesmal das überlebenswichtige MiscInfo des Bootvolumes zu überschreiben
+   (betrifft vor allen Dingen HD-Anwender).
+   
+   Für Leute mit einem gesunden Mißtrauen gegenüber der Stabilität ihres
+   GEPARD gibt es die Option der Zwischendurchsicherung bereits vorhandener
+   Konfigurationselemente :
+   
+   (5.2)             S(ave the file "GDOS_1.5.Misc"
+   
+   
+   Um die Konfigurationsversuche zu beenden, hat der geneigte Benutzer zwei
+   Möglichkeiten :
+   
+   
+   (5.3)             Q(uit und update the file "GDOS_1.5.Misc"
+   (5.4)             E(xit without updating
+                     
+   Im ersten Fall wird das Misc-File - mit den eingegebenen Änderungen - auf 
+   das Volume zurückgeschrieben, von dem es geladen wurde. Im zweiten Fall
+   erfolgt noch einmal die Sicherheitsabfrage, ob etwaige Änderungen wirklich
+   nicht abgespeichert werden sollen, zum Schluß wird in beiden Fällen das
+   Programm in Richtung Shell verlassen.
+   
+   Will der Benutzer seine Bemühungen um eine optimale Systemstruktur 
+   fortsetzen, so wähle er :
+   
+   (5.5)             R(eturn to configuration
+   
+   Bemerkung:
+   Das unnachahmliche Original dieser Dokumentation erstellte mgr, einige
+   tiefschürfende Kommentare zum Original verdanken sich tt, diese 
+   Fassung verbrach kpr, eine sprachliche Bereinigung versuchte kdz.
+  
+  
+  ┌────────────────────────────────────────────────────────────────────────────┐
+  │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+  │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+  └────────────────────────────────────────────────────────────────────────────┘

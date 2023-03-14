@@ -1,0 +1,2060 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                   Compiler (V 3.6a)                      │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+  
+  (0)            Bedienungsanleitung zum GEPARD-MODULA-2-Compiler (Übersicht)
+
+  (1)            Ein erfolgreicher Compilerlauf
+  (2)            Der Compiler entdeckt einen Fehler             
+  (3)            Schwierigkeiten mit den importierten Modulen ?
+  (4)            Steuerung des Compilers aus dem Programm heraus
+  (5)            Übersicht über die Compiler-Optionen
+  (6)            Fehlersuche bei Laufzeitfehlern und Protokolle 
+  (7)            Die Erzeugnisse des Compilers
+  (8)            MODULA-2 im GEPARD-Gewand (Sprachumfang)
+  (9)            Standardkonstanten, -typen und -prozeduren (GEPARDspezifisch)
+  (10)           Der Assembler im Compiler
+  (11)           Modula-2 Fehlermeldungen /3.6a/ 
+  
+  Der MODULA-2 - Compiler, das Herzstück des Systems, wird wohl für gewöhnlich
+  als 'First Compiler' im Config-Programm (siehe Dokumentation dazu) eingerich-
+  tet sein. Er hat den Filenamen 'Compiler.Syst' und findet sich auf der 
+  SYSTEM-Diskette. Er ist dann von der Shell aus über die Taste <C> wie Compi-
+  lieren oder <R> wie Run, d. h. erst Compilieren, dann Ausführen anwählbar.
+  
+  Der zu übersetzende Text muß nun aus einem SelectFile-Menue bestimmt werden.
+  <ESC> bricht wie üblich sofort ab, <RETURN> gestattet die Eingabe eines
+  selbstgeschriebenen Filenamens, ansonsten sollte die Bedienung dieses Menues
+  aus den mitdargestellten Hilfen offensichtlich sein. 
+  Wenn gar nichts anderes hilft, schaue man in die Dokumentation des überall 
+  im System benutzten SelectFile-Menues (Definitions-Modul GdosHelp).
+  
+  Nach erfolgreicher Wahl eines Textes wird nachgefragt, auf welches Volume
+  das zu erzeugende Codefile bei fehlerfreier Compilation geschrieben werden 
+  soll. Das System macht hier jeweils einen Vorschlag, welches Volume benutzt
+  werden könnte, der Benutzer kann wie bei einer Texteingabe mit EditString
+  aus FormatIO üblich verfahren, um seinen Wünschen gemäß diese Vorgabe abzu-
+  ändern. <RETURN> beendet in Richtung Übersetzung, <ESC> führt auch hier 
+  zurück zur Hauptkommandoebene.
+  
+  
+  (1)            Ein erfolgreicher Compilerlauf
+  
+  Der Compiler beginnt seine Arbeit mit der Annahme, daß der gewählte Text
+  immer noch vorhanden ist. Da die Dinge in diesem Abschnitt ja aus dem Blick-
+  winkel einer optimistischen Weltsicht heraus beschrieben werden sollen, 
+  findet er also dieses Textfile, öffnet es und fängt an, darin zu lesen. Er 
+  entdeckt nur solche Programmzeilen, die der Syntax von MODULA-2 (im GEPARD-
+  Gewand) entsprechen, meldet seine Erfolge beim Übersetzen der einzelnen 
+  Teile in etwa wie folgt :
+  Da MODULA-Programme eigentlich immer der Hilfe schon existierender Program-
+  miererzeugnisse bedürfen, listet der Compiler die erfolgreich importierten
+  Definitions-Module auf, d. h. er hat sie irgendwo im System auf einem Drive 
+  gefunden (zur Festlegung einer Suchreihenfolge siehe 'Schwierigkeiten mit den 
+  importierten Modulen ?'), und die gesuchten Objekte sind tatsächlich darinnen 
+  definiert.
+  Da gut strukturierte MODULA-Programme in Submodule und Prozeduren zerfallen,
+  meldet er jeden Wechsel zu einer neuen Komponente dieser Art mit der Ausgabe
+  ihres Namens und einer Zeilennummer, die ihren Anfang markiert; zugleich 
+  dokumentiert der Compiler, wie der vorhandene Speicherplatz durch seine 
+  Tätigkeit beeinflußt wird.
+  Jedes korrekte MODULA-Programm ist als endliches Gebilde irgendwann einmal 
+  durchschritten, der Compiler faßt seine Ergebnisse in einem File zusammen 
+  und speichert dieses - da ja genügend Platz dafür auf dem Zielvolume zu 
+  finden ist und der Name des Files automatisch erzeugt wird in der Form
+     - Name des Moduls wie im Modulkopf + '.Defn' bei Definitions-Modulen,
+     - Name des Moduls wie im Modulkopf + '.Code' bei Implementations- und
+                                                  Programm-Modulen,
+     - (Name des Moduls wie im Modulkopf + '.wxyz' bei Benutzung der Option
+       (*$S wxyz *), siehe unten);
+  - weg, nachdem er seinen endgültigen Triumph durch einige statistische Daten 
+  (Zeilenzahl, Länge des erzeugten Codefiles, Code-Ausgabe-Volume) kundgetan 
+  hat. 
+  Der Rücksturz in die Hauptkommandoebene ist unvermeidlich, es sei denn, der 
+  Compiler wurde durch den Run-Befehl aktiviert. Dann wird zuvor sein neuestes 
+  Produkt sofort zur Ausführung gebracht. Es produziert natürlich keinen 
+  Laufzeitfehler und tut ansonsten genau das, was es sollte. 
+  
+  
+  
+  (2)            Der Compiler entdeckt einen Fehler             
+  
+  Grundsätzlich unterbricht der Compiler seine Arbeit, wenn er auf einen
+  Fehler trifft und erzwingt so, daß dieser im Quelltext beseitigt wird, bevor
+  ein erneuter Compilerlauf hoffentlich erfolgreicher sein kann.
+  
+  Ist auf irgendeinem Drive im System ein Textfile 'ModulaErrors.Text' vor-
+  handen, das sich normalerweise auf der SYSTEM-Diskette befinden sollte, so
+  gibt der Compiler eine Fehlermeldung auf den Standardscreen im Klartext aus.
+  Sonst gibt es nur eine Fehlernummer, die man entschlüsseln kann oder auch
+  nicht (zur Entschlüsselung braucht man dann 'ModulaErrors' oder ein gutes
+  Zahlengedächtnis !).
+  
+  Die Compilation endet nun entweder durch Eingabe von <Q> wie Q(uit in der
+  Hauptkommandoebene oder mit <E> wie E(dit im System-Editor (das File,
+  welches im Moment den Namen 'Editor.Syst' führt). Dieser Editor sollte
+  so beschaffen sein, daß er automatisch die Fehlernummer und die vom Compiler
+  mitgelieferte Zeilennummer der Fehlerstelle im Quelltext (AutoCMD, ErrorNr, 
+  ErrorPos und ErrorFile aus GdosKernel) in dem Sinne auswerten kann, daß er 
+  die vermutliche (!) Fehlerstelle im File sucht und die Fehlermeldung noch
+  einmal wiederholt. Der normale GEPARD-Programm-Editor und auch der
+  GepStar sind dazu in der Lage. 
+  (Bei Warnings, die der im Compiler enthaltene Inline-Assembler gelegentlich 
+  ausgibt, kann durch <C> wie Continue der Übersetzungsprozeß fortgesetzt 
+  werden.)
+  
+  
+  
+  (3)            Schwierigkeiten mit den importierten Modulen ?
+  
+  Sollen irgendwelche Objekte aus bereits vorhandener MODULA-Software in das
+  aktuelle Programm übernommen werden, so muß dies bekanntlich durch einen
+  expliziten Import aus dem Definitions-Modul, in dem das Gewünschte deklariert 
+  wurde, geschehen. Die vom System benötigten Definitions-Module sind allesamt
+  auf der DEFN-Diskette untergebracht. Diese Files sollten während einer
+  Programmentwicklungsphase möglichst schnell zugreifbar sein (RAM-Disk oder
+  Harddisk) und das sie enthaltende Volume als Defn-Volume mit ShortVolName '-'
+  im Config-Programm ( M(iscellaneous information ) oder im Filer ( I(nfo ) 
+  voreingestellt werden. Dasselbe gilt mutatis mutandis auch für selbstgeschrie-
+  bene Definitions-Module.
+  
+  Durch eine solche Konzentration der Definitions-Module in einem Volume
+  werden zwei Ziele gleichzeitig erreicht :
+  1. Bei der Suche nach dem ersten Definitions-Modul schaut das System immer
+     zuvörderst im vordefinierten Defn-Volume nach und ist somit gleich er-
+     folgreich;
+  2. Bei allen weiteren Anforderungen von Definitionen sucht es zuerst im
+     zuletzt erfolgreich angesprochenen Volume und landet dann gleich wieder
+     einen Treffer.
+     
+  Sind dagegen die Definitions-Module im gesamten System verteilt, so startet
+  das GDOS die Suche wie eben beschrieben und klappert notfalls alle (!) vor-
+  handenen Volumes ab, um fündig zu werden.
+  Dabei kann es natürlich sein, daß ein Definitions-Modul mehrfach vorhanden
+  ist und dann womöglich noch in verschiedenen Versionen. Hier hilft die Uses-
+  Compiler-Option (siehe 'Übersicht über die Compiler-Optionen').
+  
+  Bleibt der Compiler hartnäckig bei der Behauptung, daß ein bestimmtes
+  Definitions-Modul nicht verfügbar ist, so muß man es zumindest wohl auf
+  irgendein Volume - d. h. vernünftigerweise ins Defn-Volume - kopieren
+  oder vielleicht sogar erst schreiben und/oder übersetzen ! Letzteres 'oder'
+  verdankt sich dem allseits beliebten Fehler, Implementations-Module vor
+  ihren Definitions-Modulen übersetzen zu wollen.
+  
+  Eine weitere Schwierigkeit mit Definitions-Modulen entsteht häufig dadurch,
+  daß der Exporteur oder der Importeur Probleme mit einer einheitlichen und
+  /oder korrekten Rechtschreibung hat und dadurch einzelne Objekte als nicht
+  auffindbar gekennzeichnet werden. Solche Fehler lassen sich nur durch
+  vergleichende Einsichtnahme in die zugehörigen Definitions-Texte und das 
+  eigene Geschreibsel beheben. Häufig hilft auch ein Blick in die Erzeugnisse
+  der Utility 'DefModAnalyzer'.
+   
+   
+   
+  (4)            Steuerung des Compilers aus dem Programm heraus
+  
+  Gewisse Einflußmöglichkeiten auf das, was der Compiler bei seiner Tätigkeit
+  an Einschränkungen und Erweiterungen gegenüber seiner Grundeinstellung ge-
+  stattet, sind über sogenannte Compiler-Optionen gegeben.
+  
+  Compiler-Optionen sehen aus wie Kommentare, die in den Programmtext einge-
+  streut sind, aber als Besonderheit alle als drittes Zeichen ein '$' enthal-
+  ten. Beispiel : (*$C+*). Das vierte Zeichen und alle folgenden bis hin zur 
+  abschließenden Kommentarklammer '*)' werden wie folgt ausgewertet :
+  (a) Leerzeichen werden überall ignoriert;
+  (b) der erste Buchstabe nach dem '$' liefert die gewünschte Option;
+  (c) ein darauf folgendes '+' schaltet die Option ein, ein '-' ab;
+  (d) ein Komma signalisiert eine weitere Option, die im Sinne von (b), (c) 
+      gestaltet sein muß;
+  (e) jedes andere Zeichen signalisiert einen Kommentar, der unbeachtet
+      bleibt und vor den abschließenden Kommentarklammern endet.
+  Die Ausnahmen von diesen Regeln findet man unter den Optionen mit den Kenn-
+  buchstaben 'F',' I', 'S' und '?'.
+      
+      
+      
+  (5)            Übersicht über die Compiler-Optionen
+  
+  
+  A  Assembler:                                               Default: (*$A-*)
+  
+     (*$A+*) schaltet auf den integrierten Assembler um und kann dort eingefügt
+     werden, wo eigentlich ein MODULA-Statement hingehört (also nicht mitten 
+     in Ausdrücken!). (*$A-*) schaltet nach Assemblerteilen wieder zurück. 
+     Nach (*$A-*) muß ein Semikolon folgen, wenn eine entsprechende MODULA-
+     Anweisung auch mit einem solchen abgeschlossen werden müßte. 
+     Diese Option kann in MODULA-Programmen inzwischen besser durch die Kon-
+     struktion      ASSEMBLER ... END;     ersetzt werden.
+      
+  
+  C  Case Sensitivity:                                        Default: (*$C-*)
+  
+     (*$C+*) aktiviert die Unterscheidung von Groß-/Kleinschreibung in Bezeich-
+     nern und Schlüsselwörtern, wie nach N. Wirth vorgesehen. 'end' als Variab-
+     lenname wird zulässig, 'End' ist noch ein anderes Objekt etc.
+     Ausschlaggebend für die korrekte Schreibweise importierter Bezeichner
+     ist immer das exportierende Definitions-Modul, auch wenn dieses unter
+     (*$C-*) übersetzt wurde.
+  
+  
+  D  Debug:                                                   Default: (*$D-*)
+  
+     (*$D+*) bewirkt für das folgende Programmstück bis zum nächsten (*$D-*)
+     die Erzeugung zusätzlichen Codes, der die Fehlersuche erleichtern soll. 
+     Zur Laufzeit wird eine schrittweise Abarbeitung begonnen; der Wert der 
+     errechneten Expressions wird ausgedruckt. Einzelheiten siehe Definitions-
+     Modul Debug.
+     Das Debug-Modul braucht dazu nicht mehr importiert zu werden, da es im
+     GDOS resident ist. Die zusätzlichen Optionen des Debug-Moduls (Zugriff
+     auf die Variable 'active', Debug-Umleitung) sind nur wirksam, wenn die
+     Programm(teil)e mit (*$D+*) compiliert wurden. Außerdem muß dann das 
+     Modul Debug explizit importiert werden.
+     
+     
+  F  Fließkomma-Format:                                       Default: s. u.
+     
+     Bestimmt, welches Real-Format bei Real-Konstanten verwendet werden soll.
+     Verwendung : F <Boolean-Type>. <Boolean-Type> kann auch eine importierte
+     Konstante sein ! Dabei gilt :
+     (*$F FALSE *) -> Bisheriges GEPARD-Format, 
+     (*$F TRUE  *) -> IEEE-Format.
+     Wenn diese Option nicht verwendet wird, werden Real-Konstanten in dem 
+     Format erzeugt, unter dem der Compiler standardmäßig läuft (also normaler- 
+     weise das GEPARD-Format, nur bei 68020-Systemen mit FPU das IEEE-Format).
+       
+       
+  G  Gepard:                                                  Default: (*$G+*)
+     
+     Mit (*$G-*) werden einige GEPARD-spezifische Compilerfunktionen abgeschal-
+     tet: Das Modul System wird nicht mehr automatisch importiert, und die
+     Basis für Character-Konstanten ist 8 und nicht 10.
+  
+  
+  I  Include File:                                            Default: keins
+     
+     (*$IFileName.Text *) oder (*$IFileName.Text,q+*) veranlassen den Compiler,
+     sich zunächst dem Text "FileName.Text" zu widmen und nach dessen Ende 
+     zum laufenden Text zurückzukehren. Zusätzliche Leerzeichen sind in der
+     Option beliebig (außer im Filenamen selbst). Das im ersten Beispiel an-
+     gegebene ist allerdings notwendig! Es markiert das Ende des Filenamens.
+     Bis zu 15 Includes können geschachtelt werden. Die nach einem Filenamen
+     angegebenen Optionen werden auch im Include-File berücksichtigt !
+     
+     
+  L  Link Parameters:                                         Default: (*$L+*)
+  
+     Wenn bei Erreichen des BEGIN einer Prozedur der Zustand (*$L-*) eingestellt
+     ist, erzeugt der Compiler keinen Code, um die Prozedur-Parameter vom
+     A3-Stack zu holen. Gedacht ist an Prozeduren, deren Rumpf komplett in
+     Assembler programmiert ist. Hier kann es effektiver sein, die Parameter
+     direkt vom Stack in Register zu übernehmen. 
+     Nähere Hinweise zum Stackformat finden sich im GEPARD-Handbuch. Nur eine
+     Warnung noch: Erst NACH dem END darf wieder auf (*$L+*) geschaltet werden;
+     sonst versucht der Compiler am Prozedurende, den nicht ausgeführten
+     Link-Prozeß rückgängig zu machen - das wird nichts !
+     
+     
+  N  NoRuntime:                                               Default: (*$N-*)
+  
+     Wird vor Beginn der Import-Liste (*$N+*) gesetzt, dann unterbleibt der 
+     automatische Import des Runtime-Moduls. Dafür gibt's tatsächlich einige An-
+     wendungen: Übersetzung des Runtime-Moduls selbst, Erzeugung GDOS-unabhängi-
+     ger Codefiles aus reinen Assemblerprogrammen, expliziter Import eines
+     modifizierten Runtime-Moduls.
+     
+     
+     O  Use Volume for cOde                                Default: -
+     
+     Erlaubt die Vorgabe des Volumes, auf das der Compiler das / die gerade
+     übersetzte(n) Modul(e) schreibt, z.B. (*$O #A0: *) oder (*$O CODES: *). 
+     Diese Option kann insbesondere dann angewendet werden, wenn mit sogenannten
+     Compilations-Files (das ist eine Liste von Include-Files im Sinne obiger
+     Compileroption) ganze Gruppen von Modulen eines Programmierprojektes
+     in einem Durchlauf compiliert werden sollen. Dabei ist es sogar möglich,
+     mehrfach zwischen verschiedenen Volumes hin- und herzuschalten, sodaß 
+     sogar ein und dasselbe Modul mehrfach auf verschiedene Volumes übersetzt
+     werden kann. Diese Option majorisiert das beim Compilerstart gewählte
+     Code-Output-Volume.
+                                                          
+     
+  P  Protokoll:                                               Default: (*$P+*)
+  
+     Programmteile, die unter (*$P-*) compiliert werden, erzeugen auch dann 
+     keinen Protokollausdruck, wenn global ein Protokoll über die ';P'-Option
+     (siehe 'Fehlersuche bei Laufzeitfehlern und Protokolle') angelegt wird.
+     
+     
+  Q  Quiet Compilation:                                       Default: (*$Q-*)
+  
+     (*$Q+*) unterdrückt die Ausgabe von Prozedurnamen und importierten Modulen
+     auf dem Bildschirm. Der Übergang zu anderen Textfiles mit der Include-
+     Option wird weiterhin angezeigt, damit Sie bei Fehlern wissen, wo der
+     Compiler gerade beschäftigt war.
+     
+     
+  R  Range Checking:                                          Default: (*$R+*)
+  
+     Die Erzeugung von Prüf-Code, der während der Laufzeit des Modula-Programms
+     Bereichsüberschreitungen erkennt und abfängt, kann mit (*$R-*) abgeschaltet
+     werden. Dies verkürzt den Code und und die Laufzeit um bis zu 15% - aber 
+     bitte erst verwenden, wenn das Programm ordentlich getestet ist!
+     
+     Im einzelnen werden folgende Überprüfungen abgeschaltet:
+     - Überlauf bei Integer/Cardinal/LongInt/LongCard-Arithmetik;
+     - Bereichsüberschreitung bei Zuweisung auf Subrange-Typen;
+     - dito bei ARRAY-Indizierung;
+     - Zugriff über NIL-Pointer.
+      
+     Prüfungen gegen Stack-Überlauf werden zu Beginn jedes Prozedur-Rumpfes
+     durchgeführt und sind durch (*$R-*) NICHT abschaltbar, aber durch (*$L-*).
+     
+     
+  S  Suffix:                                                  Default: Code
+                                                              
+     Ermöglicht die Erzeugung von Codefiles, die nicht mit dem Suffix 'Code'
+     abgespeichert werden. Zum Beispiel : (*$S Accr *) für Accessories oder
+     (*$S Syst *) für System-Files.
+     Der Suffix darf bis zu vier Zeichen lang sein; kürzere Strings werden mit
+     Leerzeichen aufgefüllt. Die Option kann irgendwo im Textfile stehen. Werden
+     nacheinander mehrere Optionen angegeben, gilt erwartungsgemäß die letzte.
+     In Definitions-Modulen wird diese Option ignoriert und das Suffix stets 
+     mit 'Defn' erzeugt. Diese Option ist hierbei also wirkungslos.
+                                                          
+                                                          
+  U  Use Volume for Definitions                                Default: -
+     
+     Erlaubt die Vorgabe des Volumes, auf dem der Compiler importierte
+     Definitionen sucht, z. B. (*$U #A0: *) oder (*$U DEFN: *). Diese Option 
+     findet insbesondere dann Anwendung, wenn im System verschiedene Versionen
+     eines Definitions- Moduls vorhanden sind. Im allgemeinen sollte diese 
+     Option unmittelbar vor einem solchen besonders zu behandelnden Import 
+     eingefügt und danach mit (*$U - *) wieder auf das gängige Defn-Volume 
+     zurückgeschaltet werden.
+                                                          
+                                                          
+  V  Verbosity:                                                Default: (*$V-*)
+     
+     Ein Zusatz zur Protokoll-Ausgabe (für Numerologen). Man erhält am Ende
+     des Protokolls eine Liste der globalen Variablen, die Source-Text-Länge,
+     die Code-File-Länge, die Kompilationszeit, die Kompilationsrate und 
+     manchmal eine ominöse Bananenzahl.
+                                                          
+                                                          
+  W  Warning:                                                  Default: (*$W+*)
+     
+     Dies ist eigentlich eine Option des Assemblers im Compiler. Immer wenn
+     unerlaubte Manipulationen mit den A3-Register durchgeführt werden,
+     meldet er sich mit 'Warning 250: Illegal addressing mode'. Z.B. mag er
+     nicht 'LEA -256(A3),A0' oder ähnliches. Wenn Sie tatsächlich solche Fehler-
+     meldungen erhalten, machen Sie sich nach Möglichkeit die Mühe, die
+     Stellen so umzuschreiben, daß alles relativ zu A3 adressiert wird. 
+     So wird aus
+         
+         LEA     -256(A3),A0
+         MOVEQ   #255,D0
+       l MOVE.B  (A0)+,(A5)+
+         DBRA    D0,l
+     
+     dann besser :
+         
+         MOVE.W  #-256,D1
+         MOVEQ   #255,D0
+       l MOVE.B  0(A3,D1.W),(A5)+
+         ADDQ.W  #1,D1
+         DBRA    D0,l
+    
+     Der Grund für die Meckerei des Compilers ist übrigens in der Speicher-
+     verwaltung des GDOS zu suchen : Bei gewissen Konstellationen kann sich
+     während der Laufzeit der Inhalt des A3-Registers ändern. Der Heap (A3-
+     Inhalt) wird vom System mitverschoben, aber nicht die Kopie des A3 (im 
+     Beispiel A0). Die zeigt dann in die Wüste. 
+     
+     
+  X  X wie eXtended Mnemonics:                                Default: (*$X+*)
+     
+     Der Asssembler ist um die 68020- und 68881- Mnemonics erweitert worden.
+     Sie sind über die Option  (*$X-*) verhinderbar.
+  
+  
+  ?  Bedingte Compilation                                     Default: keins
+  
+     Eine Art bedingte Compilierung ist möglich. Sie wird auch 'bedingte 
+     Kommentierung' genannt und geht nach dem Schema :
+        
+        (*$ ? <Boolean expression> :
+          ... Anweisungen ...
+        *)
+      
+     Wenn die <Boolean expression> TRUE ergibt, wird der geklammerte Teil über-
+     setzt, sonst wird er als Kommentar angesehen. Diese 'Kommentare' können 
+     überall im Source-Text stehen.
+     
+     Z.B. beim Testen :
+     
+     CONST Test = TRUE;
+     ...
+     ... Anweisungen, Prozeduren, etc ...
+     
+     (*$ ? Test :
+        WriteString ... (* Ausgabe von Informationen *)
+     *)
+     ....
+     
+     Anstatt kompliziert bei allen Zwischen-Versionen immer die Teile zu
+     entfernen, können Sie einfach die Konstante auf FALSE setzen. Arbeiten
+     Sie später weiter, ändern Sie sie wieder.
+    
+    
+  
+  (6)            Fehlersuche bei Laufzeitfehlern und Protokolle 
+  
+  
+  Der Compiler gibt sich alle erdenkliche Mühe, syntaktische Fehler und
+  einfache Denkfehler (z. B. Typkonflikte) zu ermitteln und dem Benutzer zur
+  Reparatur zu übergeben. Trotz dieses Einsatzes zeigen sich viele Fehler 
+  erst, wenn das Programm läuft. Treten also vom System registrierte Laufzeit-
+  fehler auf, so meldet das GDOS die Art des Fehlers (z. B. 'Division by 
+  zero error') und gibt die relative Fehlerposition im Code-File an. Diese 
+  Positionen bestimmter Code-Teile werden auch vom Compiler in ein Compiler-
+  Listing eingetragen : das Protokoll der Compilation. 
+  Darinnen werden zu jeder Textzeile angegeben:
+  
+  - die laufende Zeilennummer;
+  - die erreichte Schachtelungstiefe der Prozeduren;
+  - die relative Adresse innerhalb des Codefiles. 
+  
+  Die Erzeugung eines Protokolls wird nicht durch die üblichen Compiler-Optionen
+  gesteuert. Man vergißt sonst nämlich regelmäßig, das Protokoll vor dem
+  nächsten Compilerlauf wieder abzuschalten. Stattdessen können Sie bei der
+  Eingabe des Source-Files oder des Ausgabe-Volumes eine "Kommando-Option"
+  anhängen, und zwar mit der gleichen Syntax wie im Filer:
+  
+  <filename>;P                    erzeugt das Protokollfile "System.List.Text"
+  <filename>;P MeinListing.Text   erzeugt das Protokollfile "MeinListing.Text"
+  
+  Analog funktioniert das beim Ausgabe-Volume. Natürlich dürfen Sie auch
+  ein kleines "p" schreiben und nach Belieben Leerzeichen verteilen. 
+  Seit neuestem sollte es auch möglich sein, den '.Text'-Suffix bei Protokoll-
+  namen wahlweise wegzulassen.
+  
+  Es gibt sogar noch so eine Kommando-Option, mit der Sie die Spaltenzahl im
+  Protokoll einstellen können. Der Default ist 80 (wie originell); da aber zum
+  Programmtext noch zusätzliche Angaben in die Zeilen kommen, müssen dann
+  die Textzeilen oft aufgespalten werden. Wenn Sie einen Drucker mit mehr
+  als 80 Zeichen pro Zeile haben, möchten Sie vielleicht mit der "Columns"-
+  Option ein übersichtliches Listing erzeugen - etwa so:
+  
+  <filename>;P PRINTER%; C 132
+  
+  Bitte beachten Sie, daß damit nur dem Compiler mitgeteilt wird, wieviele
+  Zeichen er auf eine Protokoll-Zeile schreiben darf - den Drucker müssen Sie
+  vorher selbst auf das passende Format einstellen! Weniger als 40 Zeichen pro
+  Zeile nimmt Ihnen der Compiler übrigens nicht ab.
+  
+  Für Fehler, die zwar während des Programmlaufes auftreten, aber keine Lauf-
+  zeit-Fehlermeldungen des Systems verursachen, gibt es - wie oben bereits 
+  angeführt -  die Möglichkeit der Debug-Option, die es gestattet, die Genese 
+  eines Fehlers durch schrittweisen, auf dem Debug-Bildschirm protokollierten 
+  Ablauf eines Progammes oder Teilen davon zu ermitteln.
+  
+  
+  
+  (7)            Die Erzeugnisse des Compilers
+  
+  
+  Für Leute, die es gewohnt sind, sich für Details auf niedrigster Ebene zu
+  interessieren, sei hier nun die Struktur der vom Compiler erzeugten Files
+  dargestellt. Wie nicht anders zu erwarten, tauchen besonders zwischen
+  Definitions- und Implementations-Modulen Unterschiede auf. 
+
+  Hinweise zur Notation und zu verwendeten Begriffen:
+  
+  Zur Beschreibung des Formats wird eine Art Backus/Naur-Notation verwendet:
+  In {geschweiften Klammern} stehen Teile, die beliebig oft wiederholt werden
+  können (auch Null mal). In [eckigen Klammern] stehende Teile müssen einmal
+  oder gar nicht auftreten.
+  
+  Durch "^Objekt" wird ein Pointer auf das Objekt bezeichnet. Wenn nicht anders
+  angegeben, ist der Wert des Pointers stets relativ zum Anfang des Moduls
+  zu verstehen.
+  
+  Der "Key" eines Moduls wird vom Compiler vergeben, um verschiedene Versionen
+  eines Moduls unterscheiden zu können. Er wird beim Uebersetzen eines Defi-
+  nitionsmodules errechnet und aus dem Definitionsmodul sowohl in die zugehö-
+  rige Implementation als auch in alle Klienten-Module übernommen.
+  
+  Der "linearisierte Baum" im Definitionsmodul enthält die Beschreibungen
+  der exportierten Objekte.
+  
+  Ein "Item" bezeichnet ein beliebiges Objekt aus dem linearisierten Baum.
+  Items können z.B. Variablen, Typen, Prozeduren, Konstanten sein.
+  Items werden "anonym" eingetragen, wenn der Programmierer ihnen keine
+  expliziten Namen gegeben hat (etwa bei Typbeschreibungen, die direkt in
+  einer Variablendeklaration angegeben werden).
+  Die "Item-Nr" wird beim Linearisieren des Baums durch Abzählen vergeben.
+  
+  
+  Format von Definitions-Modulen:
+  
+  1 Byte    Layout Nr             2   für Compiler /3.6a/, erhöht bei
+                                  Änderung des Modulformats  
+  1 Byte    Kennung               immer 3 = DefModul
+  2 Byte    Qualification Flag    1 = qualified | (auch Module ohne Export)
+                                  2 = pervasive |
+                                  0 = unqualified
+  4 Byte    Key
+  4 Byte    ^ linearisierten Baum (relativ zum Dateianfang)
+  2 Byte    Anzahl der definierten Items
+  4 Byte    ^ Import-Liste (relativ zum Dateianfang)
+  4 Byte    Platzbedarf der definierten Variablen
+  
+    ...     Importliste, linearisierter Baum
+  
+  
+  
+  Format der Import-Liste (Def.Modul):
+  
+  {   4 Byte  Key des importierten Moduls
+      2 Byte  Anzahl der im importierten Modul definierten Items
+    2*n Byte  Name des Moduls [$FE] $FF
+    
+    { 2 Byte  Item-Nr des Imports (bit 15 = "Item ist Var/Proc")
+      4 Byte  eigene Item-Nr für dieses Item        
+    } 2 Byte  Endmarke $0000
+  
+  }   4 Byte  Endmarke $00000000
+  
+  
+  
+  Format des linearisierten Baumes:
+  
+  {   2 Byte  Item-Nr des folgenden Items
+                (bit 15 = "dieses Objekt wird exportiert")
+      2 Byte  ^nächste Item-Nr
+                (relativ zur Position dieses ^)
+    2*n Byte  Name des Items [$FE] $FF
+                (Name leer bei anonymen Einträgen, $FE dient als Sync)
+      2 Byte  Kennung
+    2*m Byte  Item-Beschreibung
+  }   2 Byte  Endmarke $0000
+  
+  
+  
+  Beschreibung der Items im linearisierten Baum
+  
+  - Das erste Byte jeder Item-Beschreibung enthält 8 Flag-Bits:
+    bit 7   user defined item  (kein Standard-Symbol)
+    bit 6   exported item
+    bit 5   imported item
+    bit 4   external variable  (feste Adresse)
+    bit 3   VAR parameter
+    bit 2   type descriptor
+    bit 1   global item
+    bit 0   scalar type
+    
+  - Das folgende Byte gibt den Typ des Items an (= Itemnummer seiner Definition,
+    "Kennung").
+    Es gibt Kennungen für alle skalaren Standard-Typen (und Real),
+    für die Beschreibung von Benutzer-definierten Typen (Array, Record,
+    Pointer, Subrange) sowie Konstanten, Prozeduren, Variablen.
+    "BothTypes" bzw. "LongBoth" sind die internen Typbezeichnungen für
+    Konstanten, die zu Integer/Cardinal bzw. LongInt/LongCard kompatibel
+    sind.
+  
+  - Alle Typ-Beschreibungen (erkennbar im Flag-Byte) enthalten anschliessend
+    die Angabe der Byte-Grösse des Typs (32 bit).
+  
+  - Alle Adressen werden relativ zum Modul-Anfang angegeben (ausgenommen
+    externe Variable mit absoluter Adresse).
+    
+  
+  Hinweise zur Notation:
+  
+  <ziffer>   gibt die Item-Kennung an; das Flag-Feld vor der Kennung wird
+             nicht aufgeführt.
+  ^<objekt>  Verweis auf das angegebene Objekt. Im linearisierten Baum besteht
+             er aus der Angabe der ItemNummer (word; siehe auch "Informationen
+             zum Modulformat").
+  "Adr.L"    Adresse relativ zum Modulanfang (absolut bei externen Variablen)
+  "relAdr.L" Adresse eines Recordfeldes relativ zum Record-Anfang.
+  "VarPar"   boolean "dieser Parameter ist VAR-Parameter" (word, 1=true)
+  "dummy"    Feld, das nur aus Kompatibilitäts-Gründen enthalten ist
+             (mit Längenangabe W/L)
+  "Wert-     Länge einer Konstanten in Byte, aufgerundet auf ganze Worte.
+   Länge"  
+  
+    
+  Aufbau der einzelnen Item-Beschreibungen:
+  
+  LongInt      |  1 | Länge.L |
+  Real         |  2 | Länge.L |
+  Char         |  3 | Länge.L |
+               |  4 |
+  Set          |  5 | Länge.L | ^ ElementTyp |
+  Procedure    |  6 | Adr.L | ^ 1.Parameter | ^ ResultTyp | dummy.L |
+  Parameter    |  7 | ^ nächster Parameter | ^ ParameterTyp | VarPar |   
+  Opaque (imp) |  8 | Länge.L |
+  Enumeration  |  9 | Länge.L | Anzahl Elemente.L | ^ 1.Element |
+  Enum-Element | 10 | OrdWert.W | ^ Enum-Typ | ^ nächstes Element |
+  Subrange     | 11 | Länge.L | Untergrenze.L | Obergrenze.L | ^ BasisTyp |
+  Array        | 12 | Länge.L | ^ IndexTyp | ^ ElementTyp |
+  Record       | 13 | Länge.L | <hier folgt ein lokaler Baum der Felder> |
+  Record-Feld  | 14 | relAdr.L | ^ Typ |
+               | 15 |
+               | 16 |
+  Variable     | 17 | Adr.L | ^ VarTyp | dummy.L |
+  Constant     | 18 | ^ Typ | WertLänge.W | Wert | 
+  Prozedur-Typ | 19 | Länge.L | ^ 1.Parameter | ^ ResultTyp |
+  Pointer      | 20 | Länge.L | ^ BasisTyp |
+  Word         | 21 | Länge.L |
+  LongCard     | 22 | Länge.L |
+  Address      | 23 | Länge.L | ^ BasisTyp |
+  Boolean      | 24 | Länge.L |
+  Opaque       | 25 | Länge.L |
+  Long         | 26 | Länge.L |
+  String       | 27 | Länge.L | Zeichenzahl.L |
+               | 28 |
+               | 29 |
+  LongBoth     | 30 | Länge.L |
+  String-Const | 31 | Zeichenzahl.B | {char.B} |
+  Open-Array   | 32 | ^ ElementTyp |
+  Integer      | 33 | Länge.L |
+  Cardinal     | 34 | Länge.L |
+  BothTypes    | 35 | Länge.L |
+  StandardProc | 36 | Nummer.W | ^ParStandProc |
+  ParStandProc | 37 | ^nächster Parameter | ^ParameterTyp | VarPar |
+  BYTE         | 38 | Länge.L |
+  
+  
+  Anmerkungen :
+  
+  - alle mit ^ bezeichneten Einträge sind als "WORD"-Daten zu verstehen und
+    geben die Itemnummer der zugehörigen Beschreibung an;
+    
+  - der erste Import beschreibt jeweils die importierten Standarditems
+    (entspricht Import aus einem Pseudo-Modul) wobei als Name der eigene
+    Name des beschriebenen Definitions-Moduls verwendet und als Key ein 
+    Dummy eingesetzt wird;
+    
+  - Itemnummern mit dem Wert "0" bedeuten, daß das betreffende Item nicht
+    verwendet wird;
+  
+  - Feld "VarPar" bei Parametern enthält Codierung für "OPEN ARRAY" :
+    Bit  8 gesetzt -> Parameter ist "VAR"-Parameter;
+    Bit 15 gesetzt -> Parameter ist "Open Array";
+  
+  - bei "CONSTANT"-Items gibt die Längenangabe die Länge der beschriebenen
+    Konstanten abhängig vom Basistyp an in Byte oder WORD;
+    
+    
+    
+  Format von Programm-/Implementations-Modulen:
+  
+  8 Byte    Dummy                      nicht mehr benutzt
+  1 Byte    Layout Nr                  0   für Compiler /3.6a/, erhöht
+                                       bei Änderung des Modulformats
+  1 Byte    Kennung                    1 = Programm
+                                       2 = Implementation
+  4 Byte    Key                        Dummy bei Pgm Modul (= 0)
+  4 Byte    ^ Modul-Rumpf              StartAdr bei Ausführung
+  4 Byte    ^ Modul-Ende               Platz für nächstes Modul
+  4 Byte    ^ Import-Liste
+  4 Byte    ^ Export-Liste             Nummer des ersten exportierten Items
+  4 Byte    ^ Relozier-Liste           auch Start der glob. Variablen
+  
+    ...     Importliste
+            [Export-Liste]
+            Modul-Code
+            Relozier-Liste
+            
+            
+  Format der Import-Liste (Pgm/Impl.Modul):
+  
+  {   4 Byte  Key des importierten Moduls
+    2*n Byte  Name des Moduls [$FE] $FF
+    
+    { 2 Byte  Item-Nr des Imports
+      4 Byte  ^ letzte Referenz auf importiertes Item
+    } 2 Byte  Endmarke $0000
+  
+  }   4 Byte  Endmarke $00000000
+  
+  
+  Format der Export-Liste (Impl.Modul):
+  
+      4 Byte    Key des exportierenden Moduls
+      2*n Byte  Name des exportierenden Moduls [$FE] $FF
+  {   2 Byte    Item-Nr
+      4 Byte    Adresse des Items (rel. zum Modulanfang, nur Variablen
+                und Prozeduren stehen in der Exportliste)
+  }   2 Byte    Endmarke $0000
+  
+  
+  Format der Relozier-Liste für Variablen/Prozeduren:
+  
+  {   4 Byte  ^ letzte Referenz
+      4 Byte  Adresse, rel. zum Modulanfang
+  }   4 Byte  Endmarke $00000000
+  
+  
+  Anmerkungen :
+  
+  - die ersten 8 Byte jedes normalen Programm- oder Implementationsmoduls
+    werden nicht benutzt (dies ist eine Reminiszenz an alte APPLE-Zeiten,
+    in denen man die Module im GEPARD absolut im Speicher plazieren mußte 
+    und hier diese Adresse stand);
+    außer GDOS.Syst sind alle Files als normal zu betrachten; 
+  
+  - alle mit ^ gekennzeichneten Pointer sind relativ zum Beginn des Codefiles
+    zu verstehen, wobei die genannten 8 Byte nicht berücksichtigt werden;
+    
+  - bei Moduln ohne Import (nur RUNTIME und mit (*$N+*) übersetzte) besteht
+    die Importliste nur aus der Endmarke = 0.L;
+    
+  - bei Programmmoduln ist der Pointer auf die Exportliste = 0.L;
+  
+  - bei Implementationen ohne Export besteht die Exportliste nur aus der
+    Endmarke = 0.W (Name und Key des exportierenden Moduls sind trotzdem
+    vorhanden);
+    
+    
+    
+  (8)            MODULA-2 im GEPARD-Gewand (Sprachumfang)
+  
+  
+  Ausgangspunkt für die Einschätzung der Eigenheiten dieses Compilers sollte
+  die Definition der Sprache MODULA-2 sein, wie sie in der dritten Auflage
+  des 'Standardwerkes' von Niklaus Wirth 'Programmieren in MODULA-2' gegeben
+  wurde.
+  Hinsichtlich des Sprachkerns (reservierte Wörter, Operatoren, Begrenzer und
+  Bezeichner) gibt es nur folgende Abweichungen. 
+  
+  (a) Da der GEPARD-Compiler ein 1-Pass-Compiler ist, müssen alle Bezeichner
+      vor ihrer ersten Benutzung deklariert sein. Daher ist jedes Objekt, das
+      nicht sofort vollständig definiert werden kann (z. B. Prozeduren) in
+      jeder Art Vorwärts-Referenz zumindest dem Namen nach einzuführen.
+      Dazu dient das zusätzliche reservierte Wort 'FORWARD'.
+      
+  (b) Die Worte 'ASSEMBLER' und 'TABLE' sind reserviert (s. u.).
+  
+  (c) Der Unterstrich '_' ist in Bezeichnern erlaubt. Nationale Sonderzeichen
+      wie etwa das 'ä' sind verboten.
+  
+  Im Bereich der Syntax gibt es aus historischen Gründen noch Unerlaubtes. 
+  
+  (d) - Der Compiler toleriert in Definitions-Modulen eine EXPORT-Liste, die
+        nach Wirth nur noch in lokalen Modulen Verwendung finden dürfte. Die
+        in dieser Liste aufgeführten Bezeichner sind dann auch die einzig
+        exportierten !
+        
+  Und es gibt weiterhin Dinge, die der Wirth'sche Standard nicht kennt oder
+  die von einigen Alt-GEPARDianern bislang sträflich ignoriert wurden. 
+  
+  (e) Die Konstantenkennzeichnung als
+      - LONG (Langwort, 32 Bit) durch ein angehängtes 'L' oder 'D'x,
+      - hexadezimaler Wert durch vorangestelltes '$',
+      - binärer Wert durch nachgeführtes '%',
+      - Zeichen durch eine dezimale oder hexadezimale Zahl gefolgt von 'C' 
+      ist möglich.
+      
+  (f) Die Datentypen 
+      - STRING (= Zeichenkette mit 80 Zeichen);
+      - STRING [anzahl] (= Zeichenkette mit anzahl Zeichen; realisiert als
+        ARRAY OF BYTE mit der aktuellen Länge (<= anzahl) als nulltem Byte);
+      - LONGCARD (32-Bit vorzeichenlose Zahl), LONG (32-Bit Langwort), 
+        BYTE (8-Bit Kurzwort);
+      stehen zusätzlich zur Verfügung.
+      - Bei POINTER-Vorwärts-Referenzen muß im selben TYPE-Bereich die
+        zugehörige Typ-Definition erfolgen.
+        
+  (g) Variablen 
+      - können auf eine feste Adresse abgelegt werden, wenn die folgende 
+        Konstruktion eingehalten wird.
+        In der Deklaration einer Variablen wird hinter dem Namen in eckigen 
+        Klammern die absolute Adresse, an der diese Variable im Speicher 
+        stehen soll, eingefügt.
+       
+  (h) Funktionsprozeduren
+      - können beliebige Datenstrukturen als Ergebnis zurückgeben.
+      
+  (i) Die Kontrollstruktur
+      - 'ASSEMBLER ... END;' mit 680x0-Assembler-Anweisungen im Bereich der
+        drei Punkte ist eine echte Erweiterung.
+  
+  (j) Eine Art Label 
+      - TABLE für globale Tabellen von einfachen Datentypen, die in Assembler-
+        teilen wie üblich mittels 'LEA' angesprochen werden können. In 
+        MODULA-2 - Teilen besorgt das die ADR-Standard-Prozedur;
+        nach diesem reservierten Wort ist die Längenangabe '.B', '.W' oder
+        '.L' zwingend vorgeschrieben. Es folgen der Tabellenname, ein Doppel-
+        punkt und durch Kommata getrennt die einzelnen Einträge der Tabelle;
+        abgeschlossen wird die Tabelle durch ein Semikolon.
+        
+  (k) Standardnamen
+      - MIN und MAX können auch mit REAL-Werten verwendet werden.
+      - INC und DEC können auf POINTER TO ... angewendet werden. 
+      Die normalerweise im Modul [SYSTEM] bereitgestellten, maschinenabhängigen
+      Objekte wie z. B. ADR, WORD, ADDRESS, TSIZE, NEWPROCESS werden wie 
+      Standardnamen ohne expliziten Import bereitgehalten.   
+      - SHORT und EXPAND stehen zur Typkonvertierung zur Verfügung :
+        SHORT (SHORT (LONG) = SHORT (WORD) = BYTE;
+        EXPAND (EXPAND (BYTE) = EXPAND (WORD) = LONG;
+        EXPAND (INTEGER) = LONGINT etc.
+      - TSIZE kann in konstanten Expressions nicht verwendet werden.  
+      - VAL ist eine Funktion mit zwei Parametern typ und ordnungsnummer,
+        wobei typ irgendetwas von der Art INTEGER, CARDINAL, BOOLEAN, CHAR,
+        Aufzählungs- oder Teilbereichstyp ist und ordnungsnummer ein Element
+        des Zahlbereichs CARDINAL. VAL liefert dann den den Wert des Typs typ
+        mit der Nummer ordnungsnummer.
+        
+   Weitere, eher semantische Einschränkungen und Erweiterungen:
+      
+   (l) - Aus Definitions-Modulen exportierte Bezeichner müssen, wenn sie erst
+         in einem lokalen Modul des Implementations-Moduls deklariert werden,
+         in dieses importiert anstatt exportiert werden.
+       - Fehlt in einer CASE-Anweisung der ELSE-Zweig, und wird beim Programm-
+         lauf keine der CASE-Marken angesprungen, so wird kein Laufzeitfehler
+         ausgelöst, da der Compiler ein implizites ELSE erzeugt.
+       - Prioritäten werden ignoriert.
+       
+    
+  (9)            Standardkonstanten, -typen und -prozeduren (GEPARDspezifisch)
+  
+  
+  Standardkonstanten:
+  
+  FALSE     (=  0)
+  TRUE      (=  1)
+  MaxCard    =  2^16 - 1 =       65535;
+  MaxInt     =  2^15 - 1 =       32767;
+  MinInt     = -2^15     =      -32768;
+  MaxLCard   =  2^32 - 1 =  4294967295;                          [SYSTEM]
+  MaxLInt    =  2^31 - 1 =  2147483647;
+  MinLInt    = -2^31     = -2147483648;
+  
+  
+  Standardtypen:
+  
+  Typ             Größe    Wertebereich
+  
+  CARDINAL        2 Byte           0 ... 2^16 - 1     (     0 ... MaxCard)
+  INTEGER         2 Byte       -2^15 ... 2^15 - 1     (MinInt ... MaxInt)
+  LONGINT         4 Byte    (-2^31)L ... (2^31 - 1)L (MinLInt ... MaxLInt)
+  REAL            8 Byte   -1.0E1233 ... 1.0E1233    (13.5 Mantissenstellen)
+  CHAR            2 Byte     CHR (0) ... CHR (255)  
+  BOOLEAN         2 Byte         TRUE , FALSE
+  BITSET          2 Byte        SET OF [0..31]
+  SET OF ...      Größe in Bytes = ((MAX (...) +1) + 7 ) DIV 8
+  POINTER TO ...  4 Byte
+  ADDRESS         4 Byte                                           [SYSTEM]
+  LONG            4 Byte                                           [SYSTEM]
+  WORD            2 Byte                                           [SYSTEM]
+  LONGCARD        4 Byte   0L ... (2^32 - 1)L  (0L ... MaxLCard)   [SYSTEM]
+  BYTE            1 Byte                                           [SYSTEM]
+  STRING [...]    1 - 256 Byte, wobei STRING = STRING [80]         [SYSTEM]
+  
+  Ergänzungen 
+  - zum REAL-Format : REALs werden in 64 Bit dargestellt mit normalisierter
+    Mantisse 0.5 < M <= 1.0 und Exponent E zur Basis 2. Also :
+    Real = ± M * 2^E. Aufteilung der Bits :
+    Bit   Funktion
+    63    Vorzeichen, 1 = negativ
+    62    frei
+    61    frei
+    60 ┐
+    .. ├  Exponent E + $1000, Basis ist 2
+    48 ┘
+    47 ┐  Bit 47 hat die REAL-Wertigkeit 0.5
+    .. ├  Mantisse M 
+    00 ┘  (außer bei 0.0 stets linksbündig, d. h. Bit 47 = 1
+    
+    
+  Standardprozeduren:
+  
+  ABS (x : INTEGER / LONGINT / REAL) : Argumenttype;
+     liefert den absolutwert (Betrag) des Argumentes. Das Ergebnis ist vom
+     gleichen Typ wie das Argument.
+     
+  ADR (x : Typ) : ADDRESS; [SYSTEM]
+     Die Adresse der Variablen x von beliebigem Typ x wird geliefert.
+      
+  CAP (ch : CHAR) : CHAR;
+     Konvertiert Kleinbuchstaben in die entsprechenden Großbuchstaben (auch
+     die landesspezifischen Umlaute werden berücksichtigt).
+     
+  CHR (c : CARDINAL) : CHAR;
+     Liefert das Zeichen mit der Ordnungszahl c.
+    
+  DEC (VAR x : ScalarType);
+     Dekrementiert x um 1. Der Typ von x muß skalar sein, d. h. INTEGER /
+     CARDINAL / LONGINT / LONGCARD / Unterbereiche davon / Aufzählungstypen /
+     CHAR / BOOLEAN / POINTER (werden immer um 1 und nicht etwa um die Element-
+     größe erniedrigt).
+     
+  DEC (VAR x : ScalarType; n : LONGCARD / LONGINT);
+     Dekrementiert x um n; arbeitet analog zu vorigem DEC.
+     
+  DISPOSE (p : POINTER TO typ); [SYSTEM]
+     Gibt den Speicherplatz der Variablen vom Typ typ frei, auf die der Zeiger 
+     p gerichtet ist. 
+     
+  EXCL (VAR s : SetType; i : Scalartype);
+     Entfernt Element i aus der Menge s. s muß vom Typ SET OF ScalarType sein.
+     
+  EXPAND (x : LowerType) : HigherType; [SYSTEM]
+     Die Variable x, die einen Speicherplatz von n Byte belegt, wird gewandelt
+     zu einem Wert, der 2n Byte belegt. Dabei ist n aus {1,2}.
+     
+  FLOAT (x : LONGCARD/LONGINT) : REAL;
+     Typkonversion, die x in eine Zahl des Typs REAL transformiert.
+     
+  HALT;
+     Beendet die Programmausführung mit Anzeige einer Fehlerbox wie bei Lauf-
+     zeitfehlern. Anschließend Rückkehr zur Hauptkommandoebene.
+  
+  HIGH (x : OpenArray) : CARDINAL;
+     Die Prozedur ermittelt die Zahl : Länge des offenen Feldes x minus 1.
+
+  INC (VAR x : ScalarType);
+     Inkrementiert x um 1. ScalarType wie unter DEC erwähnt.
+     
+  INC (VAR x : ScalarType; n : LONGCARD / LONGINT);
+     Inkrementiert x um n. Arbeitet ananlog zum vorigen INC.
+     
+  INCL (VAR s : SetType; i : ScalarType);
+     Fügt Element i in die Menge s ein. s muß vom Typ SET OF ScalarType sein.
+     
+  IOTRANSFER (VAR p, q : ADDRESS; va : ADDRESS); [SYSTEM]
+     Wird zur Zeit nicht vom Modul Runtime unterstützt. Es ist Ersatz im
+     Modul Interrupts zu suchen.
+     
+  MAX (ScalarType) : Scalartype;
+     Ergibt den maximalen Wert des Typs ScalarType, ScalarType wie unter DEC.
+     
+  MIN (ScalarType) : Scalartype;
+     Ergibt den minimalen Wert des Typs ScalarType, ScalarType wie unter DEC.
+     
+  NEW (VAR x : PointerType); [SYSTEM]
+     Reserviert Speicher für x^. 
+     
+  NEWPROCESS (p : PROC; a :ADDRESS; n : LONGCARD; VAR q : ADDRESS); [SYSTEM]
+     Erzeugt eine neue Coroutine p. p bezeichnet dabei die den Prozeß reprä-
+     sentierende parameterlose Prozedur; a ist die Anfangsadresse des zum 
+     Prozeß gehörenden Arbeitsspeichers; q ist ein Parameter für das Resultat
+     bzw. eine Referenz auf die neu erzeugte Coroutine.
+     
+  ODD (x : ScalarType) : BOOLEAN;
+     ODD (x) <=> 'x ist ungerade'. x kann wie bei DEC von jedem skalaren Typ
+     sein.
+     
+  ORD (x : ScalarType) : CARDINAL;
+     Liefert die Ordnungsnummer von x. x kann wie bei DEC von jedem skalaren Typ
+     sein. Das erste Element eines Aufzählungstyps hat die Ordungsnummer Null.
+     
+  SHORT (x : HigherType) : Lowertype; [SYSTEM]
+     Die Variable x, die einen Speicherplatz von 2n Byte belegt, wird gewandelt
+     zu einem Wert, der n Byte belegt. Dabei ist n aus {1,2}.
+     
+  SIZE (VAR x : AnyType) : LONGCARD;
+     Liefert den Speicherbedarf der Variablen x in Bytes.
+     
+  TRANSFER (VAR source, destination : ADDRESS); [SYSTEM]
+     Erzeugt einen Coroutinensprung von der Coroutine source, die suspendiert
+     wird, zu der Coroutine destination. Die Ausführung der Zielroutine wird
+     dort wieder aufgenommen, wo sie sich selbst zuletzt durch eine Transfer-
+     anweisung unterbrochen hatte.
+     
+  TRUNC (x : REAL) : LONGCARD;
+     Ergibt den ganzzahligen Anteil von x. Die Dezimalstellen werden abge-
+     schnitten.
+     
+  TSIZE (x : AnyType) : LONGCARD; [SYSTEM]
+     Die Länge eines Datentyps in Byte wird ermittelt.
+     
+  VAL (x : ScalarType; x : CARDINAL);
+     Ermittelt den Wert eines skalaren Typs an der Stelle x.
+     
+     
+     
+  (10)           Der Assembler im Compiler
+  
+  
+  Die GEPARD MODULA-2 - Implementation erlaubt Ihnen, innerhalb von MODULA-
+  Anweisungen Programmteile in 680x0-Assembler einzufügen. Dazu ist im Compiler
+  ein kompletter symbolischer Ein-Pass-Assembler integriert. Auf alle Daten-
+  strukturen und Prozeduren, die in MODULA deklariert wurden, kann über die
+  jeweiligen Bezeichner zugegriffen werden.
+  
+  Die folgende Beschreibung des Assemblers setzt voraus, daß Sie mit der 
+  680x0-CPU vertraut sind. Dargestellt wird hier vor allen Dingen das Zusammen-
+  spiel von Assembler- und MODULA-Programmteilen. Dabei werden Sie auch einiges 
+  über das 'Innenleben' des MODULA-Compilers erfahren.
+  
+  
+  Assembler-Anweisungen in MODULA-Programmen:
+  
+  Der GEPARD-Compiler erweitert die MODULA-Syntax um die zusätzliche ASSEMBLER-
+  Anweisung. Die Syntax dieser Anweisung lautet :
+  
+     Statement = ... | ASSEMBLER {AsmStatement} END | ...
+     
+  Überall, wo eine MODULA-Anweisung erwartet wird, kann also ein Block von
+  Assembleranweisungen eingeschoben werden. Wie ein AsmStatement genau aus-
+  sieht, erfahren Sie im folgenden Abschnitt. Vieles sehen Sie sicher schon
+  dem folgenden Beispiel an, das die bitweise Spiegelung einer CARDINAL-
+  Variablen ('bit reversal') demonstriert :
+  
+  k und kRev seien globale Variablen vom Typ CARDINAL, also 16 bit lang. 
+     
+     FOR k := 0 TO kMax DO           (* Zahlen k..kMax bitweise spiegeln *)
+       ASSEMBLER                      ; kRev := BitReversal (k)
+           MOVE.W  k, D0              ; hole Schleifenindex
+           MOVEQ   #15, D1            ; 16 Bit sind umzukehren
+       lp  LSR.W   #1, D0             ; schiebe Bit ins eXtend-Flag
+           ROXL.W  #1, D2             ; ... und von dort ins Zielregister
+           DBF     D1, lp             ; das ganze 16 mal
+           MOVE.W  D2, kRev           ; schreibe das Ergebnis in die MODULA-
+                                      ; Variable kRev
+       END;
+       ...
+     END (* FOR k *)
+     
+     
+  Aufbau von Assembler-Anweisungen:
+   
+  Wie in einem konventionellen, seperaten Assembler ist das AsmStatement auf-
+  gebaut :
+  
+    AsmStatement = [Lable] [Opcode [Operand]] [';' Comment]  .
+    
+  Zu den einzelnen Komponenten dieser Assembler-Anweisungen finden Sie in
+  den folgenden Abschnitten nähere Informationen.
+  
+  Zu beachten ist, daß die Assembler-Instruktionen und die Registernamen
+  immer in Großbuchstaben geschrieben sein müssen, wenn die (*$C+*)-Option
+  Gültigkeit hat! Es ist nicht möglich, nur die ASSEMBLER-Blöcke mit der 
+  (*$C-*)-Option zu klammern, um sie klein schreiben zu können. Aufgrund 
+  interner Gegebenheiten im Compiler würden Sie dann Schwierigkeiten haben, 
+  auf Variablen und Funktionen zuzugreifen. Stattdessen müßten Sie dann schon 
+  das ganze Modul mit (*$C-*) übersetzen.
+  
+  Übliche Assembler erwarten, daß Sie ein AsmStatement pro Textzeile in Ihren
+  Quelltext schreiben. Der integrierte GEPARD-Assembler paßt sich hier den
+  MODULA-Gepflogenheiten an : Er ist formatfrei. Sie können also ein Asm-
+  Statement über mehrere Zeilen verteilen oder auch mehrere Statements auf
+  einer Zeile zusammenfassen. Eine Besonderheit ist allerdings zu beachten :
+  Ein ';' leitet einen Kommentar ein, der stets (nur) bis zum Zeilenende reicht.
+  
+  Außer der Kommentierung nach ';' ist auch in ASSEMBLER-Teilen die Verwendung
+  der MODULA-Kommentarklammern (* *) möglich. Sie erlaubt einfaches Ausklammern
+  ganzer Programmteile.
+  
+  
+  Befehlscodes und Adressierungsarten:
+  
+  Der Assembler übersetzt alle Befehlscodes und Adressierungsarten der 680x0-
+  CPU. Als Notation wird die Standardsyntax von Motorola benutzt, wie sie
+  in allen uns bekannten 680x0-Lehrbüchern verwendet wird. Als Assembler-
+  Könner dürfen Sie also ohne Einschränkungen drauflosprogrammieren.
+  
+  Einige Besonderheiten sind allerdings zu beachten : Teilweise muß die voll-
+  ständige Anweisung geschrieben werden, auch wenn der Assembler dies eigent-
+  lich selbst korrigieren könnte. Bei Nichtbeachtung meldet der Compiler einen 
+  Fehler. Beispiele :
+  
+    CMPI    #x, D0      ; hier kann nicht CMP verwendet werden
+    CMPA.L  A0, A1      ; dito
+    MOVE.L  A2, A0      ; hier allerdings braucht nicht MOVEA stehen
+    
+    TST     0(A0,D0.W)  ; Offset (hier : 0) und Größe (.W) sind notwendig
+    
+    CLR     (A2)        ; erzeugt indirekte Adressierung ohne Offset
+    CLR     0(A2)       ; erzeugt indirekte Adressierung mit Offset
+    CLR     offs(A2)    ; ist offs Null, wird indirekte Adressierung ohne
+                        ; Offset erzeugt
+                        
+  Als Operanden können Sie unter anderem Konstanten, Variablen und Prozeduren
+  verwenden, die Sie in MODULA definiert haben. Allerdings müssen Sie etwas
+  Rücksicht auf den Compiler und die Art, wie er seine Variablen und Prozeduren
+  handhabt, nehmen. In den folgenden Abschnitten wird genau verraten, wie das
+  funktioniert; hier schon einmal die wichtige Grundregel :
+  
+  Auf globale Objekte (Variablen und Prozeduren) wird mit absoluter Adressie-
+  rung zugegriffen; auf lokale Objekte und Label mit relativer Adressierung
+  (Label und Prozeduren : PC-relativ; Variable : Adreßregister mit Displace-
+  ment). Trotz der Verwendung absoluter Adressen bleiben auch Module mit
+  Assemblerteilen stets verschiebbar. Der Assembler legt automatisch die In-
+  formationen an, die zum Relozieren, also zum Umrechnen der Adressen vor dem 
+  Starten des fertigen Moduls benötigt werden.
+  
+  
+  Label (Marken):
+  
+  Als Label (Sprungmarke) können alle Bezeichner verwendet werden, die in
+  MODULA als Variablennamen etc. zulässig wären. Reserviert sind allerdings
+  alle Opcode-Bezeichnungen der 680x0 und auch die MODULA-Schlüsselworte.
+  Natürlich dürfen Sie auch Bezeichner benutzen, die außerhalb des Assembler-
+  teils bereits anderweitig (z. B. als globale Variable) definiert sind -
+  auch der Assembler unterstützt das MODULA-Konzept der Lokalität. Dabei
+  müssen Sie allerdings Rücksicht darauf nehmen, daß auch der Assembler nur
+  einen Durchgang durch den Quelltext macht. Also muß in diesem Fall das 
+  Label definiert sein, bevor Sie darauf das erste Mal Bezug nehmen. Sonst 
+  nimmt der Assembler an, die bereits bekannte Bedeutung des Bezeichners sei 
+  gemeint. Normalerweise darf ein Label aber ohne weiteres vor seiner Defini-
+  tion benutzt werden. Die Definition muß dann im gleichen Prozedur- bzw. 
+  Modulrumpf nachfolgen.
+  
+  Labels darf ein Doppelpunkt hinten angestellt werden.
+  
+  Labels dürfen - wie schon erwähnt - nur in PC-relativen Adressierungs-
+  arten benutzt werden. Beispiele für korrekte Anwendungen :
+  
+               LEA      Daten(PC), A0      ; Zugriff auf Tabellen
+               LEA      Ziel(PC), A5       ; gleich noch einer
+   Schleife:   MOVE     (A0)+, (A5)+       ; diese Marke endet mit ':'
+               BNE      Schleife           ; Bcc und BSR sind möglich
+               RTS
+   Daten       DC.W     5, 4, 3, 2, 1, 0   ; der ':' muß nicht sein
+   Ziel        DS       20
+               SYNC
+   
+   
+   
+  Relative Sprünge (Bcc und BSR):
+   
+  Die 680x0 kennt bekanntlich relative Sprünge mit byte- oder wortlanger
+  Angabe der Sprungweite. Wird dabei eine bereits bekannte Marke angesprungen,
+  so verwendet der Assembler automatisch die passende Argumentgröße.
+  
+  Ist dagegen die angesprungene Marke noch undefiniert, so versucht der 
+  Assembler im Normalfall, einen kurzen Sprung zu erzeugen. Stellt sich bei
+  Definition der Marke heraus, daß sie zu weit von einem solchen entfernt
+  ist, so ist eine Änderung der Sprunglänge nicht mehr möglich - ein
+  Assembler-Fehler wird ausgelöst.
+  
+  Um explizit die Erzeugung einer langen Sprungweite zu fordern, können Sie
+  Bcc.L oder Bcc.W schreiben. Die explizite Forderung eines kurzen Sprungs
+  ist nicht erforderlich, aber durch Bcc.S oder Bcc.B möglich.
+  
+  
+  Belegung der CPU-Register:
+  
+  Die Register der 680x0-CPU dürfen Sie in ASSEMBLER-Teilen nicht alle nach
+  Belieben verwenden. Der vom Compiler erzeugte Code benutzt die Register
+  als Zwischenspeicher. Einige Adreßregister haben besondere Funktionen
+  und müssen daher sogar langfristig ihren Inhalt behalten.
+  
+        D0  ┐
+        ... ├  beliebig verwendbar : frei, aber undefiniert !
+        D7  ┘
+        
+        A0     frei
+        A1     reserviert - Verwaltung der lokalen Variablen     
+        A2     reserviert - Zeiger auf aktuelle lokale Variable      
+        A3     reserviert - Heap-Pointer
+        A4     reserviert - Hilfsregister bei Zuweisungen
+        A5     frei
+        A6     frei
+        A7     reserviert - Zeiger auf CPU-Stack
+        
+  Anmerkungen:
+  A1 und A2 sind vielleicht frei bei Verwendung von (*$L-*). A4 ist nur in 
+  Funktionsprozeduren reserviert (Empfangsadresse).
+  Die 'freien' Register können Sie in Assemblerteilen frei verwenden; diese
+  Register behalten jedoch im allgemeinen in MODULA-Programmstücken nicht
+  ihre Werte. Reservierte Register dürfen Sie gar nicht verändern - es sei
+  denn, Sie haben wirklich verstanden, warum und wie Sie es trotzdem dürfen!
+  
+  
+  Zugriff auf globale Variable:
+  
+  Der Zugriff auf globale Variable ist wirklich einfach : Nur den Namen be-
+  nutzen - fertig ! Der Assembler ersetzt den Namen durch die absolute Adresse
+  der Variablen. Variablen sind also immer als Source- oder Destination-
+  Adresse zulässig, wenn die 680x0 absolute Adressierung erlaubt. Beispiele :
+  
+     CLR.W     MyCardinal
+     CMPI.W    #'x', MyChar      ; CHAR hat beim GEPARD 2 Byte
+     SUBQ.L    #2, LongCount
+     MOVE.W    j, k
+     LEA       ArrayVar, A0
+     
+  Etwas mehr müssen Sie naturgemäß tun, wenn die Variable nicht 1, 2 oder 4
+  Bytes lang ist (kann man mit SIZE ermitteln), also keine der 680x0-Operanden-
+  größen hat. Beispiele :
+  
+     VAR
+       MyReal    : REAL;         (* hat 64 Bit im Standard-GEPARD-Format *)
+       Index     : CARDINAL;
+       MyString  : ARRAY [0..79] OF CHAR;
+       MyRecord  : RECORD
+                     name        : ARRAY [0..9] OF CHAR;
+                     left, right : ADDRESS;
+                   END;
+                   
+     BEGIN
+       ASSEMBLER
+         LEA       MyReal, A0    ; REAL-Variable auf den CPU-Stack bringen
+         MOVE.L    (A0)+, -(A7)  
+         MOVE.L    (A0), -(A7)   
+         ...
+         LEA       MyString, A0  ; D1 := MyString [Index]
+         MOVE.W    Index, D0
+         MOVE.B    0(A0, D0.W), D1
+       END;
+     END;
+     
+  Das letzte Beispiel zeigt, wie ein Stringelement erreicht werden kann. Der
+  Zugriff auf beliebige Felder wird später erläutert.
+  
+  Namen von RECORD-Feldern interpretiert der Assembler als den Abstand des
+  Feldes vom RECORD-Anfang. Ein RECORD-Feld können Sie also adressieren, indem
+  Sie die RECORD-Anfangsadresse in ein Register laden und den Feldnamen als
+  'Displacement' verwenden. Beachten Sie, daß trotzdem vor dem Feldnamen der
+  RECORD-Name stehen muß, damit der Assembler den Feldnamen überhaupt erkennt
+  (es sei denn, der ASSSEMBLER-Teil steht innerhalb einer WITH-Anweisung, die
+  das benutzte RECORD eröffnet).
+  
+     LEA      MyRecord, A0       ; teste, ob MyRecord.left = NIL
+     TST.L    MyRecord.left(A0) 
+     BEQ      empty
+     
+     
+  Zugriff auf lokale Variable:
+  
+  Lokale Variable haben keinen festen Speicherbereich, sondern werden bei
+  jedem Aufruf der zugehörigen Prozedur neu angelegt (wichtig für Rekursion!).
+  Auf den Beginn des Variablenbereichs, der zur gerade laufenden Prozedur
+  gehört, zeigt dann das Adreßregister A2. Alle lokalen Variablen müssen
+  relativ zu diesem Register adressiert werden, wenn die Option (*$L+*)
+  gültig ist.
+  
+  Der Assembler unterstützt diese Adressierung, indem er (wie bei RECORD-
+  Feldern) lokale Variablennamen in ein Displacement umsetzt. Sie geben hinter
+  diesem Displacement als Basisregister immer A2 an. Beispiele :
+  
+    PROCEDURE asmDemo;
+    VAR
+      j, k, MeinCardinal : CARDINAL;
+      MyChar             : CHAR;
+      MeinBitset         : BITSET;
+      LongCount          : LONGCARD;
+      ArrayVar           : ARRAY [0..9] OF INTEGER;
+      
+    BEGIN
+      ASSEMBLER
+        CLR.W    MeinCardinal(A2)
+        CMPI.W   #'x', MyChar(A2)
+        SUBQ.L   #2, LongCount(A2)
+        MOVE.W   j(A2), k(A2)
+        LEA      ArrayVar(A2), A0
+        ...
+        
+  Um lokale ARRAYs oder RECORDs zu adressieren, laden Sie deren Anfangsadresse
+  in ein Register (letztes Beispiel) und verfahren dann genau so weiter, wie 
+  oben für globale Variable beschrieben.
+  
+  Schließlich gibt es auch die (etwas kompliziertere) Möglichkeit, in lokalen
+  Prozeduren Variablen der übergeordneten, äußeren Prozedur zu adressieren.
+  Aufklärung über diesen Sachverhalt im späteren Abschnitt 'Lokale Variablen'.
+  
+  
+  Pseudo-Opcodes:
+  
+  Der Assembler unterstützt folgende Pseudo-Opcodes, die vor allem zum Anlegen
+  von Tabellen dienen :
+  
+  DC - Define Constant
+    legt Konstanten als Byte, Wort oder Langwort im Code ab.
+    DC.B    $1001, $1002, 'a'     ; legt LowBytes ab ($01, $02, $61)
+    DC.W    $A, $B, 12, 13
+    DC.L    WriteLn, WriteString  ; legt Prozeduradressen ab
+    DC.D    1.5, -0.333333333333  ; legt REAL-Konstanten ab
+    
+    
+  DS - Define Storage
+    reserviert Platz im Code. Meist ist die Verwendung von Variablen
+    einer DS-Anweisung vorzuziehen !
+    DS      100                   ; 100 Byte freihalten
+    
+    
+  ASC - ASCII Constant
+    legt Zeichenfolge im Code ab (ohne Endemarke)
+    ASC     'Hallo'
+    
+    
+  ACZ - ASCII with Zero
+    legt Zeichenfolge mit Endmarke 0.B ab (Stringformat Wirth).
+    ACZ     'Hier folgt eine Null ->' ; so sehen Standard-MODULA-Strings aus
+    
+    
+  STR - ASCII with Length (PASCAL-like GEPARD-STRING)
+    legt Zeichenfolge mit führendem Längenbyte ab.
+    STR     'PASCAL'              ; genauso wie : 
+                                  ; DC.B 6, 'P','A','S','C','A','L'
+                                  
+                                  
+  SYNC - Synchronisieren
+    erzeugt ein Null-Byte, falls der PC ungerade ist. Anzuwenden, wenn z. B.
+    nach Byte-Tabellen Befehlscodes folgen.
+    SYNC                          ; hat keine Argumente
+    
+    
+  USE - PROCEDURE-Check
+    Ermöglicht die Überprüfung von Prozedurköpfen auf Änderungen in der
+    Liste der formalen Parameter. Da in ASSEMBLER-Teilen die Verantwortung 
+    für die korrekte Verwaltung der Parameter einer Prozedur beim Programmierer 
+    liegt und keine Überprüfung durch den Assembler selbst durchgeführt werden
+    kann, wird hier eine Hilfestellung angeboten : es wird gecheckt, ob die 
+    im ASSEMBLER-Teil beim Aufruf der Prozedur unterstellte Reihenfolge und 
+    Anzahl der Parameter einer Prozedur immer noch Gültigkeit besitzt. 
+    Wichtig bei importierten Definitions-Modulen, die eine Änderung erfahren 
+    haben.
+    USE Interrupts.Install (vector    : LONGINT;
+                            priority  : CARDINAL;
+                            serve     : PROC;
+                            workSpace : LONGCARD;
+                            init,
+                            exit      : LIntProc;
+                            saveMode  : ModifyStates;
+                            replace   : BOOLEAN) : ErrorType;
+    
+  BOMB - System break-down
+     provoziert einen Systemabsturz (ausprobieren !).
+     BOMB   A7         ; verträgt alle Adressierungsarten
+    
+  Wenn Sie unter den Pseudo-Opcodes Anweisungen zur Definition von Labels
+  auf bestimmte Adressen vermissen, liegt das nicht daran, daß wir sie 
+  vergessen hätten - die Deklaration von Konstanten in MODULA (CONST-Dekla-
+  ration) und die Deklaration von Variablen auf festen Adressen (z B.
+  VAR a [$1234] : CARDINAL;) bietet ja genau diese Funktion.
+  
+  
+  Anmerkung zu den CPU-Registern:
+  
+  Der Zeiger auf den CPU-Stack (A7) ist Ihnen als Assembler-Programmierer
+  bereits bekannt. Wie von der Architektur der 680x0 vorgegeben, benutzt der
+  Compiler diesen Stack zum Ablegen von Rücksprungadressen bei Unterprogrammen.
+  Außerdem werden die lokalen Variablen für aufgerufene Prozeduren auf dem
+  CPU-Stack angelegt. Auch in einigen anderen Situationen (FOR - und WITH-
+  Anweisungen) wird Platz auf dem CPU-Stack benötigt. Dieser Stack 'wächst' 
+  bekanntlich von oben nach unten; beim Aufstapeln neuer Daten wird A7 also 
+  erniedrigt (dekrementiert).
+  
+  Der Zeiger auf den Parameter-Stack (A3) verwaltet einen weiteren Stack. 
+  Dieser dient speziell zur Übergabe von Parametern (und eventuell Ergebnissen)
+  von Prozeduren. Auch Zwischenergebnisse bei der Auswertung von Ausdrücken
+  werden dort abgelegt. Der Parameter-Stack wächst von unten nach oben, und 
+  zwar direkt dem CPU-Stack entgegen : Im Arbeitsspeicher eines aufgerufenen
+  Programms steht A7 zunächst am oberen, A3 am unteren Rand. Dadurch wird der
+  Arbeitsspeicher je nach Bedarf von beiden Stacks beansprucht.
+  
+  Das Register zur Verwaltung der lokalen Variablen (A1) funktioniert viel
+  einfacher als sein Name befürchten läßt. Um Rekursion zu ermöglichen, muß
+  bei jedem Aufruf einer Prozedur neuer Platz für die lokalen Variablen orga-
+  nisiert werden. Vielleicht ruft sich die Prozedur ja sogar gerade selbst
+  rekursiv auf. Dann werden die vorher benutzten Variablen nach der Rückkehr
+  wieder gebraucht.
+  
+  Dazu bietet die 680x0-CPU die LINK-Instruktion an. LINK A1, #Platz rettet
+  A1 auf den CPU-Stack, kopiert den Stackpointer nach A1 und subtrahiert <Platz>
+  vom Stackpointer. Presto - schon zeigt der Stackpointer auf <Platz> Bytes
+  freies RAM , das wir für die Variablen benutzen wollen. Am Ende der Prozedur
+  genügt ein UNLK A1, um A1 und den Stackpointer wieder in den Zustand vor dem 
+  letzten LINK zu vesetzen. Das Ganze funktioniert auch mit anderen Registern 
+  als A1; der Compiler hat sich aber auf dieses Register festgelegt und hofft 
+  sehr, daß Sie es in Ihren ASSEMBLER-Teilen immer schön heil lassen.
+  
+  Die Erzeugnisse des Compilers / unter (*$L+*) / bei Prozeduren lassen sich 
+  sehr gut mit dem Monitor verfolgen :
+  
+      MOVEM.L    A2/A4, -(A7)
+      LINK       A1, #-2
+      [MOVE.L    D2, -(A7)] *
+      MOVE.L     A7, A2
+      LEA        0(A1), A0
+      MOVE.L     -(A3), -(A0)
+      ...
+      UNLK       A1
+      MOVEM.L    (A7)+, A2/A4
+      
+  Die Zeile mit dem Stern taucht nur bei lokalen Prozeduren auf. In diesem Fall
+  erfolgt vor dem Aufruf einer lokalen Prozedur ein MOVE.L  A2, D2 !
+  
+  Bleibt noch der Zeiger auf die aktuellen lokalen Variablen (A2) zu erwähnen.
+  Wie Sie im vorigen Absatz gelesen haben, zeigt nach der LINK-Instruktion
+  zunächst A7 auf den gerade reservierten Platz. Da sich A7 aber (etwa in FOR-
+  Schleifen) verschieben wird, benötigen wir einen anderen, stabilen Zeiger
+  auf die Variablen. Der Compiler reserviert hierfür A2 und erzeugt an jedem 
+  Prozeduranfang Code, der A2 auf die Variablen zeigen läßt.
+  
+  
+  Zugriff auf MODULA-Konstanten:
+  
+  In MODULA definierte Konstanten können Sie ohne Einschränkungen als Operan-
+  den verwenden. Sowohl die Benutzung als 'Immediate'-Daten (hinter '#') als
+  auch als globale Adressen oder relative Displacements ist möglich. 
+  Beispiele :
+    MOVE.L   #Konstante, D0
+    LEA      AdressKonst, A0
+    MOVE.L   D0, AdressKonst   
+    LEA      Offset(A0), A2
+    
+  
+  Zugriff auf globale MODULA-Variable, speziell ARRAYs:
+  
+  Das Wichtigste über globale Variablen wurde bereits erläutert. Es fehlt die
+  Beschreibung allgemeiner ARRAY-Zugriffe.
+  
+  Die Anfangsadresse des ARRAYs wird in ein Adreßregister geladen. Ist die
+  untere Grenze des Indexbereiches nicht Null, so müssen Sie vom Indexwert
+  zunächst diese Untergrenze subtrahieren - das erste Element des Feldes steht
+  immer am Beginn des Feldplatzes. Der so korrigierte Index wird dann mit der
+  Byte-Größe der Feldelemente multipliziert. Bei der Bestimmung der Element-
+  größen hilft der Abschnitt 'Interne Datenformate'. Beispiel :
+  
+  Es sei MyArray : ARRAY [LowBound..HighBound] OF LONG.
+  
+     LEA           MyArray, A0    ; MyArray [Index] auf den CPU-Stack bringen
+     MOVE.W        Index, D0
+     SUB.W         #LowBound, D0  ; Untergrenze vom Index abziehen
+     LSL.W         #2, D0         ; Index mit Elementgröße (2^2) multiplizieren
+     MOVE.L        0(A0,D0),-(A7) ; erst die vorderen vier Bytes auf den Stack
+     
+  Ist das Produkt aus Elementlänge und Index-Untergrenze kleiner als 128, dann
+  ist eine vereinfachte Version des Feldzugriffs möglich : Statt die Unter-
+  grenze vom Index zu subtrahieren, können Sie auch das Displacement beim 
+  eigentlichen Zugriff korrigieren. Beispiel für den häufigen Fall, daß die
+  Untergrenze 1 ist (MyArray : ARRAY [1..n] OF CARDINAL) :
+  
+     LEA           MyArray, A0    ; Ziel := MyArray [Index]
+     MOVE.W        Index, D0
+     ADD.W         D0, D0         ; Elementlänge ist 2 Byte
+     MOVE.W        -2(A0,D0.W), Ziel; Zugriff mit Korrektur der Untergrenze
+     
+  
+  Lokale Variable:
+  
+  Auch zu diesem Thema haben Sie die grundlegenden Informationen schon gehört.
+  Sie sollen jetzt noch erfahren, wie in lokalen Prozeduren auf die Variablen
+  übergeordneter Prozeduren zugegriffen werden kann.
+  
+  Auch diese Variablen sind noch nicht global, werden also zur Laufzeit ange-
+  legt. Um sie wiederfinden zu können, baut der Compiler für die Laufzeit eine
+  Zeigerkette auf : In lokalen Prozeduren zeigt Adreßregister A2 gar nicht 
+  direkt auf die Variablen der übergeordneten Prozedur (da haben wir oben ein
+  wenig vereinfacht). Unter der Adresse (A2) finden Sie zunächst einen Zeiger
+  auf die Variablen der übergeordneten Prozedur; erst dahinter (Adresse 4(A2))
+  beginnen die eigenen Variablen. Bei der Adressierung über den Variablen-Namen
+  wird dieser Offset natürlich automatisch berücksichtigt.
+  
+  Damit ist Ihnen sicher schon klar, wie Sie an die äußeren Daten herankommen.
+  Das folgende Beispiel beseitigt hoffentlich die letzten Zweifel :
+  
+     PROCEDURE aussen;
+     VAR
+       aVar : CARDINAL;
+       
+       PROCEDURE innen;
+       VAR
+         iVar : CARDINAL;
+       
+       BEGIN
+         ASSEMBLER
+           MOVE.L (A2), A0       ; A0 zeigt auf die Variablen von 'aussen'
+           ADDQ   #1, aVar(A0)   ; jetzt ist aVar erreichbar
+           MOVE   aVar(A0), iVar(A2)
+         END;
+       END innen;
+     ...
+     END aussen;
+     
+  Angenommen, in diesem Beispiel ist auch 'aussen' lokal zu einer dritten
+  Prozedur 'ganzAussen' deklariert und an deren Variablen wollen Sie nun von
+  'innen' herankommen, dann brauchen Sie die Zeigerkette natürlich nur eine
+  Stufe weiter zurückverfolgen, denn 'aussen' hat vor seinen Variablen einen
+  Zeiger auf die übergeordneten Daten. Also :
+  
+     MOVE.L   (A2), A0           ; A0 zeigt auf Variablen von 'aussen'
+     MOVE.L   (A0), A0           ; A0 zeigt auf Variablen von 'ganzAussen'
+     
+  Da wir vorhaben, einige Optimierungen an der Code-Erzeugung des Compilers
+  vorzunehmen, weisen wir vorsorglich darauf hin, daß Zugriffe auf lokale
+  Variablen innerhalb von WITH-Anweisungen nicht durchgeführt werden sollen.
+  Stattdessen ist es besser, eine lokale Prozedur anzulegen, die innerhalb der
+  WITH-Anweisung aufgerufen werden kann und in der dann die Assembler-Zugriffe
+  wie oben beschrieben auf die lokalen Variablen erfolgen können.
+  
+  
+  Fehlerprüfungen vom Assembler:
+  
+  Der Assembler führt ein paar Überwachungen durch, auf die wir Sie vielleicht
+  hinweisen sollten :
+  Führen Sie einen Datenzugriff auf eine MODULA-Variable durch (z. B. MOVE,
+  ADD, nicht jedoch LEA), prüft der Compiler je nachdem, ob dieser sinnvoll
+  sein kann. So macht es keinen Sinn, MOVE var, D0 zu programmieren, wenn die
+  Variable lokal ist. Ebenso unsinnig wäre ein Zugriff mit einem Adreßdisplace-
+  ment bei einer globalen Variablen. In solchen Fällen meldet der Assembler
+  den Fehler 213 (logisch falsche Adressierung). Allerdings meckert er nicht,
+  wenn Sie beim Zugriff auf eine lokale Variable das falsche Adreßregister
+  benutzen (also nicht A2). Sie könnten A2 ja in das verwendete Register
+  kopiert haben. Dieselbe Fehlermeldung können Sie auch bei anderen sinnlosen
+  Verwendungen von MODULA-Bezeichnern erwarten.
+  
+  
+  Aufruf von globalen MODULA-Prozeduren:
+  
+  Um eine global unter MODULA deklarierte Prozedur aufzurufen, genügt ein
+  JSR ProzedurName. Der Compiler erzeugt daraus einen Aufruf mit absoluter 
+  Adressierung. Das funktioniert auch ohne weiteres für importierte Prozedu-
+  ren wie z. B. JSR WriteLn.
+  
+  Wenn eine Prozedur Parameter erwartet, liegt es beim Aufruf aus Assembler-
+  programmen in Ihrer Verantwortung, diese richtig bereitzustellen. 
+  Das geht so :
+  
+  * Vor dem Auruf einer Prozedur werden alle Parameter in der Reihenfolge
+    ihrer Deklaration im Prozedurkopf auf den Parameter-Stack gebracht.
+  
+  * Bei Werte-Parametern ('call by value') wird eine Kopie des Wertes 
+    übergeben; bei VAR-Parametern ('call by reference') übergeben Sie die 
+    Adresse der Variablen.
+    
+  * Wichtig bei Wertübergaben : Der Parameter-Stackpointer muß nach jedem
+    Parameter auf Wortlänge synchronisiert sein ! Ist ein Parameter eine 
+    ungerade Anzahl Bytes lang, müssen Sie anschließend A3 um ein Byte erhöhen 
+    oder besser 00.B auf den Stack schieben !
+    
+  * An Open-ARRAY-Parameter wird bei (Wert- und VAR-Parametern) immer die
+    Adresse und anschließend der HIGH-Wert (als Wort) übergeben. Bei Übergabe
+    an Open-ARRAY-Wert-Parameter muß eine Kopie des Parameters erzeugt und 
+    übergeben werden, damit die aufgerufene Prozedur das Original nicht
+    verändern kann.
+    
+  * Die aufgerufene Prozedur sorgt für das Abräumen der Parameter vom A3-Stack.
+    Funktions-Prozeduren legen vor der Rückkehr ihren Ergebniswert auf dem 
+    A3-Stack ab, der dann natürlich leergemacht werden muß ! 
+    
+  Noch nicht alles klar ? Dann helfen sicher einige Beispiele :
+  
+  
+     VAR
+       MeinCardinal       : CARDINAL;   (* 16 Bit - 1 Wort *)
+       MeinString         : ARRAY [0..39] OF CHAR;
+       MeinReal, DeinReal : REAL;
+       
+     ...
+     USE WriteLCard (c : LONGCARD; space : CARDINAL);
+     MOVEQ.L    #0, D0           ; Long-Wert in D0 löschen
+     MOVE.W     MeinCardinal, D0 ; Wert von MeinCardinal
+     MOVE.L     D0, (A3)+        ; und auf den Stack damit
+     MOVE.W     #8, (A3)+        ; Feldbreite für Ausgabe (space)
+     JSR        WriteLCard       ; Ausgeben
+     ...
+     USE ReadCard (VAR c : CARDINAL);
+     MOVE.L     #MeinCardinal, (A3)+   ; Adresse von MeinCardinal
+     JSR        ReadCard
+     ...
+     USE ReadString (VAR s : ARRAY OF CHAR);
+     LEA        MeinString, A0   ; ein ARRAY [0..39] OF CHAR
+     MOVE.L     A0, (A3)+        ; Adresse des STRINGs
+     MOVE.W     #39, (A3)+       ; HIGH-Wert
+     JSR        ReadString
+     ...
+     
+     
+  Aufruf von lokalen MODULA-Prozeduren:
+  
+  Keine Sorge - alles, was Sie eben über Parameterübergaben gelernt haben, gilt
+  für lokale Prozeduren ganz genau wie für globale. Einen Unteschied gibt es
+  nur beim Aufruf selbst. Lokale Prozeduren werden PC-relativ adressiert, also
+  durch BSR ProzedurName.
+  
+  Vor dem Aufruf müssen Sie allerdings noch eine weitere Information bereit-
+  stellen : einen Zeiger auf den nächsthöheren sichbaren / erreichbaren Vari-
+  ablenbereich, der im Datenregister D2 zu übergeben ist. Welcher Bereich 
+  sichtbar ist, hängt von der Deklarationshierarchie von Aufrufer und auf-
+  gerufener Prozedur ab. Das folgende Beispiel illustriert die beiden gängigen 
+  Anordnungen und zeigt die Bereitstellung des Zeigers :
+  
+  (*$L+*)
+    PROCEDURE aussen;
+    
+      PROCEDURE innen1;
+      ...
+      END innen1;
+      
+      PROCEDURE innen2;
+      
+        PROCEDURE ganzInnen;
+        ...
+        END ganzInnen;
+        
+        BEGIN (* innen2 *)
+          ...
+          MOVE.L A2, D2     ; Aufrufer ruft zu ihm lokale Prozedur
+          BSR    ganzInnen  ; Variablen des Aufrufers sichtbar
+          ...
+          MOVE.L (A2), D2   ; Aufrufer ruft Prozedur auf gleicher Ebene :
+          BSR    innen1     ; die Variablen, die Aufrufer sieht,
+                            ; sieht auch der Gerufene
+          ...
+          MOVE.L (A2), D2   ; rekursive Aufrufe rufen ebenfalls
+          BSR    innen2     ; eine Prozedur auf gleicher Ebene
+          ...
+        END innen2;
+        ...
+    BEGIN
+      ...
+    END aussen;
+    
+  Nochmal in Kurzfassung : Parameter bereitstellen (wie unter 'globale 
+  Prozeduren' beschrieben); je nach Aufruf-Hierarchie passenden Zeiger 
+  nach D2 holen; Aufruf mit BSR.
+  
+  
+  Übernahme von Parametern (Link-Option):
+  
+  Normalerweise sorgt der Compiler selbst dafür, daß zu Beginn einer Prozedur
+  die Parameter in lokale Variable übernommen werden. In ASSEMBLER-Anweisungen
+  können Sie - wie auch unter MODULA - die Parameter genau wie lokale Variable
+  über ihre Namen adressieren.
+  
+  Wenn Sie einen kompletten Prozedurrumpf in Assembler implementieren wollen,
+  kann das Umkopieren vom Parameter-Stack in lokale Variable (und von dort 
+  später in CPU-Register) ineffizient sein. Oft ist es wünschenswert, die
+  Parameter direkt vom Stack in CPU-Register zu übernehmen. In diesem Fall
+  können Sie das Umkopieren durch den Compiler unterdrücken, indem Sie vor 
+  dem Prozedurrumpf die Compiler-Option (*$L-*) setzen. Dann gilt :
+  
+  * Die Parameter stehen so auf dem Stack (A3), wie oben beschrieben. Die
+    aufgerufene Prozedur (also Ihr Assembler-Programm) ist für das Abräumen
+    der Parameter vom Stack verantwortlich.
+    
+  * Funktions-Prozeduren müssen vor der Rückkehr den Ergebnis-Wert auf den
+    Parameter-Stack bringen.
+    
+  * Prozeduren, die unter (*$L-*) übersetzt werden, dürfen keine lokale
+    Variablen haben ! Falls Sie außer den CPU-Registern zusätzlichen 
+    Speicherplatz benötigen, sollten Sie ihn auf dem CPU-Stack (A7) oder
+    mittels DS-Anweisungen selbst anlegen.
+    
+    
+  Als Beispiel hier noch einmal der 'bit reversal'-Algorithmus, diesmal als 
+  komplette Funktion, wie Sie ihn in einem FFT-Modul (Fast Fourier Transfor-
+  mation) verwenden könnten :
+  
+    (*$L-*)
+    PROCEDURE BitRev (c : CARDINAL) : CARDINAL;
+    BEGIN
+      ASSEMBLER
+          MOVE   -(A3), D0     ; hole Parameter
+          MOVEQ  #15, D1       ; 16 Bit sind umzukehren
+      lp  LSR    #1, D0        ; schiebe Bit ins eXtend-Flag
+          ROXL   #1, D2        ; ... und von dort ins Zielregister
+          DBF    D1, lp        ; das ganze 16 mal
+          MOVE   D2, (A3)+     ; schreibe Ergebnis auf den Stack 
+      END;
+    END BitRev;
+    (*$L+*)
+    
+    
+    
+  (11)           Modula-2 Fehlermeldungen /3.6a/ 
+  
+  
+  Fehler im Modulkopf und im Textformat:
+  
+    1: MODULE declaration expected
+       Moduldeklaration erwartet
+       Programm beginnt nicht mit [DEFINITION | IMPLEMENTATION] MODULE.
+    2: Identifier expected
+       Bezeichner erwartet
+       Statt eines Bezeichners steht ein Schlüsselwort oder Satzzeichen.
+    3: IMPORT expected
+       IMPORT erwartet
+       Nach FROM <ModulName> wird IMPORT erwartet.
+    4: Module name expected
+       Modulname erwartet
+       Statt eines Modulnamens steht ein reserviertes Wort oder Satzzeichen.
+    5: Qualifier not allowed here
+       Qualifizierter Name hier nicht erlaubt
+       Bezeichner dürfen hier keinen führenden Qualifier haben.
+    6: Block identifier mismatch
+       Falscher Bezeichner am Blockende
+       Modul-/Prozedurname nach END stimmt nicht mit dem Kopf überein.
+    7: Invalid comment nesting
+       Fehlerhafte Kommentarschachtelung
+       Mehr Kommentarklammern geschlossen als geöffnet wurden.
+    8: Error in compiler option
+       Fehler in Compiler-Option
+       Syntax-Fehler in einer Compiler-Option.
+    9: Unexpected end of input
+       Unerwartetes Ende des Quelltextes
+       Ende des Quelltextes mitten im Modul; auch bei nicht korrekt
+       abgeschlossenen Kommentaren.
+       
+       
+  Fehler im Deklarationsteil:
+  
+   10: Error in declaration part
+       Fehler im Deklarationsteil
+       CONST, TYPE, VAR, PROCEDURE oder MODULE wurde erwartet.
+   11: Identifier declared twice
+       Bezeichner doppelt deklariert
+       Bezeichner ist auf dieser Ebene schon deklariert (evtl. importiert).
+   12: Identifier expected, reserved word found
+       Bezeichner erwartet, Schlüsselwort gefunden
+       Der deklarierte Bezeichner ist als Schlüsselwort reserviert.
+   13: Error in TYPE declaration
+       Fehler in der Typdeklaration
+       Syntaktischer Fehler in der Typdeklaration
+   14: Undeclared identifier
+       Nicht deklarierter Bezeichner
+       Angesprochener Bezeichner ist noch nicht deklariert.
+   15: Illegal symbol (possibly missing ';' or '|' on line above)
+       Falsches Symbol (vielleicht vorher fehlendes ';' oder '|')
+       Gefundenes MODULA-Wort hier unzulässig.
+   16: ';' expected (possibly on line above)
+       ';' erwartet (vielleicht auf voriger Zeile)
+   17: ':' expected
+       ':' erwartet
+   18: '=' expected
+       '=' erwartet
+   19: '..' expected
+       '..' erwartet
+   20: '}' expected
+       '}' erwartet
+   21: ']' expected
+       ']' erwartet
+   22: OF expected
+       OF erwartet
+   23: END expected
+       END erwartet
+   24: Array index must be subrange or enumeration
+       Array-Index muß aus einem Unterbereich oder einer Aufzählung sein
+   25: SET base type must be subrange of word or byte length, or enumeration
+       SET-Basis-Typ muß aus einem Unterbereich oder einer Aufzählung sein 
+   26: Opaque types must be LONG compatible
+       Opaque-Typen müssen LONG-kompatibel sein
+       Opaque-Typen müssen als 32-Bit-Typen implementiert werden.
+   27: 
+   28: Low bound exceeds high bound
+       Untergrenze ist größer als Obergrenze
+       Definition von Unterbereichen : Untergrenze > Obergrenze.
+   29: Integer expected
+       Integer-Wert erwartet
+   30: Cardinal expected
+       Cardinal-Konstante erwartet
+       CARDINAL- oder LONGCARD-Konstante erwartet.
+   31: Length suffix must be B, W or L 
+       Längenangabe muß B, W oder L sein
+       Notwendiger Suffix bei TABLEs
+   32: FORWARD declared procedure '#' not implemented
+       FORWARD-Deklaration '#' noch nicht implementiert
+       FORWARD-deklarierte Prozedur wurde nicht implementiert
+       
+       
+  Fehler in Konstanten:
+  
+   40: Constant expected
+       Konstante erwartet
+   41: Illegal CONST type
+       Unzulässiger Konstanten-Typ
+   42: Number too large
+       Zahl zu groß
+   43: Bad number format
+       Falsches Zahlenformat
+   44: Overflow in mantissa
+       Überlauf in der Mantisse einer reellen Zahl
+   45: Overflow in exponent
+       Überlauf im Exponenten einer reellen Zahl
+   46: SET element out of range
+       SET-Element nicht im Definitionsbereich
+   47: SET elements must not be negative
+       Set-Elemente dürfen nicht negativ sein
+   48: Overflow in constant expression
+       Überlauf in konstantem Ausdruck
+   49: Bad real format selector (undefined ID or illegal value) 
+       Falscher Format-Selektor (nicht definierte ID oder illegaler Wert)
+       falsches Argument in der (*$F ...*) Compiler-Option
+       
+   
+  Fehler in Anweisungen:
+  
+   50: Error in statement
+       Fehlerhaftes <statement> (Anweisung)
+   51: DO expected
+       DO erwartet
+   52: UNTIL expected
+       UNTIL erwartet
+   53: THEN expected
+       THEN erwartet
+   54: TO expected
+       TO erwartet
+   55: ':=' expected
+       ':=' erwartet
+   56: '.' expected
+       '.' erwartet
+   57: Boolean expression expected
+       Boolescher Ausdruck erwartet
+   58: Loop control variable must be scalar
+       Schleifenzähler muß skalar sein
+   59: Increment must be INTEGER constant
+       Inkrement muß INTEGER-Konstante sein
+   60: Increment must be LongInt constant
+       Inkrement muß LONGINT-Konstante sein
+   61: EXIT without LOOP
+       EXIT ohne LOOP
+   62: Can't RETURN from FOR loops in $L- procedures  
+       RETURN aus FOR-Schleifen in (*$L-*)-Prozeduren nicht möglich
+   63: Missing RETURN in function procedure
+       Fehlendes RETURN in dieser Funktion
+   64: Record designator expected
+       RECORD-Bezeichner erwartet
+   65: CASE label declared twice
+       CASE-Marke doppelt deklariert
+   66: CASE selector must be scalar
+       CASE-Selektor muß skalar sein
+    
+    
+  Fehler in Ausdrücken (Expressions):
+  
+   70: Error in <factor> (bad expression)
+       Fehler in <factor> (fehlerhafter Ausdruck)
+   71: '-' not allowed
+       '-' nicht erlaubt
+   72: '(' expected
+       '(' erwartet
+   73: ')' expected
+       ')' erwartet
+   74: ',' expected
+       ',' erwartet
+   75: Type conflict of operands
+       Typkonflikt zwischen Operanden
+       Zwei Operanden verschiedenen Typs wurden verknüpft.
+   76: Illegal type of operand(s)
+       Falscher Operanden-Typ
+       Operation auf diesem Operanden-Typ nicht definiert.
+   77: Only '=' and '<>' are applicable to this type
+       Nur '=' und '<>' sind auf diesen Typ anwendbar
+       Gilt für Opaque- und Pointer-Typen.
+   78: Bad STRING length
+       Falsche STRING-Länge
+   79: Incorrect index type
+       Falscher Index-Typ
+       ARRAY durch falschen Typ indiziert.
+   80: Incorrect type of parameter
+       Falscher Parameter-Typ
+       Falscher Parameter-Typ an Prozedur übergeben.
+   81: Incorrect number of parameters
+       Zu wenige Parameter beim Aufruf
+   82: Variable designator expected
+       Variablen-Bezeichner erwartet
+   83: Variable expected
+       Variable erwartet
+   84: Local or generic procedure not allowed
+       Lokale oder Standardprozedur nicht erlaubt
+       Falsche Zuweisung / Übergabe an einen Prozedur-Typ.
+   85: No open array allowed here 
+       Hier kein Open Array erlaubt
+   86: The HIGH function may be applied to open arrays only
+       HIGH-Funktion nur auf 'Open ARRAY' anwendbar
+   87: Type designator expected
+       Typ-Bezeichner erwartet
+   88: Scalar type expected
+       Skalarer Typ erwartet
+   89: Procedure-Type expected
+       Prozedur-Typ erwartet
+       
+   
+  Semantische Fehler bei IMPORT und EXPORT:
+  
+   90: Exported identifier has not been declared
+       Exportierter Bezeichner nicht deklariert
+   91: Exported identifier is of illegal class
+       Der exportierte Identifier ist von einer nicht erlaubten Klasse
+   92: Imported identifier must not be re-exported
+       Importierter Bezeichner ist nicht re-exportierbar
+   93: Exported procedure '#' not implemented
+       Exportierte Prozedur <ProcName> nicht implementiert
+   94: Procedure implementation different from definition
+       Prozedur-Implementation weicht von der Definition ab
+       Prozedurköpfe in Implementations- und Definitionsmodule
+       sind verschieden
+   95: No pervasive import in definition modules 
+       Keine durchdringenden Importe in Definitions-Modulen
+       Runtime wurde explizit ins Definitions-Modul importiert.
+   96: Error during import
+       Fehler beim Importieren
+   97: Definition module not available
+       Definitions-Modul nicht vefügbar
+       Importiertes Definitions-Modul (Code-Version) fehlt.
+   98: Can't find definition module belonging to implementation
+       Definitions-Modul zu dieser Implementation fehlt
+       Definitions-Modul zur gerade übersetzten Implementation fehlt
+   99: Can't find definition module RUNTIME
+       Definitions-Modul RUNTIME fehlt
+  100: Can't find imported identifier in definition module
+       Importierter Bezeichner nicht im Definitions-Modul
+  101: System procedure from RUNTIME module not available
+       System-Prozedur aus RUNTIME-Modul fehlt
+       Wahrscheinlich alte Version der RUNTIME-Definition verwendet.
+  102: Bad format of definition module
+       Definitions-Modul hat falsches Format
+       File eines importierten Definitions-Moduls fehlerhaft / defekt.
+  103: Old module layout (recompile definition module)
+       Altes Modulformat (Definitions-Modul neu übersetzen !)
+       Importiertes Definitions-Modul wurde mit veralteter Compiler-
+       version übersetzt.
+    
+    
+  Überschreiten von Größenbegrenzungen:
+  
+  110: String too long
+       STRING zu lang
+  111: Too many array elements for this element type
+       Zu viele ARRAY-Elemente für diesen Element-Typ
+       Maximal 2^16 Elemente, falls Elementlänge nicht 1, 2, 4 oder 8 Byte.
+  112: Array elements too large
+       ARRAY-Elemente zu groß
+       Maximale Größe für ARRAY-Elemente ist 64 KB.
+  113: Record too long
+       RECORD zu lang
+       Maximale RECORD-Größe ist 32 KB.
+  114: Sets are limited to 256 elements
+       SETs können maximal 2^8 Elemente haben.
+  115: Not enough room for EXPORT
+       Kein Platz für EXPORT
+       Speicherplatz reicht nicht (eventuell geladene Module freigeben).
+  116: Not enough room for IMPORT (too many imports)
+       Kein Platz für IMPORT (zu viele IMPORTe)
+       Speicherplatz reicht nicht (eventuell geladene Module freigeben).
+  117: Definition module too large (overflow of link table)
+       Definitions-Modul zu groß (Überlauf der Link-Tabelle)
+       Speicherplatz reicht nicht (eventuell geladene Module freigeben).
+  118: Integer stack overflow
+       Überlauf des INTEGER-Stacks
+       Schachtelungstiefe oder CASE-Labelliste zu groß.
+  119: Identifier stack overflow
+       Überlauf des Bezeichner-Stacks
+       Schachtelungstiefe zu groß.
+  120: Too many EXITs
+       Zu viel EXITs
+  121: Too many file inclusions
+       Zu viele Datei-Inklusionen
+       Maximal 15 geschachtelte Include-Anweisungen.
+  122: Not enough room for local variables
+       Zu großer lokaler Variablenbereich
+       Maximal 32 KB lokale Variablen.
+  123: Control structure too long
+       Kontrollstruktur zu lang
+       Maximale Codelänge für Schleifen und Verzweigungen ist 32 KB.
+  124: Branch too long (procedure too large)
+       Sprung zu weit (Prozedur zu groß)
+       Zu viele / zu große lokale Prozeduren.
+  125: Out of code space
+       Kein Platz mehr für Code
+       Speicherplatz reicht nicht (eventuell geladene Module freigeben).
+  126: Structure too large for open array parameter
+       Datenstruktur zu groß für 'Open ARRAY'-Parameter
+       Open ARRAYs müssen durch CARDINALs indizierbar bleiben
+       
+       
+  Restriktionen:
+  
+  130: Implementation restriction
+       Implementationabhängige Einschränkung
+  131: 
+  132: 
+  133: TABLE declaration is restricted to the global level
+       TABLE-Deklarationen können nur global erfolgen
+  134: Error in pointer declaration: bad forward reference
+       Pointer-Deklaration : Ungelöste Vorwärts-Referenz
+       POINTER TO UnknownType : UnKnownType noch im gleichen
+       TYPE-Block deklarieren !
+  135: 
+  136: TYPE conversion is restricted to type of same size
+       Typ-Umwandlungen können nur zwischen Typen derselben Größe erfolgen
+  
+  
+  Fehlermeldungen des Assemblers:
+  
+  201: Wrong addressing mode
+       Falsche Adressierungsart
+       Operation nicht mit dieser Adressierungsart möglich.
+  202: Illegal operand size
+       Falsche Operandengröße
+       Operation nicht mit dieser Datengröße möglich.
+  203: Branch too long
+       Verzweigung (Bcc / BSR) zu weit
+       Achtung : Auch bei Definition eines Labels, einer Tabelle, falls
+                 Vorwärtsreferenzen vorkommen.
+       Verwendung eines Bcc.W könnte Abhilfe schaffen.
+  204: Illegal symbol
+       Unzulässiges Symbol
+  205: Label expected
+       Label (Marke) erwartet
+       Branch-Ziel muß Label sein.
+  206: Undefined label '#'
+       Label-Name nicht definiert
+       Benutzte Labels im selben Block (Rumpf) definieren !
+  207: Number expected
+       Zahl erwartet
+  209: Odd address
+       Ungerade Adresse unzulässig
+       Wort- oder Langwortzugriff auf ungerade Adresse (SYNC verwenden).
+  210: Modula keyword not allowed here
+       MODULA-Schlüsselwort nicht erlaubt
+       MODULA-Schlüsselworte sind auch in ASSEMBLER-Teilen reserviert.
+  211: Short branch not allowed here
+       Kurze Verzweigung (Bcc/BSR) hier nicht erlaubt
+       Kurzer Branch über Null Bytes unzulässig (BRA.W verwenden).
+  212: Label declared twice
+       Label (Marke) doppelt deklariert
+       Im selben Block Label doppelt definiert.
+  213: Logical addressing error (possibly undeclared variable)
+       Logisch falsche Adressierung (eventuell undeklarierte Variable)
+       Auch PC-relativer Zugriff auf gloables MODULA-Objekt oder
+       absolute Adressierung eines lokalen Objektes.
+  214: Illegal Expression
+       Fehlerhafter Ausdruck
+  215: Warning: Use only JMP to BOOT-ROM RTE-emulation !
+       Warnung : Benutze nur JMP, um in die BOOT-ROM - Emulation zu springen
+  216: Operand out of Range
+       Überlauf des Operanden
+  217: 68020 mnemonic not allowed
+       68020 Mnemonic ist nicht erlaubt
+       Wird im (*$X-*) - Modus gültig.
+  218: String too long
+       String zu lang
+  219: Unknown instruction
+       Unbekannte Anweisung
+  220: Foolish addressing mode
+       Verrückte Adresssierungsart
+  221: 68020 addressing mode not allowed here
+       68020-Adressierungsart hier nicht erlaubt
+  250: Illegal addressing mode
+       Falsche Adressierungsart
+  
+  
+  
+  Dieser Text benutzt diverse Originalbeiträge sowie Korrekturen und Ergän-
+  zungen dazu, wie sie im FORUM veröffentlicht wurden von jm, uw, as und ande-
+  ren sowie das GEPARD-Handbuch und Teile der Dokumentation des Megamax 
+  MODULA-2. Zusammengestellt wurde sie von kpr, berichtigt und ergänzt von 
+  jm, mgr und kdz.
+ 
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+ 

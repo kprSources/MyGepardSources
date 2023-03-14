@@ -1,0 +1,363 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │            SelectFile / SelectMultipleFiles              │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+ 
+  (0) Die Auswahl von Files über SelectFile / SelectMultipleFiles (Überblick)
+  
+  (1) Typische Anwendungen von SelectFile 
+
+  (2) Typische Anwendungen von SelectMultipleFiles
+
+  (3) Das Auswählen des gewünschten Volumes
+  
+  (4) Das Selektieren eines Files aus dem Angebot
+  
+  (5) Das Bestimmen eines Files, das nicht im Angebot steht
+  
+  (6) Spezialitäten
+  
+  
+  Die Prozeduren SelectFile und SelectMultipleFiles stammen aus dem Modul
+  GdosHelp. Sie gestatten es, ein File oder eben mehrere Files aus einer
+  Palette von angebotenen auszuwählen. Sie sind vielfältig, durch eine Reihe
+  von Parametern gesteuert, einsetzbar und finden sich daher in fast allen
+  System-Programmen. Über die Integration dieser mächtigen Instrumente in
+  eigene Anwendungen informiere man sich mit Hilfe des Definitions-Moduls von
+  GdosHelp. Hier wird nur die Benutzung erläutert.
+  
+  (1) Typische Anwendungen von SelectFile
+  
+  Soll z.B. ein Programmtext mit Hilfe des System-Editors geschrieben werden 
+  oder aber ein schon existierender Text durch den System-Compiler von der Shell
+  aus übersetzt werden, so zeigt sich unmittelbar nach Betätigen der entspre-
+  chenden Starttaste der Shell das SelectFile-Menue. Es hat z.B. folgenden 
+  Aufbau :
+  
+  
+  Volume Nr    = #A00:
+  Volume Name  = 'System:'
+  
+  Use: # and 0-9 to select volume, ' to enter volumename, or use shortvols.
+       A-Z to select a file, @ takes workfile, press RETURN to enter filename.
+       
+       
+       
+  ────────────────────────────── Load which file? ─────────────────────────────
+  
+  A filename01                           N filename14
+  B filename02                           O filename15
+  . ..........                           . ..........
+  . ..........                           . ..........
+  M filename13                           Z filename26
+  
+  Eine Überschrift - die in diesem Falle leer ist - kann Auskunft darüber geben,
+  welches Programm das SelectFile-Menue anbietet.
+  In der ersten Zeile danach findet sich die VolumeKennung desjenigen Volumes 
+  von dem Files zur Auswahl angeboten werden, gefolgt in der zweiten Zeile vom
+  zugehörigen VolumeNamen (zur Terminologie VolumeKennung bzw. VolumeNamen 
+  siehe Filer-Doku).
+  
+  Der sich anschließende Benutzungshinweis betrifft zwei Ebenen : zum einen
+  kann das Volume, von dem die angebotenen Files stammen, eventuell geändert
+  werden (s.u.) oder aber zum anderen der Zugriff auf ein File in unterschied-
+  licher Art erfolgen (s.u.). Die Frage in der Mitte des Bildschirms wird
+  der jeweiligen Anwendungssituation angemessen formuliert sein. Darunter
+  kommt dann eine Liste mit FileNamen.
+  
+  Der Einfachheit halber sei jetzt vorausgesetzt, daß das gewünschte File
+  bereits in der mit einer alphabetischen Numerierung versehenen Liste steht.
+  Dann ist zum Auswählen nichts anderes nötig, als den Buchstaben einzutippen,
+  der vor dem gewünschten Filenamen steht. Unmittelbar - d.h. ohne weitere
+  Rückfrage - wird dieser Filename nun an das aufrufende Programm übergeben
+  und die eigentlich intendierte Aktion damit ausgeführt. 
+  
+  SelectFile-Menues werden also immer dann Anwendung finden, wenn genau ein
+  File zur Bearbeitung durch ein Programm ansteht.
+  
+  
+  (2) Typische Anwendungen von SelectMultipleFiles
+  
+  Sind dagegen gleich mehrere Files in gleicher Art und Weise zu behandeln,
+  so hat der Programmierer sicherlich zum SelectMultipleFiles-Menue gegriffen,
+  um eine beliebige Anzahl von Files durch den Benutzer selektieren zu lassen.
+  Das untenstehende Beispiel-Menue ist dem des SelectFile sehr verwandt :
+  
+  
+                             Gepard-System-Editor 2.z
+  Volume Nr    = #A00:
+  Volume Name  = 'System:'               Display : all
+  
+  Use: # and 0-9 to select volume, ' to enter volumename, or use shortvols.
+       A-Z select/deselect files, ACCEPT ends selection.
+       F1 selects all, F2/Undo clears.
+       F3 shows full selection, F4 shows only selected, F5 shows unselected.
+  
+  ────────────────────────────── Edit which file? ─────────────────────────────
+  
+  A filename01                           N filename14
+  B filename02                           O filename15
+  . ..........                           . ..........
+  . ..........                           . ..........
+  M filename13                           Z filename26
+  
+  
+  Neu ist - neben der hier vorhandenen Überschrift - eine geänderte / erweiterte
+  Sammlung von Benutzungshinweisen und eine davon abhängige Information über
+  den Umfang und die Art der Darstellung (Display).
+  
+  Während die Informationen zur Volumewahl gleich geblieben sind, mußte die
+  zur Fileauswahl den Gegebenheiten einer Mehrfachwahl angepaßt werden. Zwar
+  kann man wie im SelectFile-Menue genau ein File durch Drücken einer der
+  angebotenen Buchstaben auswählen, aber hier erfolgt als unmittelbare Reaktion
+  auf diesen Vorgang nur das Invertieren der zugehörigen Eintragung. Die Wahl
+  muß in diesem Menue immer noch durch die <ETXKey>- / Accept-Taste bestätigt 
+  werden. Dieser Akt kann aber auch dann erst erfolgen, wenn mehrere Eintra-
+  gungen nach dem gleichen Muster invertiert wurden. Es sind dann alle so
+  hervorgehobenen Files gewählt und werden dem aufrufenden Programm zurückge-
+  meldet. Um ein wenig Arbeit zu sparen gibt es eine Taste, die alle Files
+  des Angebots markiert : <Func1Key>, die erste Funktionstaste. Die weiteren
+  Möglichkeiten sind unten in (4) erläutert.
+  
+  Eine typische Anwendung gerade der zuletzt geschilderten Variante ist das
+  durch eine Gesamtliste kontrollierbar gemachte Löschen der Files eines
+  Volumes. Man hat hier noch einmal die Gelegenheit, alle Filenamen zu sehen,
+  bevor man alle Files unwiederbringbar vernichtet. Das SelectMultipleFile-
+  Menue wird deshalb auch häufig im Filer eingesetzt.
+  
+  
+  (3) Das Auswählen des gewünschten Volumes
+  
+  Wie in der Filer-Doku näher erläutert, ist das Drive die höchste logische
+  Strukturierungsebene für blockorientierte Ein-/Ausgabegeräte. Der Program-
+  mierer, der eines der beiden Select-Menues einsetzt, hat als einen Parameter
+  der verwendeten Prozedur die Volumebezeichnung des Volumes mitgegeben, dessen
+  Files in der Liste dargestellt werden sollen. Damit ist implizit auch vorbe-
+  stimmt, welches Drive diese Angaben im Directory eines Volumes enthält (siehe
+  Filer-Doku). Will nun ein Benutzer die auszuführende Operation auf Objekten
+  eines ganz anderen Drives starten, so muß er einen Drivewechsel vornehmen :
+  
+  (a) <#>-Taste        - Der Cursor springt in die zweite Zeile des Menues und
+                         blinkt auf dem Laufwerkskennbuchstaben (in den beiden
+                         obigen Beispielen also 'A'). Nach dem Eintippen
+                         eines Buchstaben aus der maximal verfügbaren Menge der
+                         Laufwerkskennbuchstaben (A, B, C, D, E, F, H, I, J)
+                         wird, wenn es zu dem Buchstaben ein dem GDOS per
+                         Config gemeldetes Drive gibt, nun versucht, Files, die
+                         den vom Programmierer gewählten Vorgaben entsprechen,
+                         in die Liste einzulesen. Dabei kann es natürlich
+                         vorkommen, daß der Programmierer nur Textfiles (mit
+                         dem FileSuffix Text) einlesen lassen wollte, auf dem
+                         gewählten Volume aber gar kein Textfile existiert.
+                         Dann wird 'No files selected' ausgegeben.
+                         
+  Häufig wird das Wechseln zu einem anderen Drive noch einer Ergänzung durch
+  einen ebenfalls nötigen Wechsel in der VolumeNummer auf dem neuen Drive
+  bedürfen. Liegt die gewünschte VolumeKennung zwischen den Grenzen 0 und 9,
+  so vereinfacht sich das Verfahren auf die Eingabe :
+  
+  (b) <0>|<1>|..|<9>   - Eine Ziffer wählt aus den zehn ersten Volumes eines
+                         Drives das gewünschte aus. 
+                         
+  Da es aber nicht nur 10, sondern 32 maximal mögliche Volumes je Drive gibt,
+  muß zur Anwahl der höheren VolumeKennungen ein anderes Verfahren gewählt
+  werden. Es gibt dabei vier Varianten :
+  
+  (c) > / < - Taste    - Ein Tastendruck auf die Größer- oder Kleiner-Taste
+                         zählt die VolumeKennung rauf bzw. runter. Läßt man
+                         den Finger solange auf der entsprechenden Taste, bis
+                         die gewünschte Kennung erscheint, so ergibt sich ein
+                         todsicheres Verfahren, alle VolumeKennungen zu er-
+                         reichen, denn beim Rauf- oder Runterzählen wird bei
+                         Erreichen der maximalen (<= 31) oder minimalen (= 0)
+                         VolumeKennung ein Sprung zum minimalen bzw. maximalen
+                         Wert vollzogen : man dreht sich also im Kreis der
+                         beim Formatieren vergebenen VolumeKennungen.
+                         
+  Hat man allerdings ein sehr gutes Gedächtnis, so erinnert man statt des
+  Laufwerkskennbuchstaben und der VolumeKennung sogar den VolumeNamen. 
+  Dann hilft :
+  
+  (d) <'>-Taste       - In der dritten Zeile wird der vorgegebene VolumeName
+                        gelöscht und die Eingabe eines neuen VolumeNamens er-
+                        wartet. Dieser maximal 11-buchstabige STRING + ':'
+                        kann mit FormatIO.EditString bearbeitet werden. Die
+                        Eingabe ist mit <EnterKey> oder <ETXKey> oder <ESCKey>
+                        abzuschließen. In den ersten beiden Fällen hatte man
+                        hoffentlich Erfolg und es zeigte sich nicht die
+                        Fehlermeldung 'Volume not available', die dann erzeugt
+                        wird, wenn man kein wirklich gutes Gedächtnis hat. Im
+                        letzten Fall kommt das Eingeständnis der eigenen
+                        Schwäche schon eine Taste früher.
+                        
+  Für Leute mit Gedächtnislücken haben wir die nun folgende Option eingebaut :
+  
+  (e) <+> - Taste     - Hat man noch Erinnerungsfetzen an den korrekten Volume-
+                        Namen, so tippe man diese ein und benutze für nicht
+                        mehr erinnerliche Teile das Wildcard '='. Zum Abschluß
+                        benutze man wieder eine der drei Tasten wie unter (d).
+                        Das System versucht dann, einen passenden VolumeNamen
+                        in seiner dafür geführten Liste (vit, siehe GdosKernel)
+                        zu finden. Wird es fündig, so wird dieses Volume zum
+                        Laden passender Files benutzt. Stellt man fest, das es
+                        offenbar auch noch weitere Volumes gibt, die den Er-
+                        innerungsfetzen enthalten und das gesuchte Volume noch
+                        nicht erreicht ist, so kann man sich mit der nachfolgen-
+                        den Taste helfen :
+                         
+  (f) <.> - Taste     - Wenn bereits ein VolumeNamen per '+'-Option gefunden
+                        wurde, so startet der Punkt die Fortsetzung der Suche
+                        nach einem passenden Volume. So kann man sich durch das
+                        gesamte Arsenal an möglichen Kandidaten hindurchhangeln.
+                        
+  Eine besondere Konstruktion ist bei (e) möglich, wenn man seine VolumeNamen
+  geschickt genug organisiert hat. Unterscheiden sich alle Volumes bereits
+  in einer Anfangssequenz des Namens, so muß nur dieser Anfangsteil eingegeben
+  und mit <EnterKey> oder <ETXKey> die Eingabe abgeschlossen werden.
+  Das System hängt dann automatisch das Wildcard '=' an und sucht wie unter
+  (e) beschrieben. Da die Kennzeichnung als eindeutig vorausgesetzt war, wird
+  sofort das richtige Volume ermittelt. 
+  Einen besonders schnellen Zugriff hat man auf die durch ShortVols gegebenen,
+  eigens hervorgehobenen Volumes (siehe Config-Doku, Filer-Doku) :
+  
+  (g) <*>|<:>|<!>|<->|<^>|<&>|<@> - Taste   - liefert bei Drücken von 
+                        *           - das Boot-Volume,
+                        :           - das Prefix-Volume,             
+                        !           - das System-Volume,
+                        -           - das Definitionsmodul-Volume,
+                        ^           - das Treiber-Volume,
+                        &           - das Bibliotheks-Volume,
+                        @           - das Work-Volume mit Workfilename.
+                        
+  Eine sinnige Belegung dieser ShortVols hilft sehr bei der Steigerung der
+  Bedienungsfreundlichkeit unseres GDOS !
+  
+  
+  (4) Das Selektieren eines Files aus dem Angebot
+  
+  Ist die Festlegung des gewünschten Volumes auf dem einen oder anderen Wege
+  geglückt, so bleibt immer noch die Auswahl des / der Files zu bewältigen.
+  Häufig wird es geschehen, daß das gesuchte File in der Liste gar nicht zu
+  sehen ist, obwohl das richtige Volume selektiert wurde. Dies ist bei 
+  Directory-Längen von bis zu 4095 Benutzereinträgen auch nicht verwunderlich.
+  Soviel Information paßt nicht auf eine Seite. Will man weitere Seiten der
+  Liste sehen, so drücke man :
+  
+  (a) <SPACE>         - die Leertaste, und eine neue Seite der Fileliste
+                        wird sichtbar. Auch hier gilt, daß das Erreichen des
+                        Endes der Liste und ein weiteres Drücken dieser Taste
+                        zum Anfang zurückführt. Der Kreis schließt sich.
+                        
+  oder
+  
+  (b) <CtrlAKey>..    - Control-Tasten, um jeweils eine Seite zu bekommen,
+      <CtrlZKey>        die mit dem File beginnt, das als Anfangsbuchstaben
+                        denjenigen hat, der mit dem in der Control-Tasten-
+                        Kombination verwendeten übereinstimmt.
+                        Sollte kein mit dem gewünschten Anfangsbuchstaben
+                        in der Liste sein, so wird die erste Seite gezeigt.
+                        
+  Hat man im Config-Programm oder im Filer ein Workvolume mit einem darauf
+  befindlichen (Text-)Workfile definiert, so kann man durch :
+
+  (c) <@>-Taste       - den Klammeraffen eine Wahl eben dieses speziellen Files
+                        ohne irgendwelche Umwege erreichen (siehe auch (3)(g)).
+                        
+  Die letzte Möglichkeit beim einfachen SelectFile wird im nächsten Abschnitt
+  (5) beschrieben. Das SelectMultipleFiles-Menue hat jedoch noch einige
+  weitere Optionen bei der Mehrfachauswahl.
+  
+  (d) <Func1Key>      - Es werden alle Files der Liste, also auch die gegen-
+                        wärtig nicht in der Listenseite dargestellten, selek-
+                        tiert. Die Bestätigung dieser Auswahl muß - wie bereits
+                        in (2) erwähnt - über <ETXKey> erfolgen.
+                        
+  Nicht totale Auswahlen erhält man natürlich dadurch, daß man einzelne Files
+  mit dem entsprechenden Buchstaben markiert und eventuell mit <SPACE> auf
+  weiteren Seiten genauso verfährt. Die einmal gewählten Files werden auch nach
+  Umschalten auf eine andere Seite nicht vergessen. 
+  Sollte man sich einmal bei der Auswahl vertippt haben, so drücke man den
+  Buchstaben des falsch selektierten Files noch einmal. Die Markierung wird
+  dadurch aufgehoben. War der Fehlgriff ein prinzipieller, so kann man die
+  gesamte Selektion rückgängig machen :
+  
+  (e) <Func2Key>       - setzt alle Markierungen mit einem Schlag zurück. Kein
+                         File ist mehr selektiert.
+                      
+  Nach Beendigung der Auswahltätigkeit kann man, der besseren Übersicht halber,
+  alle Files, die ausgewählt wurden; alle Files, die nicht ausgewählt sind und
+  schließlich auch wieder die gesamte Liste mit allen selektierten und nicht
+  selektierten Files sehen :
+  
+  (f) <Func4Key>       - nur die selektierten Files sind in einer Liste zusam-
+                         mengefaßt sichtbar.
+                         
+  (g) <Func5Key>       - nur die nicht selektierten Files sind in einer Liste
+                         zusammengefaßt sichtbar.
+                         
+  (h) <Func3Key>       - selektierte und nicht selektierte Files werden wieder
+                         gemeinsam in einer Liste sichtbar.
+                         
+  Die Rubrik 'Display' in der dritten Bildschirmzeile gibt jeweils darüber
+  Auskunft, welcher der drei Zustände aus (f) bis (h) gegenwärtig dargestellt
+  ist (Only selected / Only unselected / All).
+  
+  
+  (5) Das Bestimmen eines Files, das nicht im Angebot steht
+  
+  Gelegentlich kann es vorkommen, daß der Programmierer des SelectFile-Menues
+  eine Vorauswahl z.B. des FileSuffixes getätigt hat, die mit der vom Benutzer
+  gewünschten nicht zur Deckung zu bringen ist. In diesem Fall hilft die letzte
+  Option der SelectFile-Prozedur : 
+  
+  (a) <EnterKey>        - bewirkt, daß zwischen Benutzerhinweisen und Frage der
+                          Fileliste eine Zeile eröffnet wird, die lautet :
+                          'Enter name with volume :'
+                          Der Benutzer hat nun den betreffenden vollständigen
+                          FileNamen mit Volumeangabe und eventuell FileSuffix
+                          einzugeben. Hiernach versucht das System, dieses File
+                          dem aufrufenden Programm zur Bearbeitung zu übergeben.
+                         
+  Dabei kann es natürlich passieren, daß eine unsinnige Zuweisung erfolgt. So
+  läßt sich z.B. mit der Eingabe '#a00:Compiler.Syst' der System-Compiler als
+  Code-File in den Editor laden, wenn man im Eingangs-SelectFile-Menue des
+  Editors obige Taste und die eben genannte Eingabe benutzt.
+  Beim SelectMultipleFile entfällt diese Möglichkeit der Direkteingabe !
+  
+  (6) Spezialitäten
+  
+  Es bleiben einige besondere Leckerbissen dieser Menues zu schildern. Paßt
+  einem Benutzer keines der Files, die angeboten werden, so kann er sein
+  Mißfallen durch die (sofortige bzw. beim SelectMultipleFiles auch spätere)
+  Eingabe von <ESCKey> zum Ausdruck bringen. Der Programmierer der aufrufenden
+  Anwendung hat dann hoffentlich das Definitionsmodul von GdosHelp gelesen,
+  um geeignete Gegenmaßnahmen gegen eine solche Benutzerreaktion zu ergreifen.
+  Zumeist sollte die eigentlich intendierte Programmausführung dann abgebrochen
+  werden oder eine Defaulteinstellung zur Anwendung kommen.
+  
+  Wird der Editor gestartet, so bietet das dort in einer besonders geschickten
+  Weise in eine Programmumgebung eingebettete SelectFile eine Besonderheit, 
+  die damit zusammenhängt, daß der Editor nicht nur Files mit dem FileSuffix 
+  'Text' laden können sollte, sondern z.B. auch solche Files wie diesen : einen
+  'Doku'-Text. Aber das haben Sie ja schon gelernt, sonst könnten Sie diesen 
+  Text gar nicht lesen !
+  Wird also beim Erstaufruf des Editors obige <EnterKey>-Option gewählt und
+  dann z.B. '=.Doku', abgeschlossen durch ein weiteres <EnterKey> oder <ETXKey>,
+  eingegeben, so zeigt sich eine Fileliste all der Files des eingestellten
+  Volumes, die den passenden FileSuffix haben. Bei anderen Endungen verfahre
+  man entsprechend - was auch immer das Resultat im Editor dann sei !
+  
+  
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+  

@@ -1,0 +1,74 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                   DriveCopy (V 2.8)                      │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+  Die im Filer vielleicht schmerzlich vermißte Möglichkeit, ganze Disketten in
+  einem Durchgang zu kopieren ohne auf die File-Strukturen Rücksicht nehmen zu 
+  müssen, bietet das über <D> erreichbare System-Programm DriveCopy.
+  
+  Es meldet sich mit mit einem Prompt, das sowohl Eingabemöglichkeiten als
+  auch bloße Informationen offeriert.
+  
+  (a) S(ource       - Hier ist die Laufwerkskennung des Drives angegeben bzw.
+                      über die Taste <S> zu verändern, die zu dem Laufwerk ge-
+                      hört, von dem kopiert werden soll (Original).
+                      
+  (b) Drives online - Gibt eine Liste der im Moment im System angemeldeten
+                      Drives und zwar durch Aufzählung der zugehörigen Kenn-
+                      buchstaben.
+                      
+  (c) D(estination  - Auf diesem Drive wird die Kopie des Originals erzeugt.
+                      Es ist zu beachten, daß Source- und Destination-Lauf-
+                      werk die gleiche Anzahl von GDOS-Blocks an Aufnahme-
+                      kapazität besitzen. Besitzt man nur ein Laufwerk, so
+                      muß die Source- und Destination-Angabe übereinstimmen.
+                      Das System gibt dann Anweisungen zum Diskettenwechsel.
+  
+  (d) Buffer Size   - Die Kopierarbeit wird über einen Puffer geleistet, dessen
+                      Größe hier in GDOS-Blocks (1 KB) angegeben wird. Daß ein
+                      sehr großer Puffer insbesondere bei nur einem Laufwerk 
+                      enorme Zeitvorteile erbringt, sollte klar sein. Wichtig 
+                      ist, daß DriveCopy nur arbeitet, wenn die Puffergröße 
+                      über 15 GDOS-Blocks liegt.
+                      
+  (e) C(opy         - Sind Original- und Kopie-Diskette in den richtigen Drives,
+                      so wird über die <C>-Taste der Kopiervorgang gestartet.
+                      Dabei erscheint rechts neben dieser Optionseintragung ein
+                      Zahlenpaar, das in der ersten Komponente die Anzahl der
+                      zu kopierenden Blöcke und in der zweiten die Anzahl der
+                      bereits durch den Puffer an die Zieldiskette weitergegeb-
+                      benen Blöcke enthält. Ist die Ziel-Diskette noch nicht 
+                      unter GDOS formatiert, so wird automatisch ein Formatier-
+                      vorgang vorgeschaltet. Hat die Diskette bereits Volume-
+                      Einträge, so werden die vorhandenen Volumes in einem
+                      Fenster angezeigt und es wird die Frage gestellt, ob diese
+                      Volume-Table durch das Kopieren zerstört werden darf.
+                      Hier ist die letzte Möglichkeit für einen einen sauberen
+                      Ausstieg aus dem Kopiervorgang. Danach wird das Kopieren
+                      vollzogen. 
+                      
+  (f) F(ormatting   - Soll die Diskette vor dem Kopieren auf jeden Fall erst
+                      einmal formatiert werden, so drücke man die <F>-Taste.
+                      
+  (g) V(olume Table - Der Inhalt des Fensters (die Volume-Table-Eintragungen
+                      des in der Überschrift per Laufwerkskennung angezeigten
+                      Drives) kann hiermit ausgewählt werden. Nach Eingabe
+                      von <V> soll ein gültiger Laufwerkskennbuchstabe (siehe
+                      Abschnitt (b)) dem System das gewünschte Laufwerk bekannt-
+                      geben.
+  
+  (h) Q(uit         - Dient dem Verlassen dieser System-Utility.
+  
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)       │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+

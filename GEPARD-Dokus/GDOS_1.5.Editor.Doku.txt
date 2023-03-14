@@ -1,0 +1,839 @@
+
+ ┌─────────────────┬──────────────────────────────────────────────────────────┐
+ │                 │                                                          │
+ │  !"#$&'()*+,-.  │     GEPARD - DISK - OPERATING - SYSTEM  (GDOS) 1.52      │
+ │  0123456789:;<  │                                                          │
+ │ =>?@ABCDEFGHIJ  │                                                          │
+ │ KLMNOPQRSTUVWX  │            DOKUMENTATION DER SYSTEM - SHELL              │
+ │                 │                                                          │
+ ├─────────────────┼──────────────────────────────────────────────────────────┤
+ │ Stand  01.05.92 │                     Editor (V 2.z)                       │
+ └─────────────────┴──────────────────────────────────────────────────────────┘
+ 
+  (0)            Bedienungsanleitung zum GEPARD-System-Editor (Übersicht)
+             
+  (1)            Einleitung
+  (2)            Einfügen von Text
+  (3)            Löschen von Text
+  (4)            Ändern von Text
+  (5)            Kopieren von Textblöcken
+  (6)            Löschen größerer Textblöcke
+  (7)            Suchen von Zeichenfolgen
+  (8)            Ersetzen von Zeichenfolgen
+  (9)            Markieren von Textpositionen
+ (10)            Anspringen von markierten Textpositionen
+ (11)            Besondere Features
+ (12)            Die Funktionstasten <Func1Key> bis <Func5Key>
+ (13)            Andere Sonderzeichen/-tasten
+ (14)            Detaillierte Beschreibung der einzelnen Kommandos
+ (15)            Format des Info-Blocks
+
+
+
+  (1)            Einleitung
+        
+  Der GEPARD-System-Editor ist fast ein bildschirmorientierter Editor, der
+  vorwiegend zur Bearbeitung von Programm-Texten gedacht ist. Er wird von
+  der Hauptkommando-Ebene aus durch die Taste <E> aufgerufen, wenn das File
+  'Editor.Syst' auf der SYSTEM-Diskette benutzt wird. Es meldet sich das be-
+  kannte SelectFile-Menue. Ein zu bearbeitender Text kann wie üblich aus der
+  angebotenen Palette ausgewählt werden oder aber nach Eingabe von <EnterKey>
+  vom Benutzer benannt werden. Der leere Filename, der durch sofortiges,
+  erneutes Drücken der <EnterKey>-Taste gesetzt wird, bewirkt die hochwillkom-
+  mene Möglichkeit, einen gänzlich neuen Text zu eröffnen. Allerdings muß ihm
+  zum Schluß, beim Verlassen des Editors, ein korrekter Filename zugewiesen
+  werden (siehe unten : Detaillierte Beschreibung der einzelnen Kommandos /
+  Stichwort 'Q(uit').
+  (Will man - aus welchen Gründen auch immer - Files in den Editor laden, die
+  nicht das Suffix 'Text' besitzen, so gebe man angesichts des SelectFile-
+  Menues <EnterKey> ein. Die Aufforderung zur Eingabe eines Filenamens be-
+  antworte man mit '=.wxyz', wenn das gewünschte File den Suffix 'wxyz' hat.
+  Es erscheint daraufhin ein neues SelectFile-Menue, das alle Files aufführt,
+  die dieses Suffix haben. Die Auswahl geschieht wie üblich.)
+  
+  Die Bedienung erfolgt in der Regel über Auswahlmenues, die meistens in der
+  obersten Bildschirmzeile angezeigt werden. Die Hauptebene des Editors zeigt
+  sich wie folgt :
+  
+  >0 Edit: A(dj C(py D(el ... /2.z/.
+  
+  Diese Kommandozeile ist wie das eigentliche Arbeitsfeld des Editors
+  80 Zeichen breit. Gerät man über den rechten Rand hinaus, so wird dies
+  durch ein '!' am äußeren Rand des Bildschirms angezeigt. Vorsicht ist
+  bei solchen Operationen geboten. Es ist verwunderlich, was der Editor
+  mit diesen überbordenden Informationen so alles macht. Vorsicht also !
+  Zurück zur obersten, nicht beschreibbaren Zeile :
+  In ihr deutet das Größerzeichen die Editier-Richtung an : Von der jetzigen
+  Cursor-Position in Richtung Textende. Alle Aktionen, die den gesamten Text
+  betreffen (z. B. eine Zeichenfolge suchen),  werden in Richtung des fort-
+  laufenden Textes vollzogen. Wird dagegen die Taste, die das Kleinerzeichen
+  enthält, auf der Hauptkommando-Ebene gedrückt, so ändert sich diese Richtung
+  um 180°. Die Taste mit dem Größerzeichen schaltet wieder auf den Default-
+  Zustand zurück.
+  
+  Die Null ist ein Hinweis darauf, daß der Editor es über sogenannte Frames
+  gestattet, andere Texte als den momentan auf Textebene 0 bearbeiteten in
+  einer weiteren Kopie des Editors ähnlichen Transformationen zu unterziehen
+  wie dem Ausgangstext. Dabei ist der Textpuffer (siehe unten) eine allen
+  Frames gemeinsame Schnittstelle, über die Textteile ausgetauscht werden
+  können. Weiteres später.
+  
+  Das Wort 'Edit' ist das Erkennungszeichen für die Haupkommandoebene des
+  Editors. Jede Subebene des Editors (d. h. jedes untergeordnete Auswahlmenue)
+  hat eine eigene Kennzeichnung.
+  
+  Es folgt (jeweils) eine Liste der (auf der gewählten Ebene) verfügbaren,
+  meist einbuchstabigen Kommandos. Nicht erwähnt werden in dieser Liste die
+  (jeweils) verwendbaren Cursor-Steuer-Tasten. Hier hilft eifriges Probieren,
+  denn :
+  Die Cursor-Position wird mit den auf der Tastatur befindlichen Pfeiltasten
+  verändert, d. h. Cursor-Bewegungen im Text können unter anderem mit ihrer
+  Hilfe vollzogen werden.
+        
+        
+        
+  (2)            Einfügen von Text
+        
+  Zum Einfügen dient der Insert-Modus, der wie folgt benutzt wird: Zunächst
+  muß man den Cursor an die Stelle bewegen, wo der Text eingefügt werden soll.
+  Dann wählt man durch Druck auf die Taste <I> für I(nsert den Insert-Modus an.
+  Nun kann man durch schlichtes Eintippen der einzufügenden Zeichen den Text
+  verändern. Durch <BSKey> oder <LeftKey> kann man zuvor eingefügte Zeichen
+  wieder löschen; die übrigen Pfeiltasten sind inaktiv. Möchte man den
+  Insert-Modus beenden, so kann man sich dabei entscheiden, ob der eingegebene
+  Text wirklich eingefügt werden soll oder nicht. Durch Druck auf die Tasten
+  <CTRL> und <C> gleichzeitig oder <ETXKey> wird der Text eingefügt. Möchte man
+  hingegen den alten Zustand wieder herstellen, so drückt man <ESCKey>.
+  
+  
+  
+  (3)            Löschen von Text
+  
+  Wenn man Texte löschen möchte, so geht man zunächst an den Anfang oder das
+  Ende des zu löschenden Bereichs und drückt <D> wie D(elete. Durch Bewegen
+  des Cursors kann man Text löschen. Zunächst wird aber nur auf dem Bildschirm
+  der gelöschte Text durch Leerzeichen überschrieben. Erst wenn man <CtrlCKey>
+  oder <ETXKey> eingibt, wird wirklich gelöscht. Durch Druck auf <ESCKey> wird
+  wieder der alte Zustand erreicht.
+  
+  
+  
+  (4)             Ändern von Text
+  
+  Häufig ergibt sich die Notwendigkeit, einfach nur einige wenige Zeichen im
+  Text durch andere zu ersetzen. Der normale Weg wäre hier, zunächst die alten
+  Zeichen zu löschen, um dann die neuen wieder einzufügen. Da dies etwas um-
+  ständlich ist, gibt es den eX(change-Modus, der durch <X> gestartet wird und
+  wahlweise über <CtrlCKey> / <ETXKey> oder <ESCKey> beendet wird. Die Arbeits-
+  weise ist wie folgt: Alle Cursor-Bewegungs-Tasten einschließlich <EnterKey>
+  und <TabRightKey> sind aktiv und arbeiten normal. Wenn man eine andere Taste
+  (z.B. einen Buchstaben)  eingibt, so kommt dieses Zeichen an die Cursor-
+  Position, und das alte Zeichen an der Stelle ist weg. Am Zeilenende wird das
+  Zeichen richtig eingefügt, anstatt den <EnterKey>-Code zu überschreiben.
+  
+  <X> erlaubt auch die Verwendung von <InsertKey> und <DeleteKey>.
+  
+  * Achtung! In diesem Modus gibt es keine Möglichkeit, einmal
+  *          überschriebenen Text wieder herzuholen!
+  
+  Eine weitere Möglichkeit zum Ändern von Text ist der Replace-Befehl, der
+  weiter unten erläutert wird.
+  
+  
+  
+  (5)        Kopieren von Textblöcken
+  
+  Bei jeder Insert- und Delete-Operation wandert der jeweils eingefügte bzw.
+  gelöschte Text in den Textpuffer. Wenn man den zuletzt eingefügten bzw.
+  zuletzt gelöschten Bereich im Text nochmals oder wieder einbauen will, so
+  wählt man <C> wie C(opy und drückt anschließend <B>, um den Textpuffer
+  (engl. Buffer) einzufügen. Das kann man beliebig oft machen, solange genug
+  Speicher verfügbar ist. Um also einen Textteil zu kopieren, löscht man den
+  Bereich zunächst, verläßt den Delete-Modus über <ESCKey>, geht an die Stelle,
+  wohin kopiert werden soll, und drückt <C> <B> hintereinander. Man kann auch
+  einen auf Diskette vorliegenden Textblock in Form eines Text-Files einkopie-
+  ren, man muß nur <C><F> eingeben. Dann werden per Menue alle verfügbaren
+  Textfiles angeboten.  (Näheres hierzu: Dokumentation des GDOS über File-
+  Select).
+  
+  
+  
+  (6)         Löschen größerer Textblöcke
+  
+  Um einen großen Textblock zu löschen, ist die Anwendung des Delete-Befehls
+  häufig zu mühsam. Hier bietet das Z(ap-Kommando eine Alternative. Man
+  geht zunächst an den Anfang des zu löschenden Bereichs und tippt <D> wie
+  D(elete und gleich danach <ESCKey>. Nun ist diese Stelle markiert. Jetzt
+  müssen Sie nur noch das Ende des zu löschenden Bereichs mit dem Cursor
+  erreichen und können dann <Z> für Z(ap drücken. In jedem Fall fragt der
+  Editor nach, ob gelöscht werden soll. Es muß also noch mit <Y> für Y(es
+  bestätigt werden.
+  Normalerweise wandert der gelöschte Text in den Textpuffer, wenn genug
+  Speicher frei ist. Der Textpuffer kann dann auch wieder zum Kopieren dieses
+  großen Textabschnittes benutzt werden. Falls jedoch nicht genug Speicher da
+  ist, wird gefragt, ob trotzdem gelöscht werden soll. - Der Buffer selbst
+  kann gelöscht werden durch Eingabe von <Z> für Z(ap und <B> für B(uffer.
+  
+  
+  
+  (7)          Suchen von Zeichenfolgen
+  
+  Um Zeichenfolgen in einem Text zu suchen, bedient man sich des F(ind-Befehls.
+  Er wird durch <F> gestartet. Dann erscheint die Frage nach der zu suchenden
+  Zeichenfolge. Gibt man <ESCKey> oder nur <EnterKey> ein, so wird sofort in
+  den Edit-Modus zurückgekehrt. Ansonsten wird nach der eingegebenen Zeichen-
+  folge in der augenblicklichen Editier-Richtung `gefahndet'. Falls die
+  Zeichenfolge im Text gefunden wird, so wird die entsprechende Textstelle
+  angezeigt und ein Tastendruck abgewartet. <SPACE> startet das Weitersuchen,
+  alle anderen Tasten brechen die Suche ab.
+  Möchte man später nochmals nach derselben Zeichenfolge suchen, so gibt man
+  vor dem <F> für F(ind ein <S> für S(ame ein. Dabei ist natürlich vorausge-
+  setzt, daß man nicht zwischendurch in irgendeiner Form nach einer anderen
+  Zeichenfolge hat suchen lassen. Es wird also immer nur der zuletzt gesuchte
+  Begriff etc. wiederverwendet. Falls man vorher einen Repeat-Faktor eingegeben
+  hatte (dies geschieht auf der Hauptkommandoebene durch nichtgeechotes
+  Eintippen einer natürlichen Zahl vor dem zu wiederholenden Befehl, funktio-
+  niert auch mit den Cursor-Steuertasten), so wird nur bis zum entsprechenden
+  Auftreten gesucht.
+  Wurde die Zeichenfolge nicht im Text gefunden, so wird dies angezeigt und
+  ein Tastendruck zur Bestätigung abgewartet. Oft kommt es vor, daß man nach
+  einer Zeichenfolge (z.B.: einem Identifier) sucht, die auch in anderen
+  Zeichenfolgen enthalten ist, aber man möchte nur die Stellen suchen, an
+  denen die Zeichenfolge isoliert (durch nicht-alphanumerische Zeichen um-
+  schlossen) auftritt. In solchen Fällen gibt man vorher ein <W> wie W(ord
+  ein (genau wie S(ame). Wenn man nicht nur am soundsovielten Auftreten
+  einer Zeichenfolge interessiert ist, so gibt man wie bereits erwähnt den
+  Repeat-Faktor vorher an und drückt dann <V> wie V(erify. Dann werden die
+  einzelnen Stellen angezeigt und der Repeat-Faktor heruntergezählt. Äquivalent
+  zur Eingabe des Repeat-Faktors MaxCard ist die Eingabe des Schrägstrichs
+  </>.
+  Wenn man weder </> noch einen Repeat-Faktor eingegeben hat, wird automatisch
+  V(erify und </> angenommen.
+  
+  
+  
+  (8)         Ersetzen von Zeichenfolgen
+  
+  Das Ersetzen von Zeichenfolgen wird mit dem R(eplace-Befehl bewerkstelligt,
+  der genau wie der F(ind-Befehl zu bedienen ist. Lediglich bei der Eingabe
+  muß man logischerweise zwei Zeichenfolgen eintippen. Die Frage bei Auffinden
+  der gesuchten Zeichenfolge lautet natürlich auch anders.
+  
+  
+  
+  (9)         Markieren von Textpositionen
+  
+  Wenn man sich eine Textposition zum schnelleren Auffinden markieren möchte,
+  so verwendet man dazu den T(ag-Befehl und gibt danach einen Buchstaben oder
+  eine Zahl ein, um diese Textstelle später identifizieren zu können.
+  Außerhalb dieser explizit markierten Textpositionen gibt es noch eine Reihe
+  weiterer mehr implizit definierter Stellen: Die Stelle des letzten I(nsert
+  oder D(elete wird aus Kompatibilitätsgründen immer noch unterstützt.
+  Zusätzlich werden jetzt die 16 chronologisch letzten Stellen im Text ge-
+  speichert, an denen der Benutzer Änderungen durchgeführt hat (eX(change,
+  I(nsert usw.).
+  Trivialerweise sind Textanfang und -ende sowie die Stelle markiert, an der
+  der Compiler zuletzt einen Syntax-Error erkannt und an den Editor gemeldet
+  hat.
+  
+  
+  (10)        Anspringen von markierten Textpositionen
+  
+  Um nun eine Textposition anzuspringen, drückt man <J> für J(ump und hat dann
+  verschiedene Möglichkeiten zur Eingabe: zunächst steht <B> für B(egin (Text-
+  anfang), <E> für E(nde, L(ast für die Stelle des letzten I(nsert oder
+  D(elete-Vorgangs. Wenn man eine der vorher markierten Textpositionen erreichen
+  möchte, so gibt man zuerst <SPACE> und dann die Taste, mit der die Stelle
+  markiert wurde, ein. Wenn man nicht ausgerechnet <B>, <E> oder <L> zum
+  Markieren genommen hat, so geht es auch ohne vorherige Eingabe von <SPACE>.
+  Häufig ergibt sich die Notwendigkeit, eine Stelle zu markieren, um nur
+  schnell eine andere Position anzusehen und dann wieder zurückzukehren. Wenn
+  man an dieser Stelle Insert oder Delete benutzt hat, so ist ja alles wunder-
+  bar (nur J(ump L(ast eingeben). Aber... wenn man nun plötzlich merkt, daß
+  dort etwas geändert werden muß, vergißt man bestimmt, daß dabei das alte
+  L(ast verloren geht. Aus diesem Grund werden ab Version 2.g die letzten 16
+  Positionen (bei Insert, Delete, Exchange, Copy, Replace) in einem Ringpuffer
+  gespeichert, (wobei Positionen, die innerhalb von +/- 8 Bytes von der letzten
+  gespeicherten Pos. liegen, nicht unterschieden werden.) Diese Stellen werden
+  über eine Sonderfunktion des J(ump-Befehls erreichbar: mit <-> und <+>. Mit
+  diesen Tasten ist es möglich, zwischen besagten 16 Positionen zu 'blättern'.
+  Um diese Sonderfunktion zu beenden, muß man nur eine beliebige andere Taste
+  drücken.
+  
+  
+  
+  (11)       Besondere Features
+  
+  Mit der Taste <#> kann man die Prompt-Line umschalten, um weitere
+  Kommando-Optionen angezeigt zu bekommen.
+  
+  Mit der Taste <K> erhält man anstelle der Prompt-Line die ge-
+  setzten Tabulator-Positionen angezeigt und wieder abgeschaltet.
+  
+  Mit Taste <E> für E(nvironment erhält man Informationen über
+  den Zustand des Editors. Außerdem können bestimmte System-
+  Variablen geändert werden.
+  
+  Mit der Taste <?> bekommt man den belegten und den noch freien
+  Speicher in Bytes, die Anzahl der Zeilen und die momentane
+  Cursor-Zeile angezeigt.
+  
+  Mit der Taste <G> für G(lue kann man zwei untereinander stehende
+  Zeilen mit einander verbinden.
+  
+  Mit der Taste <H> für H(ardcopy kann man den S(creen, den B(uffer
+  oder mit A(ll den gesamten Text über den Drucker ausgeben.
+  
+  Eine Zeile kann ab Cursor-Position aufgeteilt werden durch die
+  Eingabe von <CtrlBKey> für B(reak.
+  
+  Aufwärts-Scrollen geht mit <O> für O(pposite page, und Abwärts-
+  Scrollen mit <P> für P(age.
+  
+  Mit <M> für M(idth wird der Bildschirm neu geschrieben, wobei der
+  Cursor in die Bildmitte gesetzt wird, wenn dieser nicht am
+  Textanfang oder -ende steht.
+  
+  Wenn der Filer resident ist, kann er mit <E> und <F> aufgerufen
+  werden.
+  
+  Mit <Y> hat es folgende Bewandtnis:
+  Wird die <EnterKey>-Taste festgehalten, so daß die Auto-Repeat-
+  funktion einsetzt, so wird die Kommandozeile oben hinausgescrollt.
+  Der Editor erneuert sie nach jedem <EnterKey>, - jedoch nicht, wenn
+  der nächste <EnterKey> innerhalb eines bestimmten Zeitraumes kommt.
+  Das soll das Flimmern der Kommandozeile verhindern. Nun sind die
+  Repeatfrequenzen der Tastaturen aber unterschiedlich. Mit der
+  <Y>-Funktion kann man nun die Länge des o.g. Zeitraumes ein-
+  stellen, indem man z.B <500Y> tippt (im Kommandomodus). <1Y>
+  bewirkt ein praktisch sofortiges Erneuern der Kommandozeile,
+  während <4294900000Y> schon ulkige Effekte hervorruft.
+  Defaultwert ist 700, für die normalen Tastaturen ein ver-
+  nünftiger Wert.
+
+
+
+  (12)       Funktionstasten <Func1Key> bis <Func5Key>
+  
+  Da der GEPARD-System-Editor als Editor für die Erstellung von
+  MODULA-2 - Programmen konzipiert wurde und nicht für die Text-
+  verarbeitung, ist die Handhabung von Textattributen eher eine
+  lästige Zusatzübung für diesen Editor, denn eine Pflicht. In
+  Programmen sollte man weitestgehend darauf verzichten. Selbst
+  bei auszugebendeen Strings ist der bessere Weg der über die
+  programmierbaren Textattribute aus GdosTypes. Außerdem hakt
+  der Editor gelegentlich, wenn man z. B. die R(eplace-Funktion
+  auch auf Attribute anwendet. Ähnlich dem jm sagen wir jetzt
+  nicht, daß eine Bejahung von 'S(how Control Char ?' in der
+  E(nvironment-Option selbst in diesem Falle weiterhilft.
+  
+  <Func1Key> leitet eine Attributeingabe zum Einschalten eines
+     Attributs ein. Die nächste Taste:
+     <U> Underline                        Beispiele:
+     <I> Invers                            inverse Darstellung 
+     <B> extraBold                        (früher Lowlight)
+     <S> kursiv (Slant)                   Kursive Schrift
+     <²> superscript                      GEPARD
+     <³> subscript                               Computer
+     <L> GCDLetter                        Normale Buchstaben etc.
+     <G> GCDGraphic                       ab cd ef g h pq
+     <M> GCDMath                          1 2 3 4 5
+     
+  <Func2Key> statt <Func1Key> zuerst gedrückt, schaltet das entsprechende
+  Attribut wieder aus.
+  
+     Hier noch einmal eine Zusammenfassung im Klartext:
+     
+      zweite Taste  │    <Func1Key>    │    <Func2Key>
+     ───────────────┼──────────────────┼───────────────────
+           <R>      │ RstAttrChar      │ RstAttrChar
+           <U>      │ UnderLineOnChar  │ UnderLineOffChar
+           <I>      │ InverseOnChar    │ InverseOffChar
+           <B>      │ ExtraBoldOnChar  │ ExtraBoldOffChar
+           <S>      │ SlantOnChar      │ SlantOffChar
+         <DownKey>  │ SubScriptChar    │ NormalScriptChar
+          <UpKey>   │ SuperScriptChar  │ NormalScriptChar
+           <->      │ NormalScriptChar │ NormalScriptChar
+           <L>      │ GCDMetterChar    │ GCDLetterChar
+           <G>      │ GCDGraphicChar   │ GCDLetterChar
+           <M>      │ GCDMathChar      │ GCDLetterChar
+
+    Beispiel: <Func1Key> + <U> aktiviert Unterstreichung, <Func2Key> + <U>
+              deaktiviert sie wieder. Alle Attribute kann man mit
+              <Func1Key> + <R> oder <Func2Key> + <R> abschalten.
+
+  <Func3Key> toggelt einen Tabulator.
+  
+  <Func4Key>/<Func5Key> öffnet/schließt ein neues Textfeld (Frame). Die Nummer
+     des aktuellen Frames wird in der Kommandozeile hinter dem '>'
+     angezeigt. Also: Wenn mal kurz während des Editierens eines
+     Programms nach irgendetwas (meist Definitionsmodule) geschaut
+     werden soll, einfach <Func4Key>, dann <N> drücken, Text auswählen und
+     anschauen, ggf. etwas in den Textpuffer holen und dann <Func5Key> drücken.
+     Zum Öffnen und Schließen der Frames können auch die Tasten <@> und
+     <&> benutzt werden.
+  
+  
+  (13)         Andere Sonderzeichen/-tasten
+  
+  Zur Unterstützung der MODULA-2 - Programmierung ist dem Editor eine
+  Schnittstelle zum Compiler über einige Variablen aus GdosKernel (z. B.
+  AutoCMD, ErrorPos, ...) eingebaut. Es ist möglich, sich die letzte
+  Fehlerstelle, die der Compiler im Text fand, durch <J><?> zusammen
+  mit der zugehörigen Fehlermeldung anzeigen zu lassen.
+  Diese Schnittstelle wird auch benutzt, wenn der Compiler während
+  eines Compilations-Vorganges auf einen Fehler stößt und zur Behand-
+  lung des Fehlers in den Editor verzweigt.
+  
+  Über einige Control-Tasten sind einige GEPARD-MODULA-'Schlüsselwörter'
+  im Insert-Modus per Abkürzungstaste verfügbar :
+  
+  ASSEMBLER      ───────────── <CtrlAKey>
+  BEGIN          ──┐
+  END;           ──┴────────── <CtrlBKey>
+  DO             ──┐
+  END;           ──┴────────── <CtrlDKey>
+  END            ───────────── <CtrlEKey>
+  ARRAY OF       ───────────── <CtrlFKey>
+  INTEGER        ───────────── <CtrlIKey>
+  LONGCARD       ───────────── <CtrlLKey>
+  BOOLEAN        ───────────── <CtrlOKey>
+  PROCEDURE      ───────────── <CtrlPKey>
+  REPEAT         ──┐
+  UNTIL;         ──┴────────── <CtrlRKey>
+  STRING         ───────────── <CtrlSKey>
+  THEN           ──┐
+  END;           ──┴────────── <CtrlTKey>
+  WriteString (  ------------> <CtrlVKey>
+  WHILE          ------------> <CtrlWKey>
+  CARDINAL       ------------> <CtrlXKey>
+  ADDRESS        ------------> <CtrlYKey>
+  
+  Weitere Sondertasten lassen sich leicht über die <>-Tastenkombination
+  (siehe Dokumentation der Shell) einführen.
+  
+  <UndoKey>:
+     Bei Stringeingaben, - z.B. bei F(ind und R(eplace, -  wird die
+     FormatIO-Funktion EditString verwendet. Dadurch sind die Strings
+     komfortabel editiererbar, und mit dem <UndoKey> kann man die vorige
+     Eingabe zurückholen.
+
+  
+  
+   
+  (14)         Detaillierte Beschreibung der einzelnen Kommandos
+  
+  Pfeiltasten ..... bewegen den Cursor.
+  
+  <EnterKey>....... Im Editier- und Delete-Modus bewegt <EnterKey>
+                    den Cursor an den Anfang der nächsten Zeile
+                    in Editier-Richtung.
+                    Im Insert-Modus fügt <EnterKey> immer eine
+                    Zeilenschaltung ein.
+  
+  <ETXKey>......... hat bei den Insert und Delete-Befehlen ak-
+                    zeptierende Wirkung. Siehe auch <ESCKey> und
+                    I(nsert, D(elete.
+                    
+  <TabRightKey>.... bewegt den Cursor auf den nächsten gesetzten
+                    Tabulator nach rechts. Falls kein Tabulator
+                    gesetzt ist, geht der Cursor um eine Spalte
+                    weiter.
+                   
+                    Die gesetzten Tabulatoren kann man sich mit
+                    dem E(nvironment-Befehl ansehen oder mit <K>
+                    anstelle der Prompt-Line holen.
+  
+  <TabLeftKey>..... bewegt den Cursor auf den nächsten gesetzten
+                    Tabulator nach links. Falls kein Tabulator
+                    gesetzt ist, geht der Cursor um eine Spalte
+                    zurück.
+                    
+  <Func3Key>....... toggelt einen Tabulator, d. h. an der jetzigen
+                    Cursor-Position wird ein Tabulator gesetzt, wenn
+                    keiner vorhanden war / wird ein Tabulator
+                    gelöscht, wenn einer vorhanden war.
+                    
+  <ESCKey>......... Bei den meisten Kommandos bewirkt <ESCKey> den
+                    Abbruch, - jedoch nicht bei allen Befehlen!
+                    Damit ist die Wiederherstellung des alten Zustands
+                    möglich. Näheres dazu bei den einzelnen
+                    Befehls-Beschreibungen. Bei Eingaben (z.B.:
+                    Suchwort bei F(ind oder Tabulator-Einstellung
+                    kann man durch <ESCKey> die Eingabe verlassen,
+                    dabei bleibt die vorherige Eingabe erhalten.)
+  
+  <#>.............. schaltet die Prompt-Line um.
+  
+  </>.............. Repeat-Faktor := unendlich
+                    (nur für Find/Replace/Look).
+  
+  Ziffern.......... dienen zur Eingabe eines Repeat-Faktors, der für
+                    die Cursor-Bewegungen und für manche Kommandos
+                    (z.B. P(age, F(ind, R(eplace) verwendet wird.
+                    Dieser Repeat-Faktor wird !vor! dem Kommando ein-
+                    gegeben.
+                    
+  <CtrlBKey>....... (wie Break) trennt Zeile ab und fügt einen
+                    Zeilenvorschub ein. Die neue Zeile wird ein-
+                    gerückt wie die vorige, wenn Blank-suppression
+                    eingeschaltet ist, sonst wird linksbündig um-
+                    gebrochen.
+  
+  <CtrlCKey>....... hat bei den Insert und Delete-Befehlen ak-
+                    zeptierende Wirkung. Siehe auch <ESCKey> und
+                    I(nsert, D(elete.
+  
+  <<> ............. schaltet Editier-Richtung in Richtung zum Anfang um.
+                   
+                    Die Editier-Richtung beeinflußt einige Befehle
+                    in ihrer Richtungswirkung: <EnterKey>, F(ind,
+                    R(eplace, L(ook.
+  
+  <>> ............. schaltet Editier-Richtung in Richtung Textende zurück.
+  
+  <?>.............. zeigt belegten und noch freien Speicher in
+                    Bytes, die Anzahl der Zeilen und die momentane
+                    Cursor-Zeile an. (Da die Zeilen erst gezählt
+                    werden mussen, kann sich die Ausgabe etwas ver-
+                    zögern)
+  
+  A(djust ......... zum Einrücken einzelner Zeilen.
+                    (geht nur, wenn am Zeilenanfang eine DLE-
+                    Sequenz steht, siehe E(nvironment!)
+     <<->. . . . . . . eine Spalte nach links einrücken
+     <->>, <SPACE> . . eine Spalte nach rechts einrücken
+     <TabRightKey> . . bis auf nächste Tab-Position einrücken
+     vertikale Cursortasten,
+      <EnterKey> . . . nächste Zeile um gleichen Betrag verschieben
+     L(eft . . . . . . macht Zeile linksbündig
+     <ESCKey>,
+     <CtrlCKey > . . . verläßt A(djust
+  
+  C(opy ........... kopiert Textstück ein.
+     B(uffer . . . . . kopiert Textpuffer (vom letzten Insert,
+                       Delete, Zap) an die Cursorposition
+     F(ile . . . . . . kopiert ein File komplett an die Cursor-
+                       position
+   
+  D(elete ......... zum Löschen von Text.
+     <<>,<>> . . . . . schalten die Editier-Richtung um
+     Repeat-Faktor . . zur Wiederholung des nächsten Tastenbefehls
+     Cursortasten  . . um in die entsprechende Richtung buchstaben- oder
+                       zeilenweise zu löschen
+     <WordLeftKey> . . löscht das vorherige Wort
+     <WordRightKey>  . löscht das nächste Wort
+     <TabLeftKey>  . . geht auf die vorherige Tabulator-Position und
+                       löscht dabei
+     <TabRightKey> . . geht auf die nächste Tabulator-Position und
+                       löscht dabei
+     <EnterKey>. . . . löscht bis zum nächsten Zeilenanfang in
+                       Editier-Richtung
+     <ESCKey> . . . . .stellt Ausgangszustand wieder her
+     <CtrlCKey>. . . . löscht den Text
+  
+  E(nvironment .... gibt Informationen über den Zustand des
+                    Editors aus und erlaubt die Änderung von
+                    System-Variablen. In der obersten Bildschirm-
+                    zeile wird angegeben, ob eventuelle Ände-
+                    rungen am aktuellen Text schon abgespeichert
+                    wurden, darunter steht der Filename des
+                    aktuellen Textes (wenn bekannt). Die drei
+                    folgenden Zeilen informieren den Textbearbeiter
+                    über die Entstehungsgeschichte des Textes (Datum
+                    und Uhrzeit der Erst- und Letztabspeicherung) und
+                    die Jetztzeit. Weiter unten werden die gesetzten
+                    Tags in einer Zeile hintereinander ausgegeben.
+                    Darunter dann die über <T> änderbare Tabulatoren-
+                    anzeige.
+     O(ld  . . . . . . erlaubt das Ändern des alten Suchbegriffs
+     N(ew  . . . . . . ändert Ersatzwörter für R(eplace
+     E(xchange . . . . vertauscht Old mit New. Dies kann nützlich
+                       sein, wenn man einen vorhergegangenen
+                       R(eplace-Befehl rückgängig machen will.
+     A(uto backup  . . verändert die Wirkungsweise der Optionen
+                       S(ave und U(pdate im Q(uit-Menue. Bei
+                       Schalterstellung `On' wird grundsätzlich
+                       immer die noch auf der Diskette existier-
+                       ende Version in '=.Back' umbenannt, danach
+                       erst wird der Text auf die Diskette ge-
+                       speichert.
+     B(lank suppression schaltet die Erzeugung von DLE-Codes zur
+                       Unterdrückung von Leerzeichen am Zeilen-
+                       anfang um. Dann erscheint die Frage
+                       'Insert/Remove DLE-Codes?'. Bei Eingabe
+                       von <Y> oder <J> wird der Text umgewandelt.
+                       Achtung: die Konvertierung dauert bei
+                       großen Texten etwas lange.
+                       Diese Funktion ist vor allem nützlich, um
+                       Files vom GepStar mit DLE-Codes zu versehen
+                       oder umgekehrt. Wenn Blank-suppression aus-
+                       geschaltet ist, so wird bei Insert und Break
+                       kein DLE-Code mehr erzeugt. Das automatische
+                       Einrücken entfällt, A(djust wird nicht mehr
+                       ausführbar.
+     C(ase sensitivity beeinflußt F(ind/R(eplace/L(ook. Falls ein-
+                       geschaltet, werden beim Suchvorgang Groß-
+                       und Kleinbuchstaben unterschieden, sonst
+                       wird zum Beispiel "hansi"="HANSI".
+     I(ncrement version dient zur automatischen Erhöhung der Ver-
+                       sionsnummer bei jedem Save-Vorgang. Die
+                       Nummer muß direkt nach dem ersten Auftreten
+                       der Zeichenfolge 'V#' im Text kommen.
+                       (siehe auch Q(uit I(ncrement)
+     T(ab setting  . . zur Eingabe der Tabulatoren. Man gibt eine
+                       Zeile ein, in der jeweils ein <T> für jeden
+                       Tabulator in der entsprechenden Spalte er-
+                       scheinen muß. Wenn man nichts eingibt, wird
+                       eine Standard-Einstellung vorgenommen (alle 8
+                       Spalten ein <TabRightKey>. Siehe auch <Func3Key>.
+                       Um alle gesetzten Tabulatoren zu löschen, gibt man
+                       nur <SPACE> <EnterKey> ein.
+     <F> . . . . . . . Aufruf des Filers.
+     <?> . . . . . . . Für Statistiker und Leute ohne Zeitgefühl :
+                       Informationen über bisher am Text vergeudete Zeit.
+                       
+  F(ind ........... zum Auffinden von Suchworten
+                    (siehe auch V(erify, W(ord, S(ame und </>).
+                    Es wird die Eingabe eines Suchworts verlangt,
+                    wenn S(ame nicht gesetzt wurde. Dann wird
+                    nach dem <Repeat-Faktor>.ten Auftreten in
+                    Editier-Richtung gesucht. Wenn V(erify gesetzt
+                    ist, so wird bei jedem Auftreten angehalten
+                    und angezeigt. Wurde kein Repeat-Faktor bzw. </>
+                    gesetzt, so wird automatisch V(erfiy und </>
+                    angenommen.
+  
+  G(lue ........... kittet nächste Zeile an die aktuelle an. Dabei
+                    wird dafür gesorgt, daß mindestens ein Space
+                    am ehemaligen Zeilenende steht.
+  
+  H(ardcopy ....... ermöglicht folgende Ausgaben auf den Drucker:
+     S(creen . . . . . Bildschirminhalt
+     B(uffer . . . . . Inhalt des Puffers
+     A(ll  . . . . . . gesamter Text
+  
+  I(nsert ......... zum Einfügen von Text.
+     <<->. . . . . . . ein Zeichen zurück
+     <->>. . . . . . . wie <SPACE>
+     <EnterKey>. . . . fügt einen Zeilenvorschub ein. Wenn Blank-
+                       suppression eingeschaltet ist, wird auch
+                       ein DLE-Code generiert (siehe E(nvironment
+                       B(lank suppression).
+     <TabRightKey> . . fügt Leerzeichen ein bis zum nächsten
+                       Tabulator
+     <ESCKey>  . . . . eingegebener Text wird nicht eingebaut,
+                       ist aber im Textpuffer
+     <CtrlCKey>. . . . Text wird eingebaut und ist im Textpuffer
+  
+  J(ump ........... Der Cursor springt in die mit dem <Repeat-Faktor>
+                    gesetzte Zeile, wenn ein Repeat-Faktor gesetzt wurde,
+                    sonst kommt man mit:
+     B(egin  . . . . . an den Textanfang.
+     E(nd  . . . . . . ans Textende.
+     L(ast . . . . . . an die Textstelle des letzten Delete oder
+                       Insert.
+     <?> . . . . . . . an die Textstelle, die zuletzt vom Compiler
+                       mit einem Syntax-Error beanstandet wurde.
+                       Wenn die Fehlermeldung noch bekannt ist,
+                       wird diese angezeigt.
+                       Wenn nach einem Syntax-Error ein falscher
+                       Text geladen wurde (was auch vorkommt), so
+                       kann man mit dieser Funktion nach N(ew File
+                       die Position im richtigen Text anspringen.
+     <0> bis <9>,
+     <A> bis <Z> . . . an markierte Textposition (Tag).
+     <SPACE> . . . . . dient zur Umschaltung, um auch die Buch-
+                       staben B, E und L zur Markierung von Text-
+                       positionen verwenden zu können.
+     <->,<+> . . . . . die letzten 16 Stellen, an denen Delete,
+                       Insert, Copy, Exchange oder Replace benutzt
+                       wurde, werden gespeichert und können mit
+                       <-> und <+> angesprungen werden. Da der
+                       J(ump-Modus nach dieser Funktion nicht
+                       verlassen wird, kann man also mit <+> und
+                       <-> hin- und herblättern. Wenn man eine
+                       andere Taste drückt, wird diese noch für
+                       J(ump ausgewertet. Z.B. <B> springt an den
+                       Anfang, danach wird der Modus verlassen.
+  
+  <K>.............. schaltet anstelle der Prompt-Line die Tabulator-
+                    Anzeige ein oder wieder aus.
+  
+  L(ook ........... sucht die unter dem Cursor stehende alpha-
+                    numerische Zeichenfolge ab Textanfang bzw.
+                    Textende abhängig von der augenblicklichen
+                    Editier-Richtung. Natürlich kann man auch
+                    wortweise suchen, dazu ist vorher <W> zu
+                    drücken. Will man nicht vom Anfang bzw. Ende
+                    des Textes suchen, so muß man vorher <S> wählen.
+  
+  <M>.............. schreibt den Bildschirm neu und setzt den Cursor
+                    in die Bildschirmmitte, wenn dieser nicht am
+                    Textanfang oder -ende steht.
+  
+  N(ew ............ zum Laden eines anderen Textes von Diskette.
+                    Wenn der alte Text verändert wurde und noch
+                    nicht abgespeichert ist, so wird nachgefragt,
+                    ob dieser Text überflüssig ist!
+  
+  O(pposite ....... geht 20 * Repeat-Faktor Zeilen zurück im Text.
+  
+  P(age ........... geht 20 * Repeat-Faktor Zeilen vor im Text.
+  
+  Q(uit ........... zeigt das Quit-Auswahlmenue an.
+     E(xit . . . . . . verläßt den Editor. Wenn der Text verändert
+                       wurde und noch nicht abgespeichert ist,
+                       wird nachgefragt.
+     R(eturn . . . . . springt in den Editor zurück.
+     I(ncrement  . . . erhöht Versionsnummer im Text. Die Versions-
+                       nummer muß direkt hinter dem ersten Auf-
+                       treten der Zeichenfolge 'V#' stehen und kann
+                       beliebig viele Stellen haben. Nachdem die
+                       Nummer erhöht wurde, wird sie zur Kontrolle
+                       ausgegeben.
+     D(ecrement  . . . erniedrigt Versionsnummer im Text.
+     U(pdate . . . . . Kombination von S(ave und E(xit hinter-
+                       einander. Dabei wird E(xit nur ausgeführt,
+                       wenn kein Fehler beim Abspeichern auftrat.
+     C(ompile  . . . . Kombination von U(pdate und C(ompile hinter-
+                       einander.
+     X(ecute . . . . . Kombination von U(pdate und R(un hinter-
+                       einander.
+     S(ave . . . . . . speichert Text unter dem angezeigten Namen
+                       ab. Dieser besagte Name entspricht dem Namen,
+                       unter dem zuletzt ein Text geladen oder ge-
+                       speichert wurde.
+     B(ack up and save benennt den alten Text in '.Back' um und
+                       speichert den aktuellen Text unter dem an-
+                       gezeigten Namen ab. Das Erst-Zugriffsdatum
+                       des alten Files wird beibehalten gegenüber
+                       älteren Versionen dieses Programms. Man
+                       beachte auch das Auto-Backup-Flag im
+                       E(nvironment.
+     P(urge and save . löscht den alten Text und speichert den
+                       aktuellen Text unter dem angezeigten Namen
+                       ab (falls Diskette voll ist, kann dies
+                       nützlich sein). Selbstverständlich wird das
+                       Erst-Zugriffsdatum der gelöschten Version
+                       beibehalten.
+     W(rite a file . . speichert den aktuellen Text unter anderem
+                       (neu einzugebenden) Namen ab, ohne diesen
+                       Namen für spätere Speicherungen zu behalten.
+                       Falls schon ein File unter dem angegebenen
+                       Namen existiert, wird höflich nachgefragt,
+                       ob dieses überschrieben werden darf.
+     N(ew filename . . wie Write, Name wird beibehalten für S(ave usw.
+     V(olume change  . ändert den Volume-Namen des aktuellen File-
+                       namens. Um das File abzuspeichern, muß man
+                       danach noch die entsprechende Auswahl tref-
+                       fen (siehe oben).
+     O(ther filename . besetzt den Filenamen um, wobei aber keine
+                       Schreiboperation auf die Diskette erfolgt.
+                       (Diese Option ist sinnvoll, wenn man z.B.
+                       ein Implementations-Modul nach der Vorlage
+                       des Definitions-Moduls erstellen möchte, wobei
+                       man sehr leicht in die Versuchung gerät, nach
+                       getaner Arbeit einfach Q(uit S(ave einzu-
+                       geben, was natürlich das alte Modul ver-
+                       nichtet. Jetzt kann man also vorher schon den
+                       Namen ändern, was solche ungeliebten Fehler
+                       von vornherein ausschließt.)
+                       
+  R(eplace ........ dient zum Ersetzen des Suchworts durch ein Ersatz-
+                    wort (siehe auch V(erify, W(ord, S(ame und </>).
+                    Es wird die Eingabe eines Suchworts und eines
+                    Ersatzworts verlangt, wenn S(ame nicht ge-
+                    setzt wurde. Dann wird nach dem Auftreten des
+                    Suchworts in Editier-Richtung gesucht. Wenn
+                    V(erify gesetzt ist, so wird bei jedem Auf-
+                    treten angehalten und abgefragt, ob ersetzt
+                    werden soll. Wurde kein Repeat-Faktor bzw. </>
+                    gesetzt, so wird automatisch V(erfiy und </>
+                    angenommen.
+  
+  S(ame ........... nachfolgendes F(ind / R(eplace verwendet alte
+                    Such-/Ersatzworte. (Anzeige und Änderungsmög-
+                    lichkeit der alten Such-/ Ersatzworte über
+                    E(nvironment)
+  
+  T(ag ............ markiert die aktuelle Textposition mit nach-
+                    folgendem Buchstaben/Zahl für den J(ump-Befehl.
+                    Die Tags werden beim Abspeichern im zum Text-
+                    file gehörigen Infoblock abgelegt.
+     <0> bis <9>,
+     <A> bis <Z>. . aktuelle Textposition wird mit dem/der ein-
+                    angebenen Buchstaben/Ziffer markiert.
+  
+  <CtrlTKey> ...... löscht alle bisherigen Tags
+  
+  V(erify ......... nachfolgendes F(ind/R(eplace zeigt Einzel-
+                    schritte an
+  
+  W(ord ........... Suchwort für nachfolgendes F(ind/R(eplace/
+                    L(ook soll durch nicht alphanumerische
+                    Zeichen begrenzt sein
+  
+  X(change ........ wählt Überschreibmodus; in diesem Modus
+                    ausgeführte Änderungen kann man nicht durch
+                    <ESCKey> rückgängig machen! - X(change erlaubt
+                    auch die Verwendung von <InsertKey> und <DeleteKey>.
+     Cursortasten  . . bewegen den Cursor in gewohnter Weise
+     <TabRightKey> . . bewegt den Cursor auf die nächste
+                       Tab-Position
+     <EnterKey>. . . . geht an den nächsten Zeilenanfang in
+                       Editier-Richtung
+     <ESCKey>,
+     <CtrlCKey>  . . . verläßt Exchange
+  
+  Y ............... mit vorausgehender Cardinalzahl beeinflußt
+                    das Flimmern der Kommando-Zeile beim Scollen.
+                    (Default: <700Y>)
+  
+  Z(ap ............ löscht den Text zwischen letzter Insert/
+                    Delete-Position und der aktuellen Cursor-
+                    Position und legt ihn im Textpuffer ab.
+                    Wenn mehr als 200 Zeichen gelöscht werden
+                    sollen oder der Textpuffer nicht groß genug
+                    ist, wird gewarnt und abgefragt.
+  
+  
+  
+  
+  (15)      Format des Info-Blocks
+  
+  Der Info-Block ist in jedem Text-File enthalten, und besteht physikalisch
+  aus dem ersten (Nummer 0) Block (mit 1 KByte Länge) des Files. Der GEPARD-
+  System-Editor verwendet diesen Block, um einige spezifische Informationen,
+  die zum Text gehören, zusammen mit dem Text zu speichern. So zum Beispiel
+  die gesetzten Tags, Tabulatoren etc. Das genaue Format ist so:
+  
+  43 LONG-Werte, die der jeweils einem gesetzten Tag zugeordneten relativen
+     Textposition entsprechen (ASCII 0-Z, sowie zwischenliegende),
+   1 BOOLEAN, der dem Case-sensitivity-Flag entspricht,
+   1 LONG-Wert, der der Position des sog. L(ast (siehe J(ump L(ast) relativ
+     zum Textanfang entspricht,
+   1 STRING[80], der die gesetzten Tabulatoren reflektiert, dabei steht für
+     jeden gesetzten Tabulator ein großes <T>, sonst erscheint ein Punkt.
+  16 LONG-Werte, die den Adressen der jeweils letzten 16 geänderten Stellen
+     im File entsprechen.
+   1 CARDINAL, das intern verwendet wird, um aus obigen 16 Positionen die
+     jeweils jüngste zu kennzeichnen. (Index * 4)
+   1 BOOLEAN, das Auto-Backup-Flag, das auswählt, ob die jeweils vorletzte
+     Version des aktuellen Textes in dem entsprechenden '=.Back'-File gerettet
+     werden soll.
+   1 BOOLEAN, für AutoIncrement Version.
+   1 BOOLEAN, für ShowControlChar.
+   1 LONG, für die mit diesem File im Editor verbrachte Zeit.
+  
+
+
+  Besonderen Dank gilt es hier jh auszusprechen, der im FORUM 14 diese Doku-
+  mentation veröffentlichte. Die Überarbeitung vollzog kpr, die Korrekturen
+  und Ergänzungen lieferten mgr und kdz.
+ 
+ ┌────────────────────────────────────────────────────────────────────────────┐
+ │  Copyright © jh + GDOS - PFLEGEGEMEINSCHAFT KIEL (mgr, jm, wgn, kpr, kdz)  │
+ │  c/o Klaus-Peter Reimers, Wulfsbrook 34a 2300 Kiel 1, Tel. 0431 / 682018   │
+ └────────────────────────────────────────────────────────────────────────────┘
+
